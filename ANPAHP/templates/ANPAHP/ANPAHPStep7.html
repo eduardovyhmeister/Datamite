@@ -1,6 +1,6 @@
 {% extends "Shared/_layout.html" %}
 {% load static %}
-{% load altai_tags_filters %}
+{% load custom_filters %}
 
 
 {%block head%}
@@ -54,7 +54,7 @@
                             <tr>
                                 <th scope="row">{{x.name}}</th>
                                 <th>
-                                    {% if lista|indexing:forloop.counter0 %}
+                                    {% if lista|get_value_at:forloop.counter0 %}
                                         <input class="form-check-input" type="checkbox" name={{forloop.counter}} value={{forloop.counter}} checked="checked">
                                     {% else %}
                                         <input class="form-check-input" type="checkbox" name={{forloop.counter}} value={{forloop.counter}}>

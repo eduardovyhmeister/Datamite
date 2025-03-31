@@ -1,7 +1,7 @@
 
 {% extends "Shared/_layout.html" %}
 {% load static %}
-{% load altai_tags_filters %}
+{% load custom_filters %}
 
 
 {%block head%}
@@ -83,7 +83,7 @@
                             <span id="value{{ forloop.counter }}">0</span>
                         </div>
                     </th>
-                    <th> {{ ids2names|get_index_value:forloop.counter0 }} </th>
+                    <th> {{ ids2names|get_value_at:forloop.counter0 }} </th>
                 </tr>
             {% endwith %}
         {% endif %}

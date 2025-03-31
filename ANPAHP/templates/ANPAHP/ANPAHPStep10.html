@@ -1,7 +1,7 @@
 
 {% extends "Shared/_layout.html" %}
 {% load static %}
-{% load altai_tags_filters %}
+{% load custom_filters %}
 
 
 {%block head%}
@@ -37,7 +37,7 @@
             </br>
         </br>
         {% for ZZ in names_to_use %}
-            <h3> {{ coments| get_elements:ZZ }} </h3>
+            <h3> {{ comments| get_value_at:ZZ }} </h3>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -48,10 +48,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {{ids|get_elements:ZZ}}
-                        {% for j in ids|get_elements:ZZ %}
+                    {{ids|get_value_at:ZZ}}
+                        {% for j in ids|get_value_at:ZZ %}
                             <tr>
-                                <th scope="row">  {{ j|get_index_value:0 }} </th>
+                                <th scope="row">  {{ j|get_value_at:0 }} </th>
                                     <th>
                                         <div class="form-group">
                                             <label for="formControlRange{{ZZ}}{{j}}">Set the Range</label>
@@ -59,7 +59,7 @@
                                             <span id="value{{ZZ}}{{j}}">0</span>
                                         </div>
                                     </th>
-                                <th> {{ j|get_index_value:1 }} </th>
+                                <th> {{ j|get_value_at:1 }} </th>
                             </tr>
                         {% endfor %}                   
                         

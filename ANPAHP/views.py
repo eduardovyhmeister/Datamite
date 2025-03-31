@@ -909,11 +909,11 @@ def MyANPAHPStep10(request,pk):
     ids = {}
     ids1 = []
     ids2 = []
-    coments = {}
+    comments = {}
     names_to_use = []
     for i in columns_with_more_than_one_one:
         name = names[i]
-        coments[name] = f'For {name} please specify the relative importance of each pair of dependances:'
+        comments[name] = f'For {name} please specify the relative importance of each pair of dependances:'
         name_columns = [name for num, name in enumerate(names) if matrix_data[num,i] == 1]
         for value in new_dict.values():
             count1 = sum([1 for item in name_columns if item in value])
@@ -1032,7 +1032,7 @@ def MyANPAHPStep10(request,pk):
         return redirect('myANPAHPResults',pk=pk)
     else:
         idsfinal = {key: [item for item in value if item] for key, value in idsfinal.items()}
-        return render(request,'ANPAHP/ANPAHPStep10.html',{'ANPAHP':ANPAHP,'ids':idsfinal,'names_to_use':names_to_use,'coments':coments})
+        return render(request,'ANPAHP/ANPAHPStep10.html',{'ANPAHP':ANPAHP,'ids':idsfinal,'names_to_use':names_to_use,'comments':comments})
 
 
 @login_required

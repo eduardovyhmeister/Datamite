@@ -1,6 +1,6 @@
 {% extends "Shared/_layout.html" %}
 {% load static %}
-{% load altai_tags_filters %}
+{% load custom_filters %}
 
 
 {%block head%}
@@ -79,8 +79,8 @@
                                 <th>{{ i }}</th> <!-- Row header -->
                                 {% for j in rows %}
                                     <td class="matrix-cell">
-                                        {{matrix_data|get_index_value:forloop.parentloop.counter0|get_index_value:forloop.counter0}}
-                                        {% if matrix_data|get_index_value:forloop.parentloop.counter0|get_index_value:forloop.counter0 == 1.0 %}
+                                        {{matrix_data|get_value_at:forloop.parentloop.counter0|get_value_at:forloop.counter0}}
+                                        {% if matrix_data|get_value_at:forloop.parentloop.counter0|get_value_at:forloop.counter0 == 1.0 %}
                                     <input type="checkbox" name="matrix[{{ i }}][{{ j }}]" disabled>
                                 {% else %}
                                     <input type="checkbox" name="matrix[{{ i }}][{{ j }}]">
