@@ -1,0 +1,119 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title> Fundamental Rights </title>
+{%endblock%}
+
+
+{% block navbar %}
+
+    {% if request.user.is_authenticated %}
+        {% include "Shared/_Navbarin.html" %}
+    {% else %}
+        {% include "Shared/_NavbarOut.html" %}
+    {% endif %}
+
+{% endblock%}
+
+{%block main2%}
+
+
+
+
+        <div>
+        <h1 class="display-6 text-primary font-weight-bold"> About </h1>
+        <p style="text-align: justify;">
+            The purpose of this site is to foster the implementation of an ANP and AHP approach within
+            the DATAMITE project. This site was built with the support of the European Commission, collaborators from diverse institutions from the DATAMITE project, and
+            the Insight Centre of Data Analytics. The main participants in the development of this tool
+            and the development of the site are:
+
+            <li> Agnieszka Rausch - PSNC </li>
+            <li> Alejandro Martinez - ITI </li>
+            <li> Eduardo Vyhmeister Bastidas - Insight Centre of Data Analytics </li>
+            <li> Gabrien Gonzalez Castane - Insight Centre of Data Analytics </li>
+            <li> Loers Martin -  FIR </li>
+            <li> Montserrat Gonzalez Ferreiro - EGI Foundation </li>
+            <li> Qusai Ramadan - UniKo </li>
+
+
+        </p>
+            
+        </div>
+
+        <div>
+
+            <h1 class="display-6 text-primary font-weight-bold"> Nomenclature / Extra Information </h1>
+
+        <table class="table table-hover">
+            <thead>
+            <tr><th scope="col"> Name </th> <th scope="col"> Definition </th> </tr>
+            </thead>
+            <tbody>
+            
+            <tr><th scope="row"> Balanced Score Card (BSC) </th> 
+                <th style="text-align: justify;"> The Balanced Scorecard (BSC) is a strategic planning and management system that organizations use 
+                    to align business activities to the vision and strategy of the organization, improve internal and external communications, and monitor organizational performance against strategic goals. It was originated by Dr. Robert Kaplan and Dr. David Norton. The BSC transforms an organization’s strategic plan from an attractive but passive document into the “marching orders” for the organization on a daily basis. It provides a framework that not only provides performance measurements, but helps planners identify what should be done and measured.
+                    IMPORTANT: EACH OF THE PERSPECTIVES DEFINED BELOW ARE SEEN FROM A ENTERPRISE PERSPECTIVE, NEVERTHELESS, THESE CAN BE EASILY TRANSLATED ON DIFFERENT PERSPECTIVES OF USERS FOR DATA VALUATION.
+            </th></tr>
+
+            <tr><th scope="row"> BSC - Financial Perspective </th> 
+                <th style="text-align: justify;"> This perspective focuses on the financial performance of an organization. Key components include:
+                <b>Revenue Growth:</b> Monitoring the increase in the company's income over time.
+                <b>Cost Management:</b> Keeping track of operating costs and reducing unnecessary expenses.
+                <b>Profitability: </b> Measuring the net income after all expenses have been deducted from revenues.
+                <b>Return on Investment (ROI):</b> Assessing the efficiency of an investment or comparing the efficiency of several different investments.
+            </th></tr>
+
+
+            <tr><th scope="row"> BSC - Customer Perspective </th> 
+                <th style="text-align: justify;"> This perspective focuses on the satisfaction and retention of customers. Key components include:
+                <b>Customer Satisfaction:</b> Measuring how products or services meet or surpass customer expectations.
+                <b>Customer Retention:</b> Tracking the percentage of customers the company retains over a period.
+                <b>Market Share: </b> Evaluating the company's share of the market compared to competitors.
+                <b>Customer Acquisition: </b> Measuring the number of new customers or the increase in customer base.
+            </th></tr>
+
+
+            <tr><th scope="row"> BSC - Internal Processes Perspective </th> 
+                <th style="text-align: justify;"> This perspective focuses on the internal operational goals and outlines the key processes necessary to deliver the customer objectives. Key components include:
+                <b>Process Efficiency: </b> Evaluating how well internal processes convert inputs into outputs.
+                <b>Quality Control: </b>  Ensuring products or services meet certain standards and reducing defects.
+                <b>Cycle Time:  </b> Measuring the time taken to complete a process from start to finish.
+                <b>Innovation Processes:  </b> Encouraging and managing new ideas and improvements in products, services, or processes.
+            </th></tr>
+
+
+            <tr><th scope="row"> BSC -  Learning and Growth Perspective </th> 
+                <th style="text-align: justify;"> This perspective focuses on the intangible assets of an organization, primarily human capital, information capital, and organizational culture. Key components include:
+                <b>Employee Skills and Competencies:  </b> Enhancing the skills and abilities of the workforce.
+                <b>Employee Satisfaction and Retention:  </b>  Measuring the satisfaction and retention rates of employees.
+                <b>Training and Development:   </b> Providing ongoing education and professional development opportunities.
+                <b>Organizational Culture:  </b> Promoting a culture that encourages continuous improvement and innovation.
+            </th></tr>
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+    </div>
+
+        
+        </br>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{%block lastk%}
+{% endblock %}

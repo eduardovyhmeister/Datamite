@@ -1,0 +1,119 @@
+
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load altai_tags_filters %}
+
+
+{%block head%}
+    <title> ANP - AHP - Initiation of Risk Management Process</title>
+{%endblock%}
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        {% if ERROR1 %}
+        <div class="alert alert-warning" role="alert" style="color: red; background-color: #fff3cd; border-color: #ffeeba;">
+            <div class="panel-heading card-header">
+                <div class="sv_header__text">
+                    <h3><span style="position: static;"> {{ message }} </span></h3>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if ERROR2 %}
+        <div class="alert alert-warning" role="alert" style="color: red; background-color: #fff3cd; border-color: #ffeeba;">
+            <div class="panel-heading card-header">
+                <div class="sv_header__text">
+                    <h3><span style="position: static;"> {{ message2 }} </span></h3>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <form method='POST'>
+        {% csrf_token %}
+
+            <div class="sv_qstn"  name="title" style="flex: 1 1 100%; width: 100%; max-width: initial;margin-top: 10px;">
+                    <h3> Pairwise Comparison - Customer Considerations </h3>
+            </div>
+
+            The Pairwise comparison will be performed now for the criterias established by you. These criterias are compared agains the main objective established at the beggining of the process. 
+            </br>
+            Remamber, a scale of -8 to 8 is give here that is later on translated into a convenient matrix for analysis using Satty evaluation approach.
+            </br></br>
+
+            <h3> Please proceed:</h3>
+
+            </br>
+        </br>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"> KPI 1 </th>
+                    <th scope="col"> Pairwise Comparison </th>
+                    <th scope="col"> KPI 2 </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                    {% for j in form.Criterias.field.queryset %}
+    {% for k in ids1 %}
+        {% if j.id == k %}
+            {% with identificator=forloop.counter0 %}
+                <tr>
+                    <th scope="row"> {{ j.name }} </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange{{ forloop.counter }}">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="{{ forloop.counter }}" id="formControlRange{{ forloop.counter }}" onInput="updateValue(this)">
+                            <span id="value{{ forloop.counter }}">0</span>
+                        </div>
+                    </th>
+                    <th> {{ ids2names|get_index_value:forloop.counter0 }} </th>
+                </tr>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<script>
+    function updateValue(input) {
+        // Get the ID of the input element
+        var inputId = input.id;
+
+        // Extract the counter value from the input ID
+        var counter = inputId.substring("formControlRange".length);
+
+        // Find the corresponding span element and update its content
+        var spanId = "value" + counter;
+        document.getElementById(spanId).textContent = input.value;
+    }
+</script>
+                </tbody>
+            </table>
+
+
+            <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Update </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}

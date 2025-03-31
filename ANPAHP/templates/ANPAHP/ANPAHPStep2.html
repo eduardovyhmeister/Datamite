@@ -1,0 +1,90 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load altai_tags_filters %}
+
+
+{%block head%}
+    <title> ANP - AHP - Initiation of Risk Management Process</title>
+{%endblock%}
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <h2>{{message}}</h2>
+        <h2>{{message2}}</h2>
+
+
+            <div class="panel-heading card-header">
+                <div class="sv_header__text">
+                    <h3><span style="position: static;"> In This Section: </span></h3></div>
+                    In this section you are asked to define what KPIs are the most relevant for your analysis (i.e. based on the objective defined in the previous section).
+            </div>
+        </br>
+
+
+        <form method='POST'>
+            {% csrf_token %}
+            <div style="display: inline-block; width:80%;">
+                Plese select from the list the KPIs that are more relevant to you. If you want to add new KPIs, please use the add button named <b>Create new KPI</b>.
+            </div>
+
+
+            <div style="display: inline-block; width:110%;">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col"> Select </th>
+                        <th scope="col"> Driveer </th>
+                        <th scope="col"> Definition </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div style="display: inline-block; width:80%;">
+                        {% for x in form.KPIs.field.queryset %}
+                            <tr>
+                                <th scope="row">{{x.name}}</th>
+                                <th>
+                                    {% if lista|indexing:forloop.counter0 %}
+                                        <input class="form-check-input" type="checkbox" name={{forloop.counter}} value={{forloop.counter}} checked="checked">
+                                    {% else %}
+                                        <input class="form-check-input" type="checkbox" name={{forloop.counter}} value={{forloop.counter}}>
+                                    {% endif %}
+                                </th>
+                                <th>{{x.BSCfamily}}</th>
+                                <th>{{x.explanation}}</th>
+                            </tr>
+                        {% endfor %}
+
+                    </div>
+                    </tbody>
+                </table>
+            </div>
+        
+            <a class="btn btn-outline-secondary" href="{% url 'newKPI' pk=ANPAHP.pk %}" > Create new KPI </a>
+
+            <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Update </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load altai_tags_filters %}
+
+
+{%block head%}
+    <title> ANP - AHP - Initiation of Risk Management Process</title>
+{%endblock%}
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <h2>{{message}}</h2>
+       
+
+            <div class="panel-heading card-header">
+                <div class="sv_header__text">
+                    <h3><span style="position: static;"> In This Section: </span></h3></div>
+                    In this section you are asked to define Possible Interactions/Influences within the Criterias, KPIs, and between BSC groups. Each interaction facilitate the understanding and dependencies of the system of evaluation. Important, Those internal to each one ofthe Balanced Sorecard perspective is not neccesary ot be further analyzed (They could be represented in the table, but their answer has no influence at all at this stage).
+            </div>
+        </br>
+
+
+        <form method="post">
+            {% csrf_token %}
+            <h2>Please Define Influences between Preselected Metrics and the Criterias</h2>
+
+            <p> When filling this information read it by columns. This implies what component on each row is interlinked to other components. The components in the cross of each component has been removed to avoid its interdependance. Similarly, thoe aleready analyzed by interdepenances within the same KPIs family or Criteria are not further required.</p>
+            <div class="panel-heading card-header">
+                <style>
+                    .matrix-table {
+                        border-collapse: collapse;
+                        width: auto; /* Allow the table to expand based on content */
+                    }
+        
+                    .matrix-table th, .matrix-table td {
+                        border: 1px solid #000; /* Border style */
+                        padding: 8px;
+                        text-align: center;
+                    }
+        
+                    .matrix-table th {
+                        background-color: #f2f2f2;
+                    }
+        
+                    .matrix-table th:first-child, .matrix-table td:first-child {
+                        background-color: #e9e9e9;
+                        font-weight: bold;
+                    }
+        
+                    .matrix-cell {
+                        border-right: 1px solid #000; /* Vertical lines */
+                        border-bottom: 1px solid #000; /* Horizontal lines */
+                    }
+                </style>
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th></th> <!-- Empty corner cell -->
+                            {% for j in rows %}
+                                <th>{{ j }}</th> <!-- Column headers -->
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in rows2 %}
+                            <tr>
+                                <th>{{ i }}</th> <!-- Row header -->
+                                {% for j in rows %}
+                                    <td class="matrix-cell">
+                                        {{matrix_data|get_index_value:forloop.parentloop.counter0|get_index_value:forloop.counter0}}
+                                        {% if matrix_data|get_index_value:forloop.parentloop.counter0|get_index_value:forloop.counter0 == 1.0 %}
+                                    <input type="checkbox" name="matrix[{{ i }}][{{ j }}]" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="matrix[{{ i }}][{{ j }}]">
+                                {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Update </button>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}

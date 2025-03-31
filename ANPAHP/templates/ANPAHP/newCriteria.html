@@ -1,0 +1,64 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title>Create - Objective </title>
+{%endblock%}
+
+
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    {% if submitted == True %}
+            <h1> The Criteria Have Been Created Correctly. Please Return to The Step You Want To Continue </h1>
+    
+    {% else %}
+    <div id="surveyContainer">
+
+        <h1>Information Required to Create a New Criteria: </h1>
+        <div style="background-color: rgb(110, 110, 189);">
+            <h2>{{message}}</h2>
+        </div>
+        <p>To create a new Criteria, you should provide a name to it and an explanation. Examples of names include a consideration and an objective regarding this consideration (e.g. Cost - Reduction, Productivity - Increase)</p>
+        <p> The explination should help with an exemplification, if possible, to further understand the constep provided. 
+
+    </br>
+        
+        <h2> Define a New Criteria </h2>
+        <form method='POST'>
+            {% csrf_token %}
+            {% for x in form %}
+                <ol class="list-group list-group-numbered">
+                   <strong> {{x.name}}: </strong>
+                        {{x}}
+                </br>
+                </ol>
+
+            {% endfor %}
+            <button class="btn btn-primary card-btn" style="text-align: center;"> Create the Criteria </button>
+
+            <div>
+                <p>This website is a prototype of an interactive version of the DATAMITE project. We encourage you not to use personal information or intellectual property while using this website. Full details of how we process personal data and your rights under Data Protection legislation are set out in our <a href="https://datamite.insight-centre.org/Home/Privacy">Privacy Statement</a>.  </p>
+            </div>
+        </form>
+    </form>
+
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}
+

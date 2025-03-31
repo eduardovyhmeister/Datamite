@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!---->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'mine/stylescss.css'  %}" >
+        <link rel="stylesheet" href="{% static 'lib/bootstrap/dist/css/bootstrap.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/site.css' %}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel=icon href="{% static 'img/favicon-32x32.png' %}">
+        <link rel="stylesheet" href="{% static 'fontawesome/css/all.css'  %}" >
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script href='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <!--name x is the id to hide, name 2 is the value of the buttion yes,no,etc to hide-->
+    </head>
+
+    <body>
+
+
+        <header>
+
+            {% if request.user.is_authenticated %}
+                {% include "Shared/_NavbarIn.html" %}
+            {% else %}
+                {% include "Shared/_NavbarOut.html" %}
+            {% endif %}
+
+
+            {% block header %}
+            {% endblock %}
+
+        </header>
+
+        <div class="container">
+            <!--<div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
+                The website is a prototype for a trustworthy AI-driven platform for the ASSISTANT project. It includes an interactive Assessment List for Trustworthy AI (ALTAI) and a Trustworthy AI Process Risk Management framework (TAI-PRM). The website does not collect any personal information and advises users not to use personal information or intellectual property while using the platform. Technical cookies are used to improve the user experience, and third-party cookies are not used.
+                <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string=".AspNet.Consent=yes; path=/; samesite=none">
+                    <span aria-hidden="true">Accept</span>
+                </button>
+            </div> -->
+            <script>
+                (function () {
+                    var button = document.querySelector("#cookieConsent button[data-cookie-string]");
+                    button.addEventListener("click", function (event) {
+                        document.cookie = button.dataset.cookieString;
+                    }, false);
+                })();
+            </script>
+
+            {% block main1 %}
+            {% endblock %}
+
+
+            <main role="main"> <!-- here was placed class="pb-3"-->
+
+            {% block main2 %}
+            {% endblock %}
+
+            </main>
+
+
+            {% block main3 %}
+            {% endblock %}
+
+
+        </div>
+
+
+
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                {% include "Shared/_footer.html" %}
+                   {% block footer %}{% endblock %}
+            </div>
+
+            {% block footer2 %}
+            {% endblock %}
+
+        </footer>
+
+        <script src="{% static 'lib/jquery/dist/jquery.min.js' %}"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.unobtrusive-ajax/3.2.5/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="{% static '/lib/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://use.fontawesome.com/1bbdefb14c.js"></script>
+        {% block last %}
+        {% endblock %}
+
+    </body>
+</html>

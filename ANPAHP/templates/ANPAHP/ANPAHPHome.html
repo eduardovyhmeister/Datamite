@@ -1,0 +1,59 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title> KPI Optimization Hub </title>
+{%endblock%}
+
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}
+{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+   {% include "Shared/_survey.html" %}
+
+    <div class="col-md-8">
+        <div id="surveyContainer">
+
+            <div data-bind="css: css.root, afterRender: koEventAfterRender" class="sv_main sv_bootstrap_css">
+                <div data-bind="css: css.header" class="panel-heading card-header">
+                    <div data-bind="css: css.headerText" class="sv_header__text">
+                        <h3 data-bind="css: css.title"><span style="position: static;" data-bind="html: koRenderedHtml"> Notes</span></h3>
+                        <h5 data-bind="css: css.description"><span style="position: static;" data-bind="html: koRenderedHtml">Use this section to annotate your ANP-AHP. This is for your information only, should you wish to develop several evaluationss and use them for varying purposes.</span></h5>
+                    </div>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div data-bind="css: css.body" class="panel-body card-block mt-4">
+                                    <div data-bind="css: panel.cssClasses.row" class="sv_row">
+                                            <h5 data-bind="css: cssTitle, attr: { 'aria-label': question.locTitle.renderedHtml, id: ariaTitleId }" aria-label="Notes:" id="sq_100_ariaTitle">
+                                            <span style="position: static;" data-bind="html: koRenderedHtml">Notes:</span>
+                                            </h5>
+                                        <div data-bind="css: question.cssContent">
+                                            {{ form.as_p }}
+                                        </div>
+                                    </div>
+                        </div>
+                            <input type="submit" value="Submit"class="btn btn-primary card-btn" style="text-align: center;">
+                    </div>
+                </form>
+            </div>
+          </div>
+        <p>This website is a prototype of an interactive version of the ANP-AHP designed within the Datamite project. We encourage you not to use personal information or intellectual property while using this website. Full details of how we process personal data and your rights under Data Protection legislation are set out in our <a href="/Home/Privacy">Privacy Statement</a>.  </p>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footer%}{%endblock%}
+
+
+
+{%block lastk%}
+{% endblock %}

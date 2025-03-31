@@ -1,0 +1,173 @@
+
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load altai_tags_filters %}
+
+
+{%block head%}
+    <title> ANPAHP - User Interest </title>
+{%endblock%}
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <form method='POST'>
+        {% csrf_token %}
+        {% if ERROR1 %}
+            <div class="alert alert-warning" role="alert" style="color: red; background-color: #fff3cd; border-color: #ffeeba;">
+                <div class="panel-heading card-header">
+                    <div class="sv_header__text">
+                        <h3><span style="position: static;"> {{ message }} </span></h3>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if ERROR2 %}
+        <div class="alert alert-warning" role="alert" style="color: red; background-color: #fff3cd; border-color: #ffeeba;">
+            <div class="panel-heading card-header">
+                <div class="sv_header__text">
+                    <h3><span style="position: static;"> {{ message2 }} </span></h3>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+            
+
+            <div class="sv_qstn"  name="title" style="flex: 1 1 100%; width: 100%; max-width: initial;margin-top: 10px;">
+                    <h3> Pairwise Comparison - Considerations </h3>
+            </div>
+
+            A comparison of your main interest with the <b>data valorisation</b> will be performed now. To do it, we will perform a pairwise comparision. Each interest is compared with each other based on a range of importance. A scale of -8 to 8 is give here that is later on translated into the SATY Scale (i.e. from 1 to 9 for each pair relation, 0 does represent 1, and -8 and 8 represent 1/9 and 9, respectively).  a convenient matrix for analysis.
+            When setting the values please consider to answer this Question: Whcih one of these considerations is more relevant for you to achieve the <b>Objectives</b> previously defined?. a definitino of each teerm can be found in the about and nomenclature section.
+            </br></br>
+
+            <h3> Please proceed:</h3>
+
+            </br>
+        </br>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"> Perspective 1 </th>
+                    <th scope="col"> Pairwise Comparison </th>
+                    <th scope="col"> Perspective 2 </th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <th scope="row"> Financial </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange1">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="1" id="formControlRange1" onInput="updateValue(this)">
+                            <span id="value1">0</span>
+                        </div>
+                    </th>
+                    <th> Customer </th>
+                </tr>
+
+                <tr>
+                    <th scope="row"> Education and Growth </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange2">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="2" id="formControlRange2" onInput="updateValue(this)">
+                            <span id="value2">0</span>
+                        </div>
+                    </th>
+                    <th> Customer </th>
+                </tr>
+
+                <tr>
+                    <th scope="row"> Internal Processes </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange3">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="3" id="formControlRange3" onInput="updateValue(this)">
+                            <span id="value3">0</span>
+                        </div>
+                    </th>
+                    <th> Customer </th>
+                </tr>
+
+                <tr>
+                    <th scope="row"> Education and Growth </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange4">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="4" id="formControlRange4" onInput="updateValue(this)">
+                            <span id="value4">0</span>
+                        </div>
+                    </th>
+                    <th> Financial </th>
+                </tr>
+
+                <tr>
+                    <th scope="row"> Internal Processes </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange5">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="5" id="formControlRange5" onInput="updateValue(this)">
+                            <span id="value5">0</span>
+                        </div>
+                    </th>
+                    <th> Financial </th>
+                </tr>
+
+                <tr>
+                    <th scope="row"> Internal Processes </th>
+                    <th>
+                        <div class="form-group">
+                            <label for="formControlRange6">Set the Range</label>
+                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="4" id="formControlRange6" onInput="updateValue(this)">
+                            <span id="value6">0</span>
+                        </div>
+                    </th>
+                    <th> Education and Growth </th>
+                </tr>
+
+
+<script>
+    function updateValue(input) {
+        // Get the ID of the input element
+        var inputId = input.id;
+
+        // Extract the counter value from the input ID
+        var counter = inputId.substring("formControlRange".length);
+
+        // Find the corresponding span element and update its content
+        var spanId = "value" + counter;
+        document.getElementById(spanId).textContent = input.value;
+    }
+</script>
+                </tbody>
+            </table>
+
+
+            <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Update </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}

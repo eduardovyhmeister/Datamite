@@ -1,0 +1,98 @@
+
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load altai_tags_filters %}
+
+
+{%block head%}
+    <title> ANP - AHP - Initiation of Risk Management Process</title>
+{%endblock%}
+
+{% block navbar %}
+{% endblock%}
+
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <form method='POST'>
+        {% csrf_token %}
+
+            <div class="sv_qstn"  name="title" style="flex: 1 1 100%; width: 100%; max-width: initial;margin-top: 10px;">
+                    <h3> Pairwise Comparison - Financial Considerations </h3>
+            </div>
+
+            The Pairwise comparison will be performed now for the Interdependances between KPIs families or criteria. Please respond to the following questions.
+            </br></br>
+
+            <h3> Please proceed. If there is NO possible selection, just click the "Update" button to process the results </h3>
+
+            </br>
+        </br>
+        {% for ZZ in names_to_use %}
+            <h3> {{ coments| get_elements:ZZ }} </h3>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"> KPI 1 </th>
+                    <th scope="col"> Pairwise Comparison </th>
+                    <th scope="col"> KPI 2 </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                    {{ids|get_elements:ZZ}}
+                        {% for j in ids|get_elements:ZZ %}
+                            <tr>
+                                <th scope="row">  {{ j|get_index_value:0 }} </th>
+                                    <th>
+                                        <div class="form-group">
+                                            <label for="formControlRange{{ZZ}}{{j}}">Set the Range</label>
+                                            <input type="range" min="-8" max="8" step="1" class="form-control-range" name="results{{ZZ}}{{j}}" id="formControlRange{{ZZ}}{{j}}" onInput="updateValue(this)">
+                                            <span id="value{{ZZ}}{{j}}">0</span>
+                                        </div>
+                                    </th>
+                                <th> {{ j|get_index_value:1 }} </th>
+                            </tr>
+                        {% endfor %}                   
+                        
+
+                   
+
+                    <script>
+                        function updateValue(input) {
+                            // Get the ID of the input element
+                            var inputId = input.id;
+
+                            // Extract the counter value from the input ID
+                            var counter = inputId.substring("formControlRange".length);
+
+                            // Find the corresponding span element and update its content
+                            var spanId = "value" + counter;
+                            document.getElementById(spanId).textContent = input.value;
+                        }
+                    </script>
+                </tbody>
+            </table>
+        {% endfor %}
+
+            <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Update </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}
