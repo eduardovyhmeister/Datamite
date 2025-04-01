@@ -23,7 +23,7 @@ class BSCFamily(models.TextChoices):
         
 
 class UserType(models.TextChoices):
-    """The possible types of datamite users (for Objective and Evaluation)."""
+    """The possible types of datamite users (for Evaluation)."""
     SERVICE_USER = "SERVICE_USER", "Service User"
     DATA_PROVIDER = "DATA_PROVIDER", "Data Provider"
     SERVICE_STAKEHOLDER = "SERVICE_STAKEHOLDER", "Service Stakeholder"

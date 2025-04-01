@@ -9,7 +9,6 @@ class Objective(models.Model):
     """Model representing an objective in our DB."""
     name = models.TextField(unique = True)
     explanation = models.TextField()
-    user_type = models.CharField(max_length = 100, choices = UserType)
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     last_updated = models.DateField(auto_now_add = True)
     

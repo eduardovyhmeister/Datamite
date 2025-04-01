@@ -20,8 +20,9 @@ The project has a script to import all the metrics and KPIs into the database.
 To import, simply run the following command:
 ```
 cd foldername/
-python manage.py runscript loadANPAHP
+python manage.py runscript populate_DB
 ```
+The script uses CSV files in 'static/mine' to populate the database with the Datamite data.
 
 
 # Run unit tests

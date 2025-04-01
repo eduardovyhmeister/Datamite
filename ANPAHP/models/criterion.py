@@ -11,7 +11,7 @@ from .enumerations import CriterionOption
 class Criterion(models.Model):
     name = models.TextField(unique=True)
     explanation = models.TextField()
-    option = models.CharField(max_length = 100, choices = CriterionOption)
+    option = models.CharField(max_length = 100, choices = CriterionOption, null = True)
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     last_updated = models.DateField(auto_now_add = True)
     

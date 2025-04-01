@@ -134,13 +134,12 @@ class NewKPIForm(ModelForm):
 class NewObjectivesForm(ModelForm):
     class Meta:
         model = Objective # with wat model you want to work
-        fields = ('name','explanation','user_type')
+        fields = ('name','explanation')
         exclude = ('author',)
         widgets = {
             'name': forms.Textarea(attrs={'class':'input','placeholder':'Name for your KPI'}), # top set an input format with bootstrap form
             'explanation': forms.Textarea(attrs={'class':'input','placeholder':'Provide some exemplification for other to understand'}),
-            'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
-        }
+            }
 
 class NewCriterionForm(ModelForm):
     class Meta:
