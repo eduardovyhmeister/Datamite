@@ -19,23 +19,23 @@ class RegisterForm(UserCreationForm):
 
 class ANPAHPForm(ModelForm):
     class Meta:
-        model = EVALUATION # with wat model you want to work
-        fields = ('title','UserType')
+        model = Evaluation # with wat model you want to work
+        fields = ('title','user_type')
         exclude = ('author',)
         widgets = {
             'title': forms.TextInput(attrs={'class':'input','placeholder':'title'}), # top set an input format with bootstrap form
-            'UserType': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
+            'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
         }
 
 class NotesForm(ModelForm):
     class Meta:
-        model = EVALUATION
+        model = Evaluation
         fields = ('notes',)
 
 
 class   Step1Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         KPIs = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
         fields = ['KPIs']
         widgets = {
@@ -45,7 +45,7 @@ class   Step1Form(forms.ModelForm):
 
 class   Step2Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         FailureModes = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
         fields = ['KPIs']
         widgets = {
@@ -54,7 +54,7 @@ class   Step2Form(forms.ModelForm):
 
 class   Step3Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         FailureModes = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
         fields = ['KPIs']
         widgets = {
@@ -63,7 +63,7 @@ class   Step3Form(forms.ModelForm):
 
 class   Step4Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         FailureModes = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
         fields = ['KPIs']
         widgets = {
@@ -72,7 +72,7 @@ class   Step4Form(forms.ModelForm):
 
 class   Step5Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         FailureModes = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
         fields = ['KPIs']
         widgets = {
@@ -81,39 +81,39 @@ class   Step5Form(forms.ModelForm):
 
 class   Step6Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
-        Objectives = forms.ModelMultipleChoiceField(queryset=Objective.objects.all())
-        fields = ['Objectives']
+        model = Evaluation
+        objectives = forms.ModelMultipleChoiceField(queryset=Objective.objects.all())
+        fields = ['objectives']
         widgets = {
-            'Objectives' : CheckboxSelectMultiple(),
+            'objectives' : CheckboxSelectMultiple(),
         }
 
 class   Step8Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
-        Criterias = forms.ModelMultipleChoiceField(queryset=Criteria.objects.all().order_by('name'))
-        fields = ['Criterias']
-        widgets = {'Criterias' : CheckboxSelectMultiple(),
+        model = Evaluation
+        criteria = forms.ModelMultipleChoiceField(queryset=Criterion.objects.all().order_by('name'))
+        fields = ['criteria']
+        widgets = {'criteria' : CheckboxSelectMultiple(),
         }
 
 #class Step8Form(forms.ModelForm):
-#    Criterias = forms.ModelMultipleChoiceField(
-#        queryset=Criteria.objects.all().order_by('name'),  # Order alphabetically by name
+#    Criterions = forms.ModelMultipleChoiceField(
+#        queryset=Criterion.objects.all().order_by('name'),  # Order alphabetically by name
 #        widget=CheckboxSelectMultiple()
 #    )
 #    class Meta:
-#        model = EVALUATION
-#        fields = ['Criterias']
+#        model = Evaluation
+#        fields = ['Criterions']
 
 
 class   Step9Form(forms.ModelForm):
       class Meta:
-        model = EVALUATION
+        model = Evaluation
         KPIs = forms.ModelMultipleChoiceField(queryset=KPI.objects.all())
-        Criterias = forms.ModelMultipleChoiceField(queryset=Criteria.objects.all())
-        fields = ['Criterias','KPIs']
+        Criterions = forms.ModelMultipleChoiceField(queryset=Criterion.objects.all())
+        fields = ['criteria','KPIs']
         widgets = {
-            'Criterias' : CheckboxSelectMultiple(),
+            'criteria' : CheckboxSelectMultiple(),
             'KPIs' : CheckboxSelectMultiple(),
         }
 
@@ -134,17 +134,17 @@ class NewKPIForm(ModelForm):
 class NewObjectivesForm(ModelForm):
     class Meta:
         model = Objective # with wat model you want to work
-        fields = ('name','explanation','UserType')
+        fields = ('name','explanation','user_type')
         exclude = ('author',)
         widgets = {
             'name': forms.Textarea(attrs={'class':'input','placeholder':'Name for your KPI'}), # top set an input format with bootstrap form
             'explanation': forms.Textarea(attrs={'class':'input','placeholder':'Provide some exemplification for other to understand'}),
-            'UserType': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
+            'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
         }
 
-class NewCriteriaForm(ModelForm):
+class NewCriterionForm(ModelForm):
     class Meta:
-        model = Criteria # with wat model you want to work
+        model = Criterion # with wat model you want to work
         fields = ('name','explanation')
         exclude = ('author',)
         widgets = {
@@ -155,7 +155,7 @@ class NewCriteriaForm(ModelForm):
 
 class Results1Form(ModelForm):
     class Meta:
-        model = EVALUATION
+        model = Evaluation
         fields = ['results','ANPAHP_recommendations']
         widgets = {
             'results': forms.Textarea(attrs={'class':'input','placeholder':'Recommendations'}),

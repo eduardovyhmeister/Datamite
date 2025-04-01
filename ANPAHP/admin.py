@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import EVALUATION,KPI,Objective,Criteria
+from .models import Evaluation, KPI, Objective, Criterion
+
 # Register your models here.
-admin.site.register(EVALUATION)
+admin.site.register(Evaluation)
 admin.site.register(KPI)
 admin.site.register(Objective)
-admin.site.register(Criteria)
+admin.site.register(Criterion)

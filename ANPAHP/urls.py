@@ -31,10 +31,10 @@ urlpatterns = [
     #objectives
     path('myANPAHPStep6/<int:pk>', views.MyANPAHPStep6, name='myANPAHPStep6'),
     path('newObjectives/<int:pk>', views.NewObjectives, name='newObjectives'),
-    #criterias
+    #criteria
     path('myANPAHPStep7/<int:pk>', views.MyANPAHPStep7, name='myANPAHPStep7'),
     path('myANPAHPStep8/<int:pk>', views.MyANPAHPStep8, name='myANPAHPStep8'),
-    path('newCriteria/<int:pk>', views.NewCriteria, name='newCriteria'),
+    path('newCriterion/<int:pk>', views.NewCriterion, name='newCriterion'),
     
     #Interanalysis
     path('myANPAHPStep9/<int:pk>', views.MyANPAHPStep9, name='myANPAHPStep9'),

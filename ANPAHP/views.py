@@ -180,7 +180,9 @@ def construct_matrix(selection,elements,dim=None):
         inconcistency = 0.0
     return matrix, eig_vec, inconcistency
 
+
 def EXECUTE_ANALYSIS(ANPAHP):
+    # ANPAHP is an Evaluation object
     try:
         supermatrix = eval(ANPAHP.supermatrix)
     except:
@@ -247,6 +249,8 @@ def UserLogout(request):
 
 #################### create new element
 
+# TODO: the default value is wrong, it will be computed once and then used throughout the whole execution,
+# and not be called every time the function is called.
 def home(request,year=my_datetime.now().year,month=my_datetime.now().strftime('%B')):
     name=""
     month =month.capitalize()
@@ -262,6 +266,7 @@ def home(request,year=my_datetime.now().year,month=my_datetime.now().strftime('%
                                         "cal":cal,
                                         })
 
+# TODO: probably needs to delete this.
 def HowToAltai(request):
     context = {}
     return render(request,'howToAltai.html',context)
@@ -283,9 +288,9 @@ def Privacy(request):
     return render(request,'privacy.html',context)
 
 
-################# altai views
+################# ANPAHP views:
 def MyANPAHP(request):
-     ANPAHPs = EVALUATION.objects.all().filter(author=request.user)
+     ANPAHPs = Evaluation.objects.all().filter(author=request.user)
      context = {'ANPAHPs':ANPAHPs}
      return render(request,'ANPAHP/myANPAHP.html',context)
 
@@ -305,15 +310,16 @@ def MyANPAHPCreate(request):
     form=ANPAHPForm
     return render(request,'ANPAHP/myANPAHPCreate.html',{'form':form, 'submitted':submitted})
 
+# TODO
 @login_required
 def MyANPAHPDelete(request,pk):
-    altai = EVALUATION.objects.get(pk=pk)
+    altai = Evaluation.objects.get(pk=pk)
     altai.delete()
     return redirect('myANPAHP')
 
 @login_required
 def MyANPAHPHome(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     form = NotesForm(request.POST or None, instance=ANPAHP)
     if form.is_valid():
         form.save()
@@ -322,7 +328,7 @@ def MyANPAHPHome(request,pk):
 
 @login_required
 def NewKPI(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     submitted = False
     if request.method == "POST":
         formout=NewKPIForm(request.POST)
@@ -341,7 +347,7 @@ def NewKPI(request,pk):
 
 @login_required
 def NewObjectives(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     submitted = False
     if request.method == "POST":
         form=NewObjectivesForm(request.POST)
@@ -355,11 +361,11 @@ def NewObjectives(request,pk):
     return render(request,'ANPAHP/newObjectives.html',{'form':form, 'submitted':submitted, 'ANPAHP':ANPAHP})
 
 @login_required
-def NewCriteria(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+def NewCriterion(request,pk):
+    ANPAHP = Evaluation.objects.get(pk=pk)
     submitted = False
     if request.method == "POST":
-        formout=NewCriteriaForm(request.POST)
+        formout=NewCriterionForm(request.POST)
         if formout.is_valid():
             KPI=formout.save(commit=False) # this create the form but do not commit it so can be modified
             KPI.author = request.user # modify the form
@@ -368,25 +374,26 @@ def NewCriteria(request,pk):
             return redirect('myANPAHPStep7',pk=pk)
         else:
             message = 'Make sure that the name of the KPI is unique and the explanation does not match other KPIs.'
-            return render(request, 'ANPAHP/newCriteria.html', {'form': formout, 'submitted': submitted, 'ANPAHP': ANPAHP, 'message': message})
+            return render(request, 'ANPAHP/newCriterion.html', {'form': formout, 'submitted': submitted, 'ANPAHP': ANPAHP, 'message': message})
     else:
-        formin=NewCriteriaForm()
-        return render(request,'ANPAHP/newCriteria.html',{'form':formin, 'submitted':submitted, 'ANPAHP':ANPAHP})
+        formin=NewCriterionForm()
+        return render(request,'ANPAHP/newCriterion.html',{'form':formin, 'submitted':submitted, 'ANPAHP':ANPAHP})
 
 
 ############# Objectives/Strategies
 
 @login_required
 def MyANPAHPStep1(request,pk): # ex 6
-    
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     form = Step6Form(request.POST or None, instance=ANPAHP)
-    ids = eval(ANPAHP.SelectedObjectives)
+    ids = eval(ANPAHP.selected_objectives)
     lista = [True if x+1 in ids else False for x in range(Objective.objects.all().count())]
+    print(f"Debug: lista = {lista}")
     ERROR = False
-    if ANPAHP.status1 == False:
+    if ANPAHP.step_status1 == False:
         ERROR = True
     if request.method == "POST":
+        print("Debug: POST request")
         selection =[]
         
         #selection = list(map(int,request.POST.getlist('Failure')))
@@ -394,8 +401,8 @@ def MyANPAHPStep1(request,pk): # ex 6
         for j in range(len(KPIs)):
             selection+=list(map(int,request.POST.getlist(str(j+1))))
         if form.is_valid() and len(selection)==1:
-            ANPAHP.SelectedObjectives = selection
-            ANPAHP.shapes = {"Objectives":1, "Criterias":0,"KPIs":0, "BSC":4}
+            ANPAHP.selected_objectives = selection
+            ANPAHP.shapes = {"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}
             ANPAHP.message = ''
             ANPAHP.save()
             form.save()
@@ -403,7 +410,7 @@ def MyANPAHPStep1(request,pk): # ex 6
         else:
             message = 'You have to choose ONE OBJECTIVE / Strategies'
             ERROR = True
-            ANPAHP.status1 = False
+            ANPAHP.step_status1 = False
             ANPAHP.save()
             return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR})
     return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message2':ANPAHP.message,'ERROR1':ERROR})
@@ -412,7 +419,7 @@ def MyANPAHPStep1(request,pk): # ex 6
 
 @login_required
 def MyANPAHPStep1_2(request,pk): # ex 2
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     ERROR1 = False
     ERROR2 = False
     message = ''
@@ -427,12 +434,12 @@ def MyANPAHPStep1_2(request,pk): # ex 2
         matrix, vector, inconcistency = construct_matrix(selection,elements,dim=4)
         if abs(inconcistency) < 0.4:
             print(inconcistency)
-            ANPAHP.status1 = True
+            ANPAHP.step_status1 = True
             ANPAHP.BSC_Weights = vector.tolist()
             ANPAHP.save()
             return redirect('myANPAHPStep2',pk=pk)
         else:
-            ANPAHP.status1 = False
+            ANPAHP.step_status1 = False
             message = f'There is huge inconcistency  ({inconcistency}) in the information provided. Please re-evaluate.'
             ERROR1 = True
             return render(request,'ANPAHP/ANPAHPStep1_2.html',{'ANPAHP':ANPAHP,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR1,'ERROR2':ERROR2})
@@ -445,16 +452,16 @@ def MyANPAHPStep1_2(request,pk): # ex 2
 
 @login_required
 def MyANPAHPStep2(request,pk): # ex1
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     form = Step1Form(request.POST or None, instance=ANPAHP)
-    ids = eval(ANPAHP.SelectedKPIs)
+    ids = eval(ANPAHP.selected_KPIs)
     KPIs=KPI.objects.all().values_list('name',flat=True).order_by('id')
     if ids!=None and len(ids)!=0:
         merged_list = [item for sublist in ids.values() for item in sublist]
     else:
         merged_list = []
     lista = [True if x+1 in merged_list else False for x in range(len(KPIs))]
-    if request.method == "POST" and ANPAHP.status1 == True:
+    if request.method == "POST" and ANPAHP.step_status1 == True:
         selection =[]
         for j in range(len(KPIs)):
             selection+=list(map(int,request.POST.getlist(str(j+1))))
@@ -469,27 +476,27 @@ def MyANPAHPStep2(request,pk): # ex1
                 groups[Drivers[selection[i]-1]].append(selection[i])
             for key, indexes in groups.items():
                 combinations[key] = list(itertools.combinations(indexes,2))
-            ANPAHP.SelectedKPIs = groups
+            ANPAHP.selected_KPIs = groups
             ANPAHP.pairwise_combinations = combinations
             shapes = eval(ANPAHP.shapes)
             shapes["KPIs"] = len(selection)
             ANPAHP.shapes = shapes
-            ANPAHP.status2 = True
+            ANPAHP.step_status2 = True
             ANPAHP.message = ''
             ANPAHP.save()
             form.save()
             return redirect('myANPAHPStep3',pk=pk)
-        elif not ANPAHP.status1:
+        elif not ANPAHP.step_status1:
             ANPAHP.message = 'There are modifications or missing information in previous stages, You have to define them before continue here'
-            ANPAHP.status2 = False
+            ANPAHP.step_status2 = False
             ANPAHP.save()
             return redirect('myANPAHPStep1',pk=pk)
         else:
             ANPAHP.message = 'You have to choose at least one KPI'
-            ANPAHP.stats2 = False
+            ANPAHP.step_status2 = False
             ANPAHP.save()
             return render(request,'ANPAHP/ANPAHPStep2.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message':ANPAHP.message})
-    if ANPAHP.status1 == False:
+    if ANPAHP.step_status1 == False:
         ANPAHP.message = 'There are modifications or missing information in previous stages, Make Sure to Select and Objective'
         ANPAHP.save()
         return redirect('myANPAHPStep1',pk=pk)
@@ -498,11 +505,11 @@ def MyANPAHPStep2(request,pk): # ex1
 ########### KPIs Customer
 @login_required
 def MyANPAHPStep3(request,pk): # ex 2
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     pairs = ANPAHP.pairwise_combinations
     names = list(KPI.objects.all().values_list('name',flat=True).order_by('id'))
     ids1, ids2, ids2names = [], [], []
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
     supermatrix = eval(ANPAHP.supermatrix)
     form = Step2Form(request.POST or None, instance=ANPAHP)
     ERROR1 = False
@@ -522,19 +529,19 @@ def MyANPAHPStep3(request,pk): # ex 2
                 id_list = request.POST.getlist(str(j+1))
                 selection+=list(map(float,id_list))
             matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Customer']))
-            ANPAHP.Scores1 = json.dumps(matrix.tolist())
-            ANPAHP.inconcistency1 = str(inconcistency)
-            ANPAHP.vector1 = json.dumps(vector.tolist())
+            ANPAHP.financial_scores = json.dumps(matrix.tolist())
+            ANPAHP.financial_inconcistency = str(inconcistency)
+            ANPAHP.financial_vector = json.dumps(vector.tolist())
             for index, value in enumerate(vector):
                 supermatrix[5+index][1] = value
-            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.status1 and ANPAHP.status2:
+            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.step_status1 and ANPAHP.step_status2:
                 ANPAHP.supermatrix = str(supermatrix)
-                ANPAHP.status3 = True
+                ANPAHP.step_status3 = True
                 ANPAHP.message = ''
                 ANPAHP.save()
                 form.save()
                 return redirect('myANPAHPStep4',pk=pk)
-            elif not ANPAHP.status1 or not ANPAHP.status2:
+            elif not ANPAHP.step_status1 or not ANPAHP.step_status2:
                 ANPAHP.message = 'There are modifications or missing information in previous stages, You have been returned Missing steps'
                 ANPAHP.save()
                 return redirect('myANPAHPStep2',pk=pk)
@@ -547,24 +554,25 @@ def MyANPAHPStep3(request,pk): # ex 2
     elif len(SelectedKPIs['Customer']) == 1:
         supermatrix[5][1] == 1
         ANPAHP.supermatrix == str(supermatrix)
-        ANPAHP.Scores1, ANPAHP.inconcistency1,ANPAHP.vector1 = json.dumps([1]), str(0), json.dumps([1])
-        ANPAHP.status3 = True
+        # TODO: Indexation on nothing!
+        ANPAHP.financial_scores, ANPAHP.financial_inconcistency,ANPAHP.financial_vector = json.dumps([1]), str(0), json.dumps([1])
+        ANPAHP.step_status3 = True
         ANPAHP.save()
         return redirect('myANPAHPStep4',pk=pk)
     else:
-        ANPAHP.Scores1, ANPAHP.inconcistency1,ANPAHP.vector1 = json.dumps([]), np.nan, json.dumps([])
-        ANPAHP.status3 = True
+        ANPAHP.financial_scores, ANPAHP.financial_inconcistency,ANPAHP.financial_vector = json.dumps([]), np.nan, json.dumps([])
+        ANPAHP.step_status3 = True
         ANPAHP.save()
         return redirect('myANPAHPStep4',pk=pk)
 
 # THIS IS THE FOR FOR Financial
 @login_required
 def MyANPAHPStep4(request,pk): # ex3
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     pairs = ANPAHP.pairwise_combinations
     names = list(KPI.objects.all().values_list('name',flat=True).order_by('id'))
     ids1, ids2, ids2names = [], [], []
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
     supermatrix = eval(ANPAHP.supermatrix)
     form = Step2Form(request.POST or None, instance=ANPAHP)
     ERROR1 = False
@@ -583,13 +591,13 @@ def MyANPAHPStep4(request,pk): # ex3
                 selection+=list(map(float,id_list))
             matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Financial']))
             print(f'the inconcistency is {inconcistency}')
-            ANPAHP.Scores2 = json.dumps(matrix.tolist())
-            ANPAHP.inconcistency2 = str(inconcistency)
-            ANPAHP.vector2 = json.dumps(vector.tolist())
+            ANPAHP.internal_processes_scores = json.dumps(matrix.tolist())
+            ANPAHP.internal_processes_inconcistency = str(inconcistency)
+            ANPAHP.internal_processes_vector = json.dumps(vector.tolist())
             for index, value in enumerate(vector):
                 supermatrix[5+index+len(SelectedKPIs['Customer'])][2] = value
-            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.status1 and ANPAHP.status2 and ANPAHP.status3:
-                ANPAHP.status4 = True
+            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.step_status1 and ANPAHP.step_status2 and ANPAHP.step_status3:
+                ANPAHP.step_status4 = True
                 ANPAHP.supermatrix = str(supermatrix)
                 ANPAHP.message = ''
                 ANPAHP.save()
@@ -604,24 +612,25 @@ def MyANPAHPStep4(request,pk): # ex3
     elif len(SelectedKPIs['Financial']) == 1:
         supermatrix[5+len(SelectedKPIs['Customer'])][2] = 1.0
         ANPAHP.supermatrix = str(supermatrix)
-        ANPAHP.Scores2, ANPAHP.inconcistency2,ANPAHP.vector2 = json.dumps([1]), str(0), json.dumps([1])
-        ANPAHP.status4 = True
+        # TODO: index on nothing!
+        ANPAHP.internal_processes_scores, ANPAHP.internal_processes_inconcistency,ANPAHP.internal_processes_vector = json.dumps([1]), str(0), json.dumps([1])
+        ANPAHP.step_status4 = True
         ANPAHP.save()
         return redirect('myANPAHPStep5',pk=pk)
     else:
-        ANPAHP.Scores2, ANPAHP.inconcistency2, ANPAHP.vector2 = json.dumps([]), str(np.nan), json.dumps([])
-        ANPAHP.status4 = True
+        ANPAHP.internal_processes_scores, ANPAHP.internal_processes_inconcistency,ANPAHP.internal_processes_vector = json.dumps([]), str(np.nan), json.dumps([])
+        ANPAHP.step_status4 = True
         ANPAHP.save()
         return redirect('myANPAHPStep5',pk=pk)
 
 # THIS IS THE FOR FOR 'Education and Growth'
 @login_required
 def MyANPAHPStep5(request,pk): # ex4
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     pairs = ANPAHP.pairwise_combinations
     names = list(KPI.objects.all().values_list('name',flat=True).order_by('id'))
     ids1, ids2, ids2names = [], [], []
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
     supermatrix = eval(ANPAHP.supermatrix)
     ERROR1 = False
     ERROR2 = False
@@ -639,13 +648,13 @@ def MyANPAHPStep5(request,pk): # ex4
                 id_list = request.POST.getlist(str(j+1))
                 selection+=list(map(float,id_list))
             matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Education and Growth']))
-            ANPAHP.Scores3 = json.dumps(matrix.tolist())
-            ANPAHP.inconcistency3 = str(inconcistency)
-            ANPAHP.vector3 = json.dumps(vector.tolist())
+            ANPAHP.learn_growth_scores = json.dumps(matrix.tolist())
+            ANPAHP.learn_growth_inconcistency = str(inconcistency)
+            ANPAHP.learn_growth_vector = json.dumps(vector.tolist())
             for index, value in enumerate(vector):
                 supermatrix[5+index+len(SelectedKPIs['Customer'])+len(SelectedKPIs['Financial'])][3] = value
-            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.status1 and ANPAHP.status2 and ANPAHP.status3 and ANPAHP.status4:
-                ANPAHP.status5 = True
+            if form.is_valid() and abs(inconcistency) < 0.4 and ANPAHP.step_status1 and ANPAHP.step_status2 and ANPAHP.step_status3 and ANPAHP.step_status4:
+                ANPAHP.step_status5 = True
                 ANPAHP.supermatrix = str(supermatrix)
                 ANPAHP.message = ''
                 ANPAHP.save()
@@ -660,20 +669,21 @@ def MyANPAHPStep5(request,pk): # ex4
     elif len(SelectedKPIs['Education and Growth']) == 1:
         supermatrix[5+len(SelectedKPIs['Customer'])+len(SelectedKPIs['Financial'])][3] = 1.0
         ANPAHP.supermatrix = str(supermatrix)
-        ANPAHP.Scores1, ANPAHP.inconcistency1,ANPAHP.vector1 = json.dumps([1]), str(0), json.dumps([1])
-        ANPAHP.status5 = True
+        # TODO: Indexation on nothing!
+        ANPAHP.learn_growth_scores, ANPAHP.learn_growth_inconcistency,ANPAHP.learn_growth_vector = json.dumps([1]), str(0), json.dumps([1])
+        ANPAHP.step_status5 = True
         ANPAHP.save()
         return redirect('myANPAHPStep6',pk=pk)
     else:
-        ANPAHP.Scores3, ANPAHP.inconcistency3, ANPAHP.vector3 = json.dumps([]), str(np.nan), json.dumps([])
-        ANPAHP.status5 = True
+        ANPAHP.learn_growth_scores, ANPAHP.learn_growth_inconcistency,ANPAHP.learn_growth_vector = json.dumps([]), str(np.nan), json.dumps([])
+        ANPAHP.step_status5 = True
         ANPAHP.save()
         return redirect('myANPAHPStep6',pk=pk)
     
 # THIS IS THE FOR FOR 'Internal Processes'
 @login_required
 def MyANPAHPStep6(request,pk): # ex5
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     pairs = ANPAHP.pairwise_combinations
     names = list(KPI.objects.all().values_list('name',flat=True).order_by('id'))
     ids1, ids2, ids2names = [], [], []
@@ -695,13 +705,13 @@ def MyANPAHPStep6(request,pk): # ex5
                 id_list = request.POST.getlist(str(j+1))
                 selection+=list(map(float,id_list))
             matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Internal Processes']))
-            ANPAHP.Scores4 = json.dumps(matrix.tolist())
-            ANPAHP.inconcistency4 = str(inconcistency)
-            ANPAHP.vector4 = json.dumps(vector.tolist())
+            ANPAHP.clients_scores = json.dumps(matrix.tolist())
+            ANPAHP.clients_inconcistency = str(inconcistency)
+            ANPAHP.clients_vector = json.dumps(vector.tolist())
             for index, value in enumerate(vector):
                 supermatrix[5+index+len(SelectedKPIs['Customer'])+len(SelectedKPIs['Financial'])+len(SelectedKPIs['Education and Growth'])][4] = value
-            if form.is_valid() and abs(inconcistency) < 0.4  and ANPAHP.status1 and ANPAHP.status2 and ANPAHP.status3 and ANPAHP.status4 and ANPAHP.status5:
-                ANPAHP.status6 = True
+            if form.is_valid() and abs(inconcistency) < 0.4  and ANPAHP.step_status1 and ANPAHP.step_status2 and ANPAHP.step_status3 and ANPAHP.step_status4 and ANPAHP.step_status5:
+                ANPAHP.step_status6 = True
                 ANPAHP.supermatrix = str(supermatrix)
                 ANPAHP.message = ''
                 ANPAHP.save()
@@ -716,88 +726,89 @@ def MyANPAHPStep6(request,pk): # ex5
     elif len(SelectedKPIs['Internal Processes']) == 1:
         supermatrix[5+len(SelectedKPIs['Customer'])+len(SelectedKPIs['Financial'])+len(SelectedKPIs['Education and Growth'])][4] = 1.0
         ANPAHP.supermatrix = str(supermatrix)
-        ANPAHP.Scores1, ANPAHP.inconcistency1,ANPAHP.vector1 = json.dumps([1]), str(0), json.dumps([1])
-        ANPAHP.status6 = True
+        # TODO: Indexation on nothing!
+        ANPAHP.clients_scores, ANPAHP.clients_inconcistency, ANPAHP.clients_vector = json.dumps([1]), str(0), json.dumps([1])
+        ANPAHP.step_status6 = True
         ANPAHP.save()
         return redirect('myANPAHPStep7',pk=pk)
     else:
-        ANPAHP.Scores4, ANPAHP.inconcistency4, ANPAHP.vector4 = json.dumps([]), str(np.nan), json.dumps([])
-        ANPAHP.status6 = True
+        ANPAHP.clients_scores, ANPAHP.clients_inconcistency, ANPAHP.clients_vector = json.dumps([]), str(np.nan), json.dumps([])
+        ANPAHP.step_status6 = True
         ANPAHP.save()
         return redirect('myANPAHPStep7',pk=pk)
 
-    ############# Criterias
+    ############# Criterions
 
 @login_required
 def MyANPAHPStep7(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     form = Step8Form(request.POST or None, instance=ANPAHP)
-    form.fields['Criterias'].queryset = Criteria.objects.all().order_by('id')
-    Criterias=Criteria.objects.all().values_list('name',flat=True)
-    ids = eval(ANPAHP.SelectedCriterias)
-    lista = [True if x+1 in ids else False for x in range(len(Criterias))]
+    form.fields['Criterions'].queryset = Criterion.objects.all().order_by('id')
+    Criterions=Criterion.objects.all().values_list('name',flat=True)
+    ids = eval(ANPAHP.selected_criteria)
+    lista = [True if x+1 in ids else False for x in range(len(Criterions))]
     if request.method == "POST":
         selection =[]
-        for j in range(len(Criterias)):
+        for j in range(len(Criterions)):
             selection+=list(map(int,request.POST.getlist(str(j+1))))
-        ANPAHP.status4 = True
+        ANPAHP.step_status4 = True
 
         if form.is_valid() and len(selection)!=0 and ANPAHP.status1 and ANPAHP.status6:
-            ANPAHP.SelectedCriterias = selection
-            groups,combinations = {'Criteria':selection}, {}
+            ANPAHP.selected_criteria = selection
+            groups,combinations = {'Criterion':selection}, {}
             for key, indexes in groups.items():
                 combinations[key] = list(itertools.combinations(indexes,2))
             supermatrix = eval(ANPAHP.supermatrix)
             shapes = eval(ANPAHP.shapes)
-            shapes['Criterias'] = len(selection)
+            shapes['Criterions'] = len(selection)
             ANPAHP.shapes = shapes
-            if len(supermatrix) == shapes["KPIs"] + 5 or len(supermatrix)!=shapes["KPIs"] +5 +shapes["Criterias"]:
-                if len(supermatrix)!=shapes["KPIs"] +5 +shapes["Criterias"]:
+            if len(supermatrix) == shapes["KPIs"] + 5 or len(supermatrix)!=shapes["KPIs"] +5 +shapes["Criterions"]:
+                if len(supermatrix)!=shapes["KPIs"] +5 +shapes["Criterions"]:
                     num = shapes["KPIs"] +5
                     supnp =np.array(supermatrix)
                     supermatrix = supnp[:num,:num].tolist()
                 expanded_array = np.zeros((len(supermatrix)+len(selection),len(supermatrix)+len(selection)))
                 expanded_array[:len(supermatrix), :len(supermatrix)] = np.array(supermatrix)
                 ANPAHP.supermatrix = expanded_array.tolist()
-            ANPAHP.pairwise_combinations_criterias = combinations
+            ANPAHP.pairwise_combinations_criteria = combinations
             ANPAHP.save()
             form.save()
             return redirect('myANPAHPStep8',pk=pk)
-        elif ~ANPAHP.status1 or ANPAHP.status6:
+        elif not ANPAHP.step_status1 or ANPAHP.step_status6:
             ANPAHP.message = 'There are modifications or missing information in previous stages, You have to define them before continue here'
             return redirect('myANPAHPStep6',pk=pk)
         else:
-            message = 'You have to choose at least one Criteria'
+            message = 'You have to choose at least one Criterion'
             return render(request,'ANPAHP/ANPAHPStep7.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message':message})
     return render(request,'ANPAHP/ANPAHPStep7.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista})
 
 @login_required
 def MyANPAHPStep8(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
-    pairs = ANPAHP.pairwise_combinations_criterias
-    names = list(Criteria.objects.all().values_list('name',flat=True).order_by('id'))
+    ANPAHP = Evaluation.objects.get(pk=pk)
+    pairs = ANPAHP.pairwise_combinations_criteria
+    names = list(Criterion.objects.all().values_list('name',flat=True).order_by('id'))
     ids1, ids2, ids2names = [], [], []
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
     ERROR1 = False
     ERROR2 = False
     if len(ANPAHP.message)!=0:
         ERROR2 = True
-    if len(pairs['Criteria']) > 0:
-        for elements in pairs['Criteria']:
+    if len(pairs['Criterion']) > 0:
+        for elements in pairs['Criterion']:
             ids1.append(elements[0])
             ids2.append(elements[1])
             ids2names.append(names[elements[1]-1])
         form = Step8Form(request.POST or None, instance=ANPAHP)
-        form.fields['Criterias'].queryset = Criteria.objects.all().order_by('id')
+        form.fields['Criterions'].queryset = Criterion.objects.all().order_by('id')
         if request.method == "POST":
             selection=[]
             for j in range(len(ids1)):
                 id_list = request.POST.getlist(str(j+1))
                 selection+=list(map(float,id_list))
-            matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Criteria']))
-            ANPAHP.Scores5 = json.dumps(matrix.tolist())
-            ANPAHP.inconcistency5 = str(inconcistency)
-            ANPAHP.vector5 = json.dumps(vector.tolist())
+            matrix, vector, inconcistency = construct_matrix(selection,transform_list(pairs['Criterion']))
+            ANPAHP.objectives_scores = json.dumps(matrix.tolist())
+            ANPAHP.objectives_inconcistency = str(inconcistency)
+            ANPAHP.objectives_vector = json.dumps(vector.tolist())
             supermatrix = eval(ANPAHP.supermatrix)
             for index, value in enumerate(vector):
                 supermatrix[5+index+len(SelectedKPIs['Customer'])+len(SelectedKPIs['Financial'])+len(SelectedKPIs['Education and Growth'])+len(SelectedKPIs['Internal Processes'])][0] = value
@@ -806,7 +817,7 @@ def MyANPAHPStep8(request,pk):
                 supnp[:,0] = supnp[:,0]/np.sum(supnp[:,0])
             ANPAHP.supermatrix = supnp.tolist()
             if form.is_valid() and inconcistency < 0.4:
-                ANPAHP.status7 = True
+                ANPAHP.step_status7 = True
                 ANPAHP.message = ''
                 ANPAHP.save()
                 form.save()
@@ -819,8 +830,8 @@ def MyANPAHPStep8(request,pk):
             ANPAHP.message = 'There was a problem with it'
             return render(request,'ANPAHP/ANPAHPStep8.html',{'ANPAHP':ANPAHP,'form':form,'ids1':ids1,'ids2':ids2,'ids2names':ids2names,'ERROR2':ERROR2,'message2':ANPAHP.message})
     else:
-        ANPAHP.Scores1, ANPAHP.inconcistency1,ANPAHP.vector1 = json.dumps([]), np.nan, json.dumps([])
-        ANPAHP.status7 = True
+        ANPAHP.objectives_scores, ANPAHP.objectives_inconcistency,ANPAHP.objectives_vector = json.dumps([]), np.nan, json.dumps([])
+        ANPAHP.step_status7 = True
         ANPAHP.save()
         return redirect('myANPAHPStep9',pk=pk)
 
@@ -828,17 +839,17 @@ def MyANPAHPStep8(request,pk):
 @login_required
 def MyANPAHPStep9(request,pk):
 
-    ANPAHP = EVALUATION.objects.get(pk=pk)
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
-    SelectedCriterias = eval(ANPAHP.SelectedCriterias)
+    ANPAHP = Evaluation.objects.get(pk=pk)
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
+    SelectedCriterions = eval(ANPAHP.selected_criteria)
     KPIs_list = [value for sublist in SelectedKPIs.values() for value in sublist]
     KPIs_names = list(KPI.objects.all().values_list('name',flat=True).order_by('id'))
-    Criteria_names = list(Criteria.objects.all().order_by('id').values_list('name',flat=True))
+    Criterion_names = list(Criterion.objects.all().order_by('id').values_list('name',flat=True))
     KPIS_selected_names = [KPIs_names[index - 1] for index in KPIs_list if 0 < index <= len(KPIs_names)]
-    Criterias_selected_names = [Criteria_names[index - 1] for index in SelectedCriterias if 0 < index <= len(Criteria_names)]
+    Criterions_selected_names = [Criterion_names[index - 1] for index in SelectedCriterions if 0 < index <= len(Criterion_names)]
     rows = []
     rows.extend(KPIS_selected_names)
-    rows.extend(Criterias_selected_names)
+    rows.extend(Criterions_selected_names)
 
     #set the matrix of interactions
     matrix_data = np.eye(len(rows))
@@ -848,7 +859,7 @@ def MyANPAHPStep9(request,pk):
             size =len(value)
             matrix_data[count:count + size, count:count + size] = 1.0
             count +=size
-    size = len(SelectedCriterias)
+    size = len(SelectedCriterions)
     #matrix_data[count:count + size, count:count + size] = 1.0
     form = Step9Form(request.POST or None, instance=ANPAHP)
     if request.method == "POST":
@@ -865,14 +876,14 @@ def MyANPAHPStep9(request,pk):
             matrix_data_post.append(rows_values)
         ANPAHP.matrix_data_pre = str(matrix_data.tolist())
         ANPAHP.matrix_data = json.dumps(matrix_data_post)
-        ANPAHP.KPIS_selected_names = KPIS_selected_names
-        ANPAHP.Criterias_selected_names = Criterias_selected_names
+        ANPAHP.KPIs_selected_names = KPIS_selected_names
+        ANPAHP.criteria_selected_names = Criterions_selected_names
         if count != 0 :
             ANPAHP.save()
             return redirect('myANPAHPStep10',pk=pk)
         else:
             limitingmatrix, Hierarchy, supermatrix = EXECUTE_ANALYSIS(ANPAHP)
-            ANPAHP.status8 = True
+            ANPAHP.step_status8 = True
             ANPAHP.results = limitingmatrix
             ANPAHP.hierarcy = Hierarchy
             ANPAHP.supermatrix = supermatrix.tolist()
@@ -880,13 +891,13 @@ def MyANPAHPStep9(request,pk):
             return redirect('myANPAHPResults',pk=pk)
     else:
         
-        rows2 = rows[:-len(SelectedCriterias)]
+        rows2 = rows[:-len(SelectedCriterions)]
         return render(request,'ANPAHP/ANPAHPStep9.html',{'ANPAHP':ANPAHP,'form':form,'matrix_data': matrix_data.tolist(), 'rows': rows,'rows2': rows2})
 
 
 @login_required
 def MyANPAHPStep10(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
+    ANPAHP = Evaluation.objects.get(pk=pk)
     matrix_data = np.array(eval(ANPAHP.matrix_data))
     matrix_data_pre = np.array(eval(ANPAHP.matrix_data_pre))
     # Find the columns with one check and multiple checs. The columns with one check is direct dependance so no pairwise comparison and should be set as 1 in the supermatrix.
@@ -894,13 +905,13 @@ def MyANPAHPStep10(request,pk):
     columns_with_one_one = np.where(column_counts == 1)[0]
     columns_with_more_than_one_one = np.where(column_counts > 1)[0]
     # extract names and list to process Finaly, create a dictionary that links names of KPIs families instead of their numbers.
-    KPIS_selected_names = eval(ANPAHP.KPIS_selected_names)
-    Criterias_selected_names = eval(ANPAHP.Criterias_selected_names)
-    names = KPIS_selected_names + Criterias_selected_names
-    SelectedKPIs = eval(ANPAHP.SelectedKPIs)
-    SelectedCriterias = eval(ANPAHP.SelectedCriterias)
+    KPIS_selected_names = eval(ANPAHP.KPIs_selected_names)
+    Criterions_selected_names = eval(ANPAHP.criteria_selected_names)
+    names = KPIS_selected_names + Criterions_selected_names
+    SelectedKPIs = eval(ANPAHP.selected_KPIs)
+    SelectedCriterions = eval(ANPAHP.selected_criteria)
     KPI_names = list(KPI.objects.all().values_list('name',flat=True))
-    CRITERIA_names = list(Criteria.objects.all().order_by('id').values_list('name',flat=True))
+    Criterion_names = list(Criterion.objects.all().order_by('id').values_list('name',flat=True))
     new_dict = {}
     for key, value in SelectedKPIs.items():
         new_values = [KPI_names[idx-1] for idx in value]
@@ -920,9 +931,9 @@ def MyANPAHPStep10(request,pk):
             if count1 >=2:
                 names_to_add1 = [name for name in name_columns if name in value]
                 ids1.extend([names_to_add1])
-        #count2 = sum([1 for item in name_columns if item in Criterias_selected_names])
+        #count2 = sum([1 for item in name_columns if item in Criterions_selected_names])
         #if count2 >=2:
-        #    names_to_add2 = [name for name in name_columns if name in Criterias_selected_names]
+        #    names_to_add2 = [name for name in name_columns if name in Criterions_selected_names]
         #    ids2.extend(names_to_add2)
         #ids1.extend([ids2])
         names_to_use.extend([name])
@@ -1023,10 +1034,10 @@ def MyANPAHPStep10(request,pk):
         ANPAHP.supermatrix = supermatrix.tolist()
         #matrix, vector, inconcistency = construct_matrix(selection,pairs['Financial'])
         limitingmatrix, Hierarchy, supermatrix = EXECUTE_ANALYSIS(ANPAHP)
-        ANPAHP.status8 = True
+        ANPAHP.step_status8 = True
         ANPAHP.results = limitingmatrix
         ANPAHP.hierarcy = Hierarchy
-        ANPAHP.status8 = True
+        ANPAHP.step_status8 = True
         ANPAHP.supermatrix = supermatrix.tolist()
         ANPAHP.save()
         return redirect('myANPAHPResults',pk=pk)
@@ -1037,10 +1048,10 @@ def MyANPAHPStep10(request,pk):
 
 @login_required
 def myANPAHPResult(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
-    KPIS_selected_names = eval(ANPAHP.KPIS_selected_names)
-    Criterias_selected_names = eval(ANPAHP.Criterias_selected_names)
-    names = ['Strategy','Customer','Financial','Education and Growth','Internal Processes'] + KPIS_selected_names + Criterias_selected_names
+    ANPAHP = Evaluation.objects.get(pk=pk)
+    KPIS_selected_names = eval(ANPAHP.KPIs_selected_names)
+    Criterions_selected_names = eval(ANPAHP.criteria_selected_names)
+    names = ['Strategy','Customer','Financial','Education and Growth','Internal Processes'] + KPIS_selected_names + Criterions_selected_names
     limiting_matrix = eval(ANPAHP.results)
     limiting_matrix_plot_KPIs = np.array(limiting_matrix)
     limiting_matrix_plot_KPIs = limiting_matrix_plot_KPIs[5:5+len(KPIS_selected_names),0]
@@ -1066,10 +1077,10 @@ def myANPAHPResult(request,pk):
 
 @login_required
 def myANPAHPPdf(request,pk):
-    ANPAHP = EVALUATION.objects.get(pk=pk)
-    KPIS_selected_names = eval(ANPAHP.KPIS_selected_names)
-    Criterias_selected_names = eval(ANPAHP.Criterias_selected_names)
-    names = ['Strategy','Customer','Financial','Education and Growth','Internal Processes'] + KPIS_selected_names + Criterias_selected_names
+    ANPAHP = Evaluation.objects.get(pk=pk)
+    KPIS_selected_names = eval(ANPAHP.KPIs_selected_names)
+    Criterions_selected_names = eval(ANPAHP.criteria_selected_names)
+    names = ['Strategy','Customer','Financial','Education and Growth','Internal Processes'] + KPIS_selected_names + Criterions_selected_names
     limiting_matrix = eval(ANPAHP.results)
     limiting_matrix_plot_KPIs = np.array(limiting_matrix)
     limiting_matrix_plot_KPIs = limiting_matrix_plot_KPIs[5:5+len(KPIS_selected_names),0]

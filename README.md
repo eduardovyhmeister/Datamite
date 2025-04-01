@@ -2,7 +2,20 @@
 datamite ANPAHP
 
 
-# Fill up the database with metrics and KPIs
+# Reset the database
+If you made changes to the models that might not be compatible with the current schema (e.g. modifying the name/type of column), then you can recreate the database by using the following commands:
+```
+cd foldername/
+rm db.sqlite3
+python manage.py makemigrations
+python manage.py migrate
+python manage.py makemigrations ANPAHP
+python manage.py migrate ANPAHP
+```
+If you do this, you need to repopulate the DB.
+
+
+# Populate the database
 The project has a script to import all the metrics and KPIs into the database.
 To import, simply run the following command:
 ```
