@@ -81,16 +81,18 @@ class StandardFormatter(logging.Formatter):
 
 # -----------------------------------------------------------------------------
 
-def get_logger(app_name, level = logging.INFO, formatter = StandardFormatter):
+def get_logger(app_name, level = logging.INFO, formatter = StandardFormatter, handler = None ):
     """The main function to get a nicely formatted logger.
 
     Args:
         app_name (str): The name of the application associated with the logger, enables differientiating
             between various loggers used in parallel by different services for instance.
         level (str, optional): The level of the logger (pls, use standards 'logging.logging_level'). 
-            Defaults to logging.INFO.
+            Defaults to 'logging.INFO'.
         formatter (class, optional): The formatter class to instantiate, needs to inherit from
-            'logging.Formatter'. Defaults to StandardFormatter.
+            'logging.Formatter'. Defaults to 'StandardFormatter'.
+        handler (logging.Handler, optional): The handler to use, if 'None', then the default
+            'logging.StreamHandler()' is used. Defaults to 'None'.
         
     Returns:
         logging.Logger - A preformatted logger, ready to use.
@@ -99,7 +101,7 @@ def get_logger(app_name, level = logging.INFO, formatter = StandardFormatter):
     logger.setLevel(level)
 
     # Create console handler with a higher log level
-    console_handler= logging.StreamHandler()
+    console_handler = handler if handler is not None else logging.StreamHandler()
     console_handler.setLevel(level)
     console_handler.setFormatter(formatter())
 
