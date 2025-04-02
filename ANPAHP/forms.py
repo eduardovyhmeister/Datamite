@@ -1,9 +1,12 @@
 from random import choices
 from django import forms
-from .models import *
+
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import CheckboxSelectMultiple, widgets, ModelForm, formset_factory
+
+from .models import Criterion, Evaluation, KPI, Objective
+
 
 class RegisterForm(UserCreationForm):
     class Meta:

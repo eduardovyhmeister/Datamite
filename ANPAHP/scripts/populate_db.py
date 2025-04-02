@@ -1,6 +1,7 @@
 """Script used to populate the DB with the DATAMITE KPIs, criteria, and objectives.
-To run this script, use the 'python manage.py runscript populate_DB' while inside the
-project folder."""
+To run this script, use the 'python manage.py runscript populate_db' while inside the
+project folder. This scripts provide human-readable logs to let you know if anything
+went wrong."""
 
 import csv
 
@@ -23,17 +24,23 @@ def populate_KPIs():
     """Loads all of the KPIs defined in the Datamite project into the DB.
     Also checks for duplicated definitions and wrong BSCfamily values;
     will notify if it finds any issue."""
-    logger.info(f"Loading the KPIs from '{KPIS_CSV_PATH}'.")
-    with open(KPIS_CSV_PATH, "r") as csv_file:
+    file_name = KPIS_CSV_PATH
+    logger.info(f"Loading the KPIs from '{file_name}'.")
+    with open(file_name, "r") as csv_file:
         reader = csv.reader(csv_file)
         next(reader) # Skips the header (stupid python module)
         names = []
         for i, row in enumerate(reader, start = 1):
-            name, explanation, BSCfamily = row
+            # Make sure the file is formatted correctly:
+            try:
+                name, explanation, BSCfamily = row
+            except ValueError: # Happens when too few or too many values are provided.
+                logger.critical(f"Invalid KPIs file - File '{file_name} should contain exactly three columns: 'name', 'explanation', and 'BSCfamily'.")
+                return
             
             # Check for duplicate names within the same file:
             if name in names:
-                logger.error(f"Duplicate KPI name - KPI '{name}' is defined multiple times in '{KPIS_CSV_PATH}'.")
+                logger.error(f"Duplicate KPI name - KPI '{name}' is defined multiple times in '{file_name}'.")
                 continue
             names.append(name)
             
@@ -45,7 +52,7 @@ def populate_KPIs():
             # Check the validity of the BSCfamily value:
             if BSCfamily not in enumerations.BSCFamily:
                 valid_values = [str(value) for value in enumerations.BSCFamily]
-                logger.error(f"Unknown BSCfamily value - In file '{KPIS_CSV_PATH}', line {i}, value '{BSCfamily}' is invalid, should be in {valid_values}")
+                logger.error(f"Unknown BSCfamily value - In file '{file_name}', line {i}, value '{BSCfamily}' is invalid, should be in {valid_values}")
                 continue
                         
             kpi, created = KPI.objects.get_or_create(name = name, 
@@ -62,17 +69,23 @@ def populate_KPIs():
 def populate_objectives():
     """Loads all of the objectives defined in the Datamite project into the DB.
     Also checks for duplicated definitions and will notify if it finds any."""
-    logger.info(f"Loading the objectives from '{OBJECTIVES_CSV_PATH}'.")
-    with open(OBJECTIVES_CSV_PATH, "r") as csv_file:
+    file_name = OBJECTIVES_CSV_PATH
+    logger.info(f"Loading the objectives from '{file_name}'.")
+    with open(file_name, "r") as csv_file:
         reader = csv.reader(csv_file)
         next(reader) # Skips the header (stupid python module)
         names = []
         for row in reader:
-            name, explanation = row
+            # Make sure the file is formatted correctly:
+            try:
+                name, explanation = row
+            except ValueError:
+                logger.critical(f"Invalid objectives file - File '{file_name} should contain exactly two columns: 'name', 'explanation'.")
+                return
             
             # Check for duplicates within the same file:
             if name in names:
-                logger.error(f"Duplicate objective name - Objective '{name}' is defined multiple times in '{OBJECTIVES_CSV_PATH}'.")
+                logger.error(f"Duplicate objective name - Objective '{name}' is defined multiple times in '{file_name}'.")
                 continue
             names.append(name)
             
@@ -94,17 +107,23 @@ def populate_objectives():
 def populate_criteria():
     """Loads all the criteria defined in the Datamite project into the DB.
     Also checks for duplicated definitions and will notify if it finds any."""
-    logger.info(f"Loading the criteria from '{CRITERIA_CSV_PATH}'.")
-    with open(CRITERIA_CSV_PATH, "r") as csv_file:
+    file_name = CRITERIA_CSV_PATH
+    logger.info(f"Loading the criteria from '{file_name}'.")
+    with open(file_name, "r") as csv_file:
         reader = csv.reader(csv_file)
         next(reader) # Skips the header (stupid python module)
         names = []
         for row in reader:
-            name, explanation = row
+            # Make sure the file is formatted correctly:
+            try:
+                name, explanation = row
+            except ValueError:
+                logger.critical(f"Invalid criteria file - File '{file_name} should contain exactly two columns: 'name', 'explanation'.")
+                return
             
             # Check for duplicate names within the file:
             if name in names:
-                logger.error(f"Duplicate criterion name - Criterion '{name}' is defined multiple times in '{CRITERIA_CSV_PATH}'.")
+                logger.error(f"Duplicate criterion name - Criterion '{name}' is defined multiple times in '{file_name}'.")
                 continue
             names.append(name)
             

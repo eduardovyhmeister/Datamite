@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from .criterion import Criterion
 from .objective import Objective
-from .KPI import KPI
+from .kpi import KPI
 from .enumerations import UserType, UserDomain
 
 

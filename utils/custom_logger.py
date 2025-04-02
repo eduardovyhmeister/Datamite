@@ -40,7 +40,7 @@ class Font(StrEnum):
     BLINK = "\033[5m"
     NEGATIVE = "\033[7m"
     CROSSED = "\033[9m"
-    # Use this to prevent your color from affecting more than 1 line:
+    # Use this to prevent your font from affecting more than 1 line:
     RESET = "\x1b[0m"
     
     
@@ -61,7 +61,8 @@ def get_colour_with_font(color : Color, font : Font):
 # -----------------------------------------------------------------------------
 
 class StandardFormatter(logging.Formatter):
-    """A standard formatter for logs."""
+    """A standard formatter for logs. Use this as an example on how to create
+    your own log formatter."""
 
     format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
 

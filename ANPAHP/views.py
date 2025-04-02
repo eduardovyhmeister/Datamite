@@ -3,7 +3,13 @@ from django.shortcuts import render, redirect
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime as my_datetime
-from .models import *
+
+from .models import Criterion, KPI, Objective, Evaluation
+# from .models import *
+# from .models.criterion import Criterion
+# from .models.evaluation import Evaluation
+# from .models.kpi import KPI
+# from .models.objective import Objective
 from .forms import *
 
 from django.http import HttpResponseRedirect, FileResponse # this is to redirect to a specific page after submission

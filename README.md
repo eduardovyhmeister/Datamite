@@ -20,7 +20,7 @@ The project has a script to import all the metrics and KPIs into the database.
 To import, simply run the following command:
 ```
 cd foldername/
-python manage.py runscript populate_DB
+python manage.py runscript populate_db
 ```
 The script uses CSV files in 'static/mine' to populate the database with the Datamite data.
 
@@ -29,12 +29,12 @@ The script uses CSV files in 'static/mine' to populate the database with the Dat
 The project has unit tests. To run them, run the following commands:
 ```
 cd foldername/
-python manage.py test ANPAHP
+python manage.py test
 ```
 
 If you want to generate a 'coverage' (use 'pip' to install this package) report, you can instead use:
 ```
 cd foldername/
-python -m coverage run --source='.' manage.py test ANPAHP
+python -m coverage run --source='.' manage.py test
 python -m coverage report
 ```

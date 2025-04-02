@@ -39,15 +39,15 @@ ALLOWED_HOSTS.extend(
 # Application definition
 
 INSTALLED_APPS = [
+    'ANPAHP.apps.AnpahpConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ANPAHP',
-    'multiselectfield',
     'django_extensions',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
