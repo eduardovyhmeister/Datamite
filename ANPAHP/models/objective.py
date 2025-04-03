@@ -2,8 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-from .enumerations import UserType
-
+from .validators import run_validators
 
 class Objective(models.Model):
     """Model representing an objective in our DB."""
@@ -13,8 +12,12 @@ class Objective(models.Model):
     last_updated = models.DateField(auto_now_add = True)
     
     def save(self, *args, **kwargs):
-        """Allows to automatically save the last modified field."""
+        """Overrides 'save()' to:
+            - Allow to automatically save the last modified field.
+            - Run all the validators on all the fields.    
+        """
         self.last_updated = timezone.now()
+        run_validators(self)
         super(Objective, self).save(*args, **kwargs)
 
     def __str__(self):
