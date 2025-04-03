@@ -6,4 +6,3 @@ from .criterion import Criterion
 from .evaluation import Evaluation
 from .kpi import KPI
 from .objective import Objective
-from .user import User

@@ -1,6 +1,3 @@
-"""Model representing a criterion in our DB."""
-
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -9,6 +6,7 @@ from .enumerations import CriterionOption
 
 
 class Criterion(models.Model):
+    """Model representing a criterion in our DB."""
     name = models.TextField(unique=True)
     explanation = models.TextField()
     option = models.CharField(max_length = 100, choices = CriterionOption, null = True)
