@@ -7,6 +7,7 @@ If you made changes to the models that might not be compatible with the current 
 ```
 cd foldername/
 rm db.sqlite3
+rm ANPAHP/migrations/*
 python manage.py makemigrations
 python manage.py migrate
 python manage.py makemigrations ANPAHP

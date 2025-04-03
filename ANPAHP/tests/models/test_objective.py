@@ -14,7 +14,8 @@ class ObjectiveModelTests(TestCase):
     
     
     def test_valid_basic_creation(self):
-        """An objective can be created and saved into the DB."""
+        """An objective can be created and saved into the DB with just a name
+        and the 'last_update' field should be updated automatically."""
         new_objective = Objective(name = "Test")
         new_objective.save()
         
@@ -25,7 +26,7 @@ class ObjectiveModelTests(TestCase):
         self.assertLess(objectives[0].last_updated, timezone.now())
         self.assertGreater(objectives[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
         
-        time.sleep(0.5)
+        time.sleep(0.3)
         
         # Modify it and check that the last_update field is updated accordingly:
         new_objective.name = "NewName"
@@ -61,3 +62,13 @@ class ObjectiveModelTests(TestCase):
         self.assertEqual(len(objectives), 1)
         self.assertEqual(objectives[0].author, new_user)
         
+
+    def test_objective_duplicate(self):
+        """Each objective name needs to be unique. Trying to save a
+        duplicate should raise an exception."""
+        new_objective = Objective(name = "Test")
+        new_objective.save()
+        
+        new_objective2 = Objective(name = "Test", explanation = "blabla")
+        with self.assertRaises(Exception):
+            new_objective2.save()
