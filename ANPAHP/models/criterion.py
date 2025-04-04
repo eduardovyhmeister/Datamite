@@ -11,6 +11,7 @@ class Criterion(models.Model):
     explanation = models.TextField()
     option = models.CharField(max_length = 100, choices = CriterionOption, null = True)
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+    created = models.DateTimeField(auto_now_add = True, editable = False)
     last_updated = models.DateField(auto_now_add = True)
     
     def save(self, *args, **kwargs):

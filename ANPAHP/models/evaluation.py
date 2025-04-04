@@ -17,7 +17,7 @@ class Evaluation(models.Model):
     notes = models.TextField(blank = True)
     ANPAHP_recommendations = models.TextField(blank=True, default = "")
     percentage = models.TextField(default = r"0%") # this is the % on how ready is the service
-    publication_date = models.DateTimeField(auto_now_add = True)
+    created = models.DateTimeField(auto_now_add = True, editable = False)
     last_modified = models.DateTimeField(auto_now_add = True)
     action = models.TextField(blank = True, default = "")
     user_type = models.CharField(max_length = 100, choices = UserType)

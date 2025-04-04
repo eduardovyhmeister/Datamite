@@ -25,6 +25,8 @@ class ObjectiveModelTests(TestCase):
         self.assertEqual(objectives[0].author, None) # Should be the default value
         self.assertLess(objectives[0].last_updated, timezone.now())
         self.assertGreater(objectives[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
+        creation_time = timezone.now()
+        self.assertLess(objectives[0].created, creation_time)
         
         time.sleep(0.3)
         
@@ -36,6 +38,7 @@ class ObjectiveModelTests(TestCase):
         self.assertEqual(len(objectives), 1)
         self.assertLess(objectives[0].last_updated, timezone.now())
         self.assertGreater(objectives[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
+        self.assertLess(objectives[0].created, creation_time)
 
 
     def test_invalid_basic_creation(self):
