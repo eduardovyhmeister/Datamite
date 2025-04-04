@@ -18,7 +18,7 @@ class Evaluation(models.Model):
     ANPAHP_recommendations = models.TextField(blank=True, default = "")
     percentage = models.TextField(default = r"0%") # this is the % on how ready is the service
     created = models.DateTimeField(auto_now_add = True, editable = False)
-    last_modified = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
     action = models.TextField(blank = True, default = "")
     user_type = models.CharField(max_length = 100, choices = UserType)
     
@@ -34,7 +34,7 @@ class Evaluation(models.Model):
     
     ############### these are exclusive for the KPIs.
     KPIs = models.ManyToManyField(KPI)
-    selected_KPIs =  models.TextField(default = "[]")
+    selected_KPIs = models.TextField(default = "[]") #list of booleans
     
     financial_scores = models.JSONField(default = dict)
     financial_inconcistency = models.TextField(default = "[]")
@@ -49,8 +49,8 @@ class Evaluation(models.Model):
     clients_inconcistency = models.TextField(default = "[]")
     clients_vector = models.JSONField(default = dict)
     
-    pairwise_combinations = models.JSONField(default = dict)
-    KPIs_selected_names = models.TextField(default = "[]")
+    pairwise_combinations = models.JSONField(default = dict) # key = tuple (index, index), value = user defined score
+    KPIs_selected_names = models.TextField(default = "[]") # list of names
     
     ################# OBJECTIVES
     objectives = models.ManyToManyField(Objective)
@@ -71,18 +71,18 @@ class Evaluation(models.Model):
     criteria_selected_names = models.TextField(default = "[]")
     
     ############### RESULTS
-    shapes = models.TextField(default = "[]")
-    matrix_data = models.JSONField(default = dict)
+    shapes = models.TextField(default = "[]") # Sizes of the subdomain of the supermatrix
+    matrix_data = models.JSONField(default = dict) # The 4 matrics (bsc families)
     matrix_data_pre = models.TextField(default = "[]")
-    results = models.TextField(default = "[]")
-    hierarcy = models.TextField(default = "[]")
-    supermatrix = models.TextField(default = "[]")
+    results = models.TextField(default = "[]") 
+    hierarcy = models.TextField(default = "[]") # list of weights for metrics
+    supermatrix = models.TextField(default = "[]") # Matrix of the 4 bsc families matrices
     rows = models.TextField(default = "[]")
     
     ############## these are for the risk register ################################
     # general comments
-    comments = models.TextField(default = "")
-    message = models.TextField(default = "")
+    comments = models.TextField(default = "") # Comments by user
+    message = models.TextField(default = "") # Error message displayed in HTML
     ##################################
     user_domain = models.CharField(max_length = 100, choices = UserDomain)
     
