@@ -13,34 +13,34 @@
             </li>
         </ul></nav></br>
 
-        {% if ANPAHP.status1 %}
+        {% if ANPAHP.step_status1 %}
             <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
                 <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
                     </i>Step2: Identification of KPIs </a>
                 </li>
             </ul></nav></br>
             
-            {% if ANPAHP.status2 %}
+            {% if ANPAHP.step_status2 %}
                 <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
                     <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
                         </i>Step3: KPIs Pairwise Comparison Identification of Objectives </a>
                     </li>
                 </ul></nav></br>
-                {% if ANPAHP.status6 %}
+                {% if ANPAHP.step_status6 %}
                     <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
                         <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
                             </i>Step4: Identification of Criteria </a>
                         </li>
                     </ul></nav></br>
                 
-                    {%if ANPAHP.status7 %}
+                    {%if ANPAHP.step_status7 %}
                     <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
                         <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep9' pk=ANPAHP.pk %}">
                             </i>Step5: Internal Relation Analyses </a>
                         </li>
                     </ul></nav></br>
 
-                        {% if ANPAHP.status8 %}
+                        {% if ANPAHP.step_status8 %}
 
 
                         <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
@@ -65,9 +65,9 @@
                 <i class="fas fa-clipboard-check" aria-label="Requirement completed"></i>Completed and validated
             </li>
         </ul>
-        {% if taiprm.status3 %}
+        {% comment %} {% if taiprm.status3 %}
         <h2 class="mt-3">See the results </h2>
         <a class="btn btn-primary card-btn" style="text-align: center;  background-color:  #00458f;" href="{% url 'myANPAHPResult' pk=ANPAHP.pk %}">Results and Recommendations </a>
         <br/>
-        {% endif %}
+        {% endif %} {% endcomment %}
     </div>
