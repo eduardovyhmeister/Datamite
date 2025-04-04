@@ -21,6 +21,7 @@ class KPIModelTest(TestCase):
         
         kpis = KPI.objects.all()
         self.assertEqual(len(kpis), 1)
+        self.assertEqual(kpis[0].name, "Test")
         self.assertEqual(kpis[0].explanation, "") # Should be the default value
         self.assertLess(kpis[0].last_updated, timezone.now())
         self.assertGreater(kpis[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
@@ -35,6 +36,7 @@ class KPIModelTest(TestCase):
         
         kpis = KPI.objects.all()
         self.assertEqual(len(kpis), 1)
+        self.assertEqual(kpis[0].name, "NewName")
         self.assertLess(kpis[0].last_updated, timezone.now())
         self.assertGreater(kpis[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
         self.assertLess(kpis[0].created, creation_time)

@@ -5,7 +5,9 @@ from django.core.validators import MinLengthValidator
 
 from .validators import run_validators
 
+
 NAME_MIN_LENGTH = 1
+
 
 class Objective(models.Model):
     """Model representing an objective in our DB."""

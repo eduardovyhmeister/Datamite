@@ -13,14 +13,15 @@ class ObjectiveModelTests(TestCase):
     """Class to test model 'Objective' in the ANPAHP app."""
     
     
-    def test_valid_basic_creation(self):
+    def test_objective_valid_basic_creation(self):
         """An objective can be created and saved into the DB with just a name
-        and the 'last_update' field should be updated automatically."""
+        and the 'created' and 'last_updated' fields should be updated automatically."""
         new_objective = Objective(name = "Test")
         new_objective.save()
         
         objectives = Objective.objects.all()
         self.assertEqual(len(objectives), 1)
+        self.assertEqual(objectives[0].name, "Test")
         self.assertEqual(objectives[0].explanation, "") # Should be the default value
         self.assertEqual(objectives[0].author, None) # Should be the default value
         self.assertLess(objectives[0].last_updated, timezone.now())
@@ -36,12 +37,13 @@ class ObjectiveModelTests(TestCase):
         
         objectives = Objective.objects.all()
         self.assertEqual(len(objectives), 1)
+        self.assertEqual(objectives[0].name, "NewName")
         self.assertLess(objectives[0].last_updated, timezone.now())
         self.assertGreater(objectives[0].last_updated, timezone.now() - timedelta(seconds = 0.1))
         self.assertLess(objectives[0].created, creation_time)
 
 
-    def test_invalid_basic_creation(self):
+    def test_objective_invalid_basic_creation(self):
         """An objective name must of at least NAME_MIN_LENGTH chars.
         Should raise a ValidationError if it's not."""
         new_objective = Objective(name = "a"*(NAME_MIN_LENGTH - 1))
@@ -52,9 +54,8 @@ class ObjectiveModelTests(TestCase):
         self.assertEqual(len(objectives), 0)
 
 
-    def test_valid_creation_with_user(self):
+    def test_objective_valid_creation_with_user(self):
         """An objective can be associated to a user."""
-        # Create a user:
         new_user = User(username = "Test Name", password = "Test Password")
         new_user.save()
         
@@ -75,3 +76,7 @@ class ObjectiveModelTests(TestCase):
         new_objective2 = Objective(name = "Test", explanation = "blabla")
         with self.assertRaises(Exception):
             new_objective2.save()
+            
+        objectives = Objective.objects.all()
+        self.assertEqual(len(objectives), 1)
+        self.assertEqual(objectives[0].explanation, "")
