@@ -468,7 +468,7 @@ def MyANPAHPStep2(request,pk): # ex1
             for num,content in enumerate(eval(ANPAHP.BSC_Weights)):
                 supermatrix[1+num][0] = content
             ANPAHP.supermatrix = str(supermatrix)
-            Drivers = list(KPI.objects.all().values_list('BSCfamily',flat=True))
+            Drivers = list(KPI.objects.all().values_list('bsc_family',flat=True))
             groups,combinations = {key: [] for key in ['Customer','Financial','Education and Growth','Internal Processes']}, {}
             for i in range(len(selection)):
                 groups[Drivers[selection[i]-1]].append(selection[i])

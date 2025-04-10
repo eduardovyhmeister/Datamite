@@ -5,7 +5,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import CheckboxSelectMultiple, widgets, ModelForm, formset_factory
 
-from .models import Criterion, Evaluation, KPI, Objective
+from .models import (BSCFamily,
+                     BSCSubfamily,
+                     Criterion, 
+                     Evaluation, 
+                     KPI, 
+                     Objective)
 
 
 class RegisterForm(UserCreationForm):
@@ -125,13 +130,14 @@ class   Step9Form(forms.ModelForm):
 class NewKPIForm(ModelForm):
     class Meta:
         model = KPI # with wat model you want to work
-        fields = ('name','explanation','BSCfamily',)
+        fields = ('name','explanation','bsc_subfamilies',)
         exclude = ('author',)
         widgets = {
             'name': forms.Textarea(attrs={'class':'input','placeholder':'Name for your KPI'}), # top set an input format with bootstrap form
             'explanation': forms.Textarea(attrs={'class':'input','placeholder':'Provide some exemplification for other to understand'}),
-            #'BSCfamily': forms.Textarea(attrs={'class':'input','placeholder':'BSCfamily from your KPI'}),
-            'BSCfamily': forms.Select(choices=[('Clients','Clients'),('Finance','Finance'),('Internal Process','Internal Process'),('Learn and Growth','Learn and Growth')]),
+            #'bsc_family': forms.Textarea(attrs={'class':'input','placeholder':'bsc_family from your KPI'}),
+            #'bsc_subfamily': forms.Select(choices=[('Clients','Clients'),('Finance','Finance'),('Internal Process','Internal Process'),('Learn and Growth','Learn and Growth')]),
+            'bsc_subfamilies': forms.ModelMultipleChoiceField(queryset = BSCSubfamily.objects.all())
         }
 
 class NewObjectivesForm(ModelForm):

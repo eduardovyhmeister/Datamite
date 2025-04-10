@@ -14,9 +14,9 @@ class KPIModelTest(TestCase):
     
     
     def test_kpi_valid_basic_creation(self):
-        """A KPI can be created and saved into the DB with a name and BSCfamily
+        """A KPI can be created and saved into the DB with a name and bsc_family
         and the 'last_update' field should be updated automatically."""
-        new_KPI = KPI(name = "Test", BSCfamily = list(BSCFamily)[0])
+        new_KPI = KPI(name = "Test", bsc_family = list(BSCFamily)[0])
         new_KPI.save()
         
         kpis = KPI.objects.all()
@@ -44,7 +44,7 @@ class KPIModelTest(TestCase):
 
     def test_kpi_missing_name(self):
         """A KPI cannot be created without a name, it should raise an exception."""
-        new_KPI = KPI(BSCfamily = list(BSCFamily)[0])
+        new_KPI = KPI(bsc_family = list(BSCFamily)[0])
         with self.assertRaises(Exception):
             new_KPI.save()
     
@@ -55,7 +55,7 @@ class KPIModelTest(TestCase):
     def test_kpi_missing_name(self):
         """Field 'name' should have a min length of NAME_MIN_LENGTH. Should 
         raise a ValidationError if not."""
-        new_KPI = KPI(name = "a"*(NAME_MIN_LENGTH - 1), BSCfamily = list(BSCFamily)[0])
+        new_KPI = KPI(name = "a"*(NAME_MIN_LENGTH - 1), bsc_family = list(BSCFamily)[0])
         with self.assertRaises(ValidationError):
             new_KPI.save()
         
@@ -63,8 +63,8 @@ class KPIModelTest(TestCase):
         self.assertEqual(len(kpis), 0)
     
     
-    def test_kpi_missing_BSCfamily(self):
-        """A KPI cannot be created without a BSCfamily, it should raise an exception."""
+    def test_kpi_missing_bsc_family(self):
+        """A KPI cannot be created without a bsc_family, it should raise an exception."""
         new_KPI = KPI(name = "Test")
         with self.assertRaises(Exception):
             new_KPI.save()
@@ -73,10 +73,10 @@ class KPIModelTest(TestCase):
         self.assertEqual(len(kpis), 0)
         
         
-    def test_kpi_invalid_BSCfamily(self):
+    def test_kpi_invalid_bsc_family(self):
         """The BSC family can only be selected from choices. Should fail if something
         unexpected is provided."""
-        new_KPI = KPI(name = "Test", BSCfamily = "ergbrdgqh")
+        new_KPI = KPI(name = "Test", bsc_family = "ergbrdgqh")
         with self.assertRaises(Exception):
             new_KPI.save()
             

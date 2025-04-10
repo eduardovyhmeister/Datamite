@@ -35,7 +35,7 @@ class PopulateDBTests(TestCase):
         warnings or error messages when provided with a correct csv file."""
         # Create a temp file of a correct KPI csv file:
         with tempfile.NamedTemporaryFile(dir = '.', delete_on_close = False) as temp:
-            temp.write(b"name,explanation,BSCfamily\n")
+            temp.write(b"name,explanation,bsc_family\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},Explanation{i},{bsc_family}\n".encode())
             temp.close()
@@ -57,14 +57,14 @@ class PopulateDBTests(TestCase):
             for i, kpi in enumerate(kpis):
                 self.assertEqual(kpi.name, f"Test{i}")
                 self.assertEqual(kpi.explanation, f"Explanation{i}")
-                self.assertEqual(kpi.BSCfamily, list(BSCFamily)[i])
+                self.assertEqual(kpi.bsc_family, list(BSCFamily)[i])
 
     
     def test_populate_kpis_incorrect_bsc_family(self):
         """'populate_KPIs()' should not insert KPIs that have an
-        invalid BSCfamily and log an error for each one."""
+        invalid bsc_family and log an error for each one."""
         with tempfile.NamedTemporaryFile(delete_on_close = False) as temp:
-            temp.write(b"name,explanation,BSCfamily\n")
+            temp.write(b"name,explanation,bsc_family\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},Explanation{i},{bsc_family}_error\n".encode())
             temp.close()
@@ -91,12 +91,12 @@ class PopulateDBTests(TestCase):
         """'populate_KPIs()' should not add a KPI already registered in the DB and log a
         WARNING message."""
         # Add a KPI to the DB
-        existing_kpi = KPI(name = "Test0", explanation = "AlreadyExplained", BSCfamily = BSCFamily.choices[-1][0])
+        existing_kpi = KPI(name = "Test0", explanation = "AlreadyExplained", bsc_family = BSCFamily.choices[-1][0])
         existing_kpi.save()
         
         # This should have the first KPI as duplicate:
         with tempfile.NamedTemporaryFile(delete_on_close = False) as temp:
-            temp.write(b"name,explanation,BSCfamily\n")
+            temp.write(b"name,explanation,bsc_family\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},Explanation{i},{bsc_family}\n".encode())
             temp.close()
@@ -120,18 +120,18 @@ class PopulateDBTests(TestCase):
             self.assertEqual(len(kpis), len(BSCFamily))
             self.assertEqual(kpis[0].name, existing_kpi.name)
             self.assertEqual(kpis[0].explanation, existing_kpi.explanation)
-            self.assertEqual(kpis[0].BSCfamily, existing_kpi.BSCfamily)
+            self.assertEqual(kpis[0].bsc_family, existing_kpi.bsc_family)
             for i, kpi in enumerate(kpis[1:], 1):
                 self.assertEqual(kpi.name, f"Test{i}")
                 self.assertEqual(kpi.explanation, f"Explanation{i}")
-                self.assertEqual(kpi.BSCfamily, list(BSCFamily)[i])
+                self.assertEqual(kpi.bsc_family, list(BSCFamily)[i])
             
     
     def test_populate_kpis_too_many_columns(self):
         """'populate_KPIs() should not populate anything with a file containing too many
         columns AND log a critical message."""
         with tempfile.NamedTemporaryFile(delete_on_close = False) as temp:
-            temp.write(b"name,explanation,BSCfamily,extra_column\n")
+            temp.write(b"name,explanation,bsc_family,extra_column\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},Explanation{i},{bsc_family},extra{i}\n".encode())
             temp.close()
@@ -155,7 +155,7 @@ class PopulateDBTests(TestCase):
         """'populate_KPIs() should not populate anything with a file containing too few
         columns AND log a critical message."""
         with tempfile.NamedTemporaryFile(delete_on_close = False) as temp:
-            temp.write(b"name,BSCfamily\n")
+            temp.write(b"name,bsc_family\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},{bsc_family}\n".encode())
             temp.close()
@@ -179,7 +179,7 @@ class PopulateDBTests(TestCase):
         """'populate_KPIs()' should not add duplicates to the database AND log an error
         for every duplicate."""
         with tempfile.NamedTemporaryFile(dir = '.', delete_on_close = False) as temp:
-            temp.write(b"name,explanation,BSCfamily\n")
+            temp.write(b"name,explanation,bsc_family\n")
             for i, bsc_family in enumerate(BSCFamily):
                 temp.write(f"Test{i},Explanation{i},{bsc_family}\n".encode())
                 temp.write(f"Test{i},Explanation{i},{bsc_family}\n".encode())
@@ -206,7 +206,7 @@ class PopulateDBTests(TestCase):
             for i, kpi in enumerate(kpis):
                 self.assertEqual(kpi.name, f"Test{i}")
                 self.assertEqual(kpi.explanation, f"Explanation{i}")
-                self.assertEqual(kpi.BSCfamily, list(BSCFamily)[i])
+                self.assertEqual(kpi.bsc_family, list(BSCFamily)[i])
     
     
     def test_populate_objectives_correct_values(self):

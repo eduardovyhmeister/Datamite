@@ -12,7 +12,8 @@ NAME_MIN_LENGTH = 1
 
 class Criterion(models.Model):
     """Model representing a criterion in our DB."""
-    name = models.TextField(unique = True, validators=[MinLengthValidator(NAME_MIN_LENGTH)])
+    name = models.TextField(primary_key = True, unique = True, 
+                            validators=[MinLengthValidator(NAME_MIN_LENGTH)])
     explanation = models.TextField(default = "", blank = True)
     option = models.CharField(max_length = 100, choices = CriterionOption, 
                               null = True, blank = True, default = "")
@@ -22,7 +23,7 @@ class Criterion(models.Model):
     
     
     def save(self, *args, **kwargs):
-        """Allows to automatically save the last modified field."""
+        """Overrides 'save()' to run all the validators on all the fields when saved."""
         run_validators(self)
         self.full_clean() # See: https://docs.djangoproject.com/en/5.1/ref/models/instances/#django.db.models.Model.full_clean
         super(Criterion, self).save(*args, **kwargs)
