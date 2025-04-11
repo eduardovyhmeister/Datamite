@@ -4,3 +4,5 @@ nagivate."""
 
 # Enables imports in the form of 'from .models import Criterion'
 from . import basics
+from . import user_management
+from . import anpahp_management

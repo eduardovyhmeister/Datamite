@@ -287,33 +287,33 @@ def EXECUTE_ANALYSIS(ANPAHP):
 
 
 ################# ANPAHP views:
-def MyANPAHP(request):
-     ANPAHPs = Evaluation.objects.all().filter(author=request.user)
-     context = {'ANPAHPs':ANPAHPs}
-     return render(request,'ANPAHP/myANPAHP.html',context)
+# def MyANPAHP(request):
+#      ANPAHPs = Evaluation.objects.all().filter(author=request.user)
+#      context = {'ANPAHPs':ANPAHPs}
+#      return render(request,'ANPAHP/myANPAHP.html',context)
 
-def MyANPAHPCreate(request):
-    submitted = False
-    if request.method == "POST":
-        form=ANPAHPForm(request.POST)
-        if form.is_valid():
-            assessment=form.save(commit=False) # this create the form but do not commit it so can be modified
-            assessment.author = request.user # modify the form
-            assessment.save()
-            return HttpResponseRedirect('myANPAHP') # /add_event?submitted=True
-    else:
-        form=ANPAHPForm
-        if 'submitted' in request.GET:
-            submitted = True
-    form=ANPAHPForm
-    return render(request,'ANPAHP/myANPAHPCreate.html',{'form':form, 'submitted':submitted})
+# def MyANPAHPCreate(request):
+#     submitted = False
+#     if request.method == "POST":
+#         form=ANPAHPForm(request.POST)
+#         if form.is_valid():
+#             assessment=form.save(commit=False) # this create the form but do not commit it so can be modified
+#             assessment.author = request.user # modify the form
+#             assessment.save()
+#             return HttpResponseRedirect('myANPAHP') # /add_event?submitted=True
+#     else:
+#         form=ANPAHPForm
+#         if 'submitted' in request.GET:
+#             submitted = True
+#     form=ANPAHPForm
+#     return render(request,'ANPAHP/myANPAHPCreate.html',{'form':form, 'submitted':submitted})
 
-# TODO
-@login_required
-def MyANPAHPDelete(request,pk):
-    altai = Evaluation.objects.get(pk=pk)
-    altai.delete()
-    return redirect('myANPAHP')
+# # TODO
+# @login_required
+# def MyANPAHPDelete(request,pk):
+#     altai = Evaluation.objects.get(pk=pk)
+#     altai.delete()
+#     return redirect('myANPAHP')
 
 @login_required
 def MyANPAHPHome(request,pk):

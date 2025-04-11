@@ -1,26 +1,32 @@
+"""
+Add your URLs here in the following form:
+path('URL_you_want', 'corresponding_view', name = 'name used in redirection and links')
+"""
+
 from django.urls import path
 from . import old_views
 from . import views
 
-# Add your URLs here in the following form:
-# path('URL_you_want', 'corresponding_view', name = 'name used in redirection and links')
 
 urlpatterns = [
+    # Setup basic pages found in the header:
     path('', views.basics.home, name = "home"),
-    path('register', views.basics.user_register_view, name = 'register'),
-    path('login', views.basics.user_login_view, name = 'login'),
-    path('logout', views.basics.user_logout_view, name = 'logout'),
     path('howtoANPAHP', views.basics.how_to_anp_ahp_view, name = 'howto_ANP_AHP'),
     path('about', views.basics.about_view, name = 'about'),
-    
     # TODO: This one is never referenced anywhere, should probably be put somewhere:
     path('privacy', views.basics.privacy_view, name = 'privacy'),
 
-    # path('myANPAHP',old_views.MyANPAHP,name='myANPAHP'),
-    # path('myANPAHPCreate',old_views.MyANPAHPCreate,name='myANPAHPCreate'),
-    # path('myANPAHPDelete/<int:pk>',old_views.MyANPAHPDelete,name='myANPAHPDelete'),
-    # path('myANPAHPHome/<pk>',old_views.MyANPAHPHome,name='myANPAHPHome'),
-    # path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name='myANPAHPPdf'),
+    # Setup basic pages for user management:
+    path('register', views.user_management.user_register_view, name = 'register'),
+    path('login', views.user_management.user_login_view, name = 'login'),
+    path('logout', views.user_management.user_logout_view, name = 'logout'),
+
+    # Setup pages for the management of a user's ANP-AHP evaluations:
+    path('myANPAHP', views.anpahp_management.my_anp_ahp, name = 'myANPAHP'),
+    path('myANPAHPCreate', views.anpahp_management.my_anp_ahp_create, name = 'myANPAHPCreate'),
+    path('myANPAHPDelete/<int:pk>', views.anpahp_management.my_anp_ahp_delete, name= 'myANPAHPDelete'),
+    path('myANPAHPHome/<pk>', old_views.MyANPAHPHome, name= 'myANPAHPHome'),
+    path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
 
 
