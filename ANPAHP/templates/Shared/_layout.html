@@ -21,26 +21,12 @@
 
 
         <header>
-
-            {% if request.user.is_authenticated %}
-                {% include "Shared/_NavbarIn.html" %}
-            {% else %}
-                {% include "Shared/_NavbarOut.html" %}
-            {% endif %}
-
-
+            {% include "Shared/_Navbar.html" %}
             {% block header %}
             {% endblock %}
-
         </header>
 
         <div class="container">
-            <!--<div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
-                The website is a prototype for a trustworthy AI-driven platform for the ASSISTANT project. It includes an interactive Assessment List for Trustworthy AI (ALTAI) and a Trustworthy AI Process Risk Management framework (TAI-PRM). The website does not collect any personal information and advises users not to use personal information or intellectual property while using the platform. Technical cookies are used to improve the user experience, and third-party cookies are not used.
-                <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string=".AspNet.Consent=yes; path=/; samesite=none">
-                    <span aria-hidden="true">Accept</span>
-                </button>
-            </div> -->
             <script>
                 (function () {
                     var button = document.querySelector("#cookieConsent button[data-cookie-string]");
@@ -53,7 +39,6 @@
             {% block main1 %}
             {% endblock %}
 
-
             <main role="main"> <!-- here was placed class="pb-3"-->
 
             {% block main2 %}
@@ -61,14 +46,10 @@
 
             </main>
 
-
             {% block main3 %}
             {% endblock %}
 
-
         </div>
-
-
 
 
         <footer class="border-top footer text-muted">

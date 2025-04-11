@@ -2,50 +2,36 @@
 {% load static %}
 
 {%block head%}
-    <title> Fundamental Rights </title>
+    <title> DATAMITE - About </title>
 {%endblock%}
 
 
-{% block navbar %}
-
-    {% if request.user.is_authenticated %}
-        {% include "Shared/_Navbarin.html" %}
-    {% else %}
-        {% include "Shared/_NavbarOut.html" %}
-    {% endif %}
-
-{% endblock%}
-
 {%block main2%}
 
-
-
-
         <div>
-        <h1 class="display-6 text-primary font-weight-bold"> About </h1>
-        <p style="text-align: justify;">
-            The purpose of this site is to foster the implementation of an ANP and AHP approach within
-            the DATAMITE project. This site was built with the support of the European Commission, collaborators from diverse institutions from the DATAMITE project, and
-            the Insight Centre of Data Analytics. The main participants in the development of this tool
-            and the development of the site are:
+            <h1 class="display-6 text-primary font-weight-bold"> About </h1>
+            <p style="text-align: justify;">
+                The purpose of this site is to foster the implementation of an ANP and AHP approach within the DATAMITE project. This site was built with the support of the European Commission, collaborators from diverse institutions from the DATAMITE project, and
+                the Insight Centre of Data Analytics. The main participants in the development of this tool and the development of the site are:
 
-            <li> Agnieszka Rausch - PSNC </li>
-            <li> Alejandro Martinez - ITI </li>
-            <li> Eduardo Vyhmeister Bastidas - Insight Centre of Data Analytics </li>
-            <li> Gabriel Gonzalez Castane - Insight Centre of Data Analytics </li>
-            <li> Loers Martin -  FIR </li>
-            <li> Montserrat Gonzalez Ferreiro - EGI Foundation </li>
-            <li> Qusai Ramadan - UniKo </li>
-
-
-        </p>
-            
+                <li> Agnieszka Rausch - PSNC </li>
+                <li> Alejandro Martinez - ITI </li>
+                <li> Bastien Pietropaoli - Insight Centre for Data Analytics </li>
+                <li> Eduardo Vyhmeister Bastidas - Insight Centre of Data Analytics </li>
+                <li> Gabriel Gonzalez Castane - Insight Centre of Data Analytics </li>
+                <li> Loers Martin -  FIR </li>
+                <li> Montserrat Gonzalez Ferreiro - EGI Foundation </li>
+                <li> Qusai Ramadan - UniKo </li>
+            </p>
+            <h2 class="display-6 text-primary font-weight-bold">Acknowledgments</h2>
+            <p>
+                This website benefited from the financial support of the European Commission under Grant number 101092989, the Science Foundation Ireland under Grant numbers 12/RC/2289-P2,16/RC/3918, and 18/CRT/6223, which are co-funded under the European Regional Development Fund.
+            </p>
         </div>
 
+{% comment %} 
         <div>
-
             <h1 class="display-6 text-primary font-weight-bold"> Nomenclature / Extra Information </h1>
-
         <table class="table table-hover">
             <thead>
             <tr><th scope="col"> Name </th> <th scope="col"> Definition </th> </tr>
@@ -94,14 +80,10 @@
             </th></tr>
 
 
-
-
-
-
             </tbody>
         </table>
 
-    </div>
+    </div> {% endcomment %}
 
         
         </br>

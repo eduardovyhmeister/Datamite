@@ -5,7 +5,7 @@ from calendar import HTMLCalendar
 from datetime import datetime as my_datetime
 
 from .models import Criterion, KPI, Objective, Evaluation
-from .forms import *
+from .old_forms import *
 
 from django.http import HttpResponseRedirect, FileResponse # this is to redirect to a specific page after submission
 from django.http import HttpResponse # create different responses.
@@ -208,82 +208,82 @@ def EXECUTE_ANALYSIS(ANPAHP):
 
 
 ###############     register view
-def UserRegisterView(request):
-    form = RegisterForm
+# def UserRegisterView(request):
+#     form = RegisterForm
 
-    if request.method == 'POST': 
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user =form.cleaned_data.get('username')
-            messages.success(request,'Account was created for ' + user)
-            return redirect('login')
-    context = {'form':form}
-    return render(request,'registration.html',context)
-
-
-
-def UserLoginView(request):
-
-    if request.method =="POST":
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-
-        user =authenticate(request,username=username, password=password)
-
-        if user is not None:
-            login(request,user)
-            return redirect('home')
-        else:
-            messages.info(request,'Username or Password is incorrect')
-
-    context = {}
-    return render(request,'login.html',context)
+#     if request.method == 'POST': 
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             user =form.cleaned_data.get('username')
+#             messages.success(request,'Account was created for ' + user)
+#             return redirect('login')
+#     context = {'form':form}
+#     return render(request,'registration.html',context)
 
 
 
-def UserLogout(request):
-    logout(request)
-    return redirect('login')
+# def UserLoginView(request):
+
+#     if request.method =="POST":
+#         username=request.POST.get('username')
+#         password=request.POST.get('password')
+
+#         user =authenticate(request,username=username, password=password)
+
+#         if user is not None:
+#             login(request,user)
+#             return redirect('home')
+#         else:
+#             messages.info(request,'Username or Password is incorrect')
+
+#     context = {}
+#     return render(request,'login.html',context)
+
+
+
+# def UserLogout(request):
+#     logout(request)
+#     return redirect('login')
 
 
 
 #################### create new element
 
-# TODO: the default value is wrong, it will be computed once and then used throughout the whole execution,
-# and not be called every time the function is called.
-def home(request,year=my_datetime.now().year,month=my_datetime.now().strftime('%B')):
-    name=""
-    month =month.capitalize()
-    #convert month from name to number
-    month_number = list(calendar.month_name).index(month)
-    cal =HTMLCalendar().formatmonth(year,month_number)
+# # TODO: the default value is wrong, it will be computed once and then used throughout the whole execution,
+# # and not be called every time the function is called.
+# def home(request,year=my_datetime.now().year,month=my_datetime.now().strftime('%B')):
+#     name=""
+#     month =month.capitalize()
+#     #convert month from name to number
+#     month_number = list(calendar.month_name).index(month)
+#     cal =HTMLCalendar().formatmonth(year,month_number)
 
 
-    return render(request,'home.html',{"first_name":name,
-                                        "year":year,
-                                        "month":month,
-                                        "month_number":month_number,
-                                        "cal":cal,
-                                        })
+#     return render(request,'home.html',{"first_name":name,
+#                                         "year":year,
+#                                         "month":month,
+#                                         "month_number":month_number,
+#                                         "cal":cal,
+#                                         })
 
-# TODO: probably needs to delete this.
-def HowToAltai(request):
-    context = {}
-    return render(request,'howToAltai.html',context)
+# # TODO: probably needs to delete this.
+# def HowToAltai(request):
+#     context = {}
+#     return render(request,'howToAltai.html',context)
 
 
-def HowToANPAHP(request):
-    context = {}
-    return render(request,'howToANPAHP.html',context)
+# def HowToANPAHP(request):
+#     context = {}
+#     return render(request, 'howto_ANP_AHP.html', context)
 
-def About(request):
-    context = {}
-    return render(request,'about.html',context)
+# def About(request):
+#     context = {}
+#     return render(request, 'about.html',context)
 
-def Privacy(request):
-    context = {}
-    return render(request,'privacy.html',context)
+# def Privacy(request):
+#     context = {}
+#     return render(request, 'privacy.html',context)
 
 
 ################# ANPAHP views:
