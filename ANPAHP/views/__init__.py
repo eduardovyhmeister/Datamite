@@ -5,6 +5,7 @@ nagivate."""
 # Enables imports in the form of 'from .views import basics'
 from . import steps
 from . import basics
+from . import content_management
 from . import user_management
 from . import anpahp_management
 from . import my_anpahp

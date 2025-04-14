@@ -400,7 +400,7 @@ def NewCriterion(request,pk):
 #             selection+=list(map(int,request.POST.getlist(str(j+1))))
 #         if form.is_valid() and len(selection)==1:
 #             ANPAHP.selected_objectives = selection
-#             ANPAHP.shapes = {"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}
+#             ANPAHP.shapes['Objectives'] = 1 # {"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}
 #             ANPAHP.message = ''
 #             ANPAHP.save()
 #             form.save()

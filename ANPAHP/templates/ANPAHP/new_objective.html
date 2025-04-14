@@ -1,0 +1,57 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title>DATAMITE - Create new objective</title>
+{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <h1> Define a new objective:</h1>
+        <p style="text-align: justify;">
+            Please, fill up the following form in order to add an objective to the tool.
+        </p>
+        <form method='POST'>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <ol class="list-group list-group-numbered">
+                    <strong> {{field.label}}: </strong>
+                    {{field}}
+                    {% if field.errors %}
+                        <div class="text-danger">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </br>
+                </ol>
+
+            {% endfor %}
+            <a class="btn btn-secondary" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">Cancel</a>
+            <button class="btn btn-primary card-btn" style="text-align: center;"> Create the objective </button>
+            
+        </form>
+    </div>
+</div>
+
+{% include "Shared/_privacystatement.html" %}
+{% endblock %}
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}
+
+
+
+
+
+
+
+
+

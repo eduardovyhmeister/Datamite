@@ -27,6 +27,17 @@ urlpatterns = [
     path('myANPAHPDelete/<int:pk>', views.anpahp_management.my_anp_ahp_delete, name= 'myANPAHPDelete'),
     path('myANPAHP/<int:pk>/Home', views.my_anpahp.my_anpahp_home_view, name = 'myANPAHPHome'),
     
+    # New content creation pages:
+    path('myANPAHP/<int:pk>/createobjective', views.content_management.create_objective_view, name = 'create_objective'),
+    path('myANPAHP/<int:pk>/deleteobjective', views.content_management.delete_objective_view, name = 'delete_objective'),
+
+    
+
+    path('newKPI', old_views.NewObjectives, name='newKPI'),
+    path('newcriterion', old_views.NewObjectives, name='newcriterion'),
+
+
+    
     # Objective selection:
     path('myANPAHP/<int:pk>/Step1', views.steps.step1.step1_view, name = "myANPAHPStep1"),
     
@@ -39,14 +50,14 @@ urlpatterns = [
     # path('myANPAHPStep3/<int:pk>', old_views.MyANPAHPStep3, name='myANPAHPStep3'),
     # path('myANPAHPStep4/<int:pk>', old_views.MyANPAHPStep4, name='myANPAHPStep4'),
     # path('myANPAHPStep5/<int:pk>', old_views.MyANPAHPStep5, name='myANPAHPStep5'),
-    path('newKPI/<int:pk>', old_views.NewKPI, name='newKPI'),
+    # path('newKPI/<int:pk>', old_views.NewKPI, name='newKPI'),
     # #objectives
     # path('myANPAHPStep6/<int:pk>', old_views.MyANPAHPStep6, name='myANPAHPStep6'),
-    path('newObjectives/<int:pk>', old_views.NewObjectives, name='newObjectives'),
+    # path('newObjectives/<int:pk>', old_views.NewObjectives, name='newObjectives'),
     # #criteria
     # path('myANPAHPStep7/<int:pk>', old_views.MyANPAHPStep7, name='myANPAHPStep7'),
     # path('myANPAHPStep8/<int:pk>', old_views.MyANPAHPStep8, name='myANPAHPStep8'),
-    path('newCriterion/<int:pk>', old_views.NewCriterion, name='newCriterion'),
+    # path('newCriterion/<int:pk>', old_views.NewCriterion, name='newCriterion'),
     
     # #Interanalysis
     # path('myANPAHPStep9/<int:pk>', old_views.MyANPAHPStep9, name='myANPAHPStep9'),

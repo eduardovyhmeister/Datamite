@@ -6,4 +6,6 @@ easy to nagivate."""
 from .register import RegisterForm
 from .anpahp import ANPAHPForm
 from .notes import NotesForm
-from .objectives import ObjectiveSelectionForm
+from .objectives import (ObjectiveSelectionForm,
+                         CreateObjectiveForm,
+                         DeleteObjectiveForm)

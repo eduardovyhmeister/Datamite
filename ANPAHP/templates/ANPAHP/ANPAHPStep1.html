@@ -53,7 +53,7 @@
                                     <tr>
                                         <td>{{ choice.tag }}</td>
                                         <td><b>{{ obj.name }}<b/></td>
-                                        <td>{{ obj.short_definition }}</td>
+                                        <td>{{ obj.short_definition }} {% if obj.author %}(<b>Created by:</b> {{ obj.author }}{% endif%})</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -62,7 +62,8 @@
                 </table>
             </div>
         
-            <a class="btn btn-outline-secondary" href="{% url 'newObjectives' pk=ANPAHP.pk %}" > Create new objective </a>
+            <a class="btn btn-outline-secondary" href="{% url 'create_objective' pk=ANPAHP.pk %}" > Create a new objective </a>
+            <a class="btn btn-outline-secondary" href="{% url 'delete_objective' pk=ANPAHP.pk %}" > Delete an objective </a>
 
             <button class="btn btn-primary card-btn" style="text-align: center;" name="button1"> Confirm selection </button>
         </form>
