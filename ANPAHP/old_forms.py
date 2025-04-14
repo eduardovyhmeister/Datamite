@@ -24,15 +24,15 @@ from .models import (BSCFamily,
 #         }
 
 
-class ANPAHPForm(ModelForm):
-    class Meta:
-        model = Evaluation # with wat model you want to work
-        fields = ('title','user_type')
-        exclude = ('author',)
-        widgets = {
-            'title': forms.TextInput(attrs={'class':'input','placeholder':'title'}), # top set an input format with bootstrap form
-            'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
-        }
+# class ANPAHPForm(ModelForm):
+#     class Meta:
+#         model = Evaluation # with wat model you want to work
+#         fields = ('title','user_type')
+#         exclude = ('author',)
+#         widgets = {
+#             'title': forms.TextInput(attrs={'class':'input','placeholder':'title'}), # top set an input format with bootstrap form
+#             'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
+#         }
 
 class NotesForm(ModelForm):
     class Meta:

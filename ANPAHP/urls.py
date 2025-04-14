@@ -13,8 +13,8 @@ urlpatterns = [
     path('', views.basics.home, name = "home"),
     path('howtoANPAHP', views.basics.how_to_anp_ahp_view, name = 'howto_ANP_AHP'),
     path('about', views.basics.about_view, name = 'about'),
-    # TODO: This one is never referenced anywhere, should probably be put somewhere:
-    path('privacy', views.basics.privacy_view, name = 'privacy'),
+    # Pushed into the about page.
+    # path('privacy', views.basics.privacy_view, name = 'privacy'),
 
     # Setup basic pages for user management:
     path('register', views.user_management.user_register_view, name = 'register'),
@@ -25,13 +25,10 @@ urlpatterns = [
     path('myANPAHP', views.anpahp_management.my_anp_ahp, name = 'myANPAHP'),
     path('myANPAHPCreate', views.anpahp_management.my_anp_ahp_create, name = 'myANPAHPCreate'),
     path('myANPAHPDelete/<int:pk>', views.anpahp_management.my_anp_ahp_delete, name= 'myANPAHPDelete'),
-    path('myANPAHPHome/<pk>', old_views.MyANPAHPHome, name= 'myANPAHPHome'),
-    path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
-
-
-
+    path('myANPAHPHome/<int:pk>', views.my_anpahp.my_anpahp_home_view, name = 'myANPAHPHome'),
+    
     # #Objectives
-    # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
+    path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
     # # Perspectives BSC
     # path('myANPAHPStep1_2/<int:pk>', old_views.MyANPAHPStep1_2, name='myANPAHPStep1_2'),
     # #KPIs
@@ -54,5 +51,6 @@ urlpatterns = [
     # #Results
     # path('myANPAHPResults/<int:pk>', old_views.myANPAHPResult, name='myANPAHPResults'),
 
+    #path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
 ]

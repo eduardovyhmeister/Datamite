@@ -5,3 +5,4 @@ easy to nagivate."""
 # Enables imports in the form of 'from .forms import RegisterForm'
 from .register import RegisterForm
 from .anpahp import ANPAHPForm
+from .notes import NotesForm

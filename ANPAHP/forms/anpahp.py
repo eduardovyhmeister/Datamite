@@ -5,6 +5,8 @@ from ..models.enumerations import UserType
 
 
 class ANPAHPForm(ModelForm):
+    """Form for creating a new ANP-AHP Evaluation"""
+
     class Meta:
         model = Evaluation
         fields = ('title', 'user_type')
