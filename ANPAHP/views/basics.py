@@ -22,8 +22,4 @@ def about_view(request):
     return render(request, 'about.html')
 
 
-def privacy_view(request):
-    """View for the privacy policy page."""
-    return render(request, 'privacy.html')
-
 

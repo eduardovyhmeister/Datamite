@@ -1,0 +1,75 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title>Create - KPI </title>
+{%endblock%}
+
+
+
+{%block main2%}
+<div class="row">
+
+
+{% include "Shared/_survey.html" %}
+
+
+<div class="col-md-9">
+
+    <div id="surveyContainer">
+
+        <h1>Information Required to Create a New KPI: </h1>
+        <div style="background-color: rgb(110, 110, 189);">
+            <h2>{{message}}</h2>
+        </div>
+        <p>To create a new failure mode, you should provide a name to it, an explanation, and a driver definition. Please provide AS DEFINED NEXT to the BSC family </p>
+            <li> Clients </li>
+            <li> Internal Processes </li>
+            <li> Finance </li>
+            <li> Learn and Growth </li>
+
+        <p> Additinally, please provide an explination ideially with an exempliification to further understand the constep provided in order to differentiate it from those existing. Furthermore, KPIs should be defined possible with a perspective from user or data providers.</p>
+
+    </br>
+        <h2> Define a New KPI </h2>
+        <form method='POST'>
+            {% csrf_token %}
+            {% for x in form %}
+                <ol class="list-group list-group-numbered">
+                   <strong> {{x.name}}: </strong>
+                        {{x}}
+                </br>
+                </ol>
+
+            {% endfor %}
+            <button class="btn btn-primary card-btn" style="text-align: center;"> Create the KPI </button>
+
+            <div>
+                <p>This website is a prototype of an interactive version of the ASSISTANT project. We encourage you not to use personal information or intellectual property while using this website. Full details of how we process personal data and your rights under Data Protection legislation are set out in our <a href="https://datamite.insight-centre.org/Home/Privacy">Privacy Statement</a>.  </p>
+            </div>
+        </form>
+    </form>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block footer%}
+{%endblock%}
+
+{%block lastk%}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

@@ -53,12 +53,15 @@ class Evaluation(models.Model):
     KPIs_selected_names = models.TextField(default = "[]") # list of names
     
     ################# OBJECTIVES
-    objectives = models.ManyToManyField(Objective)
-    selected_objectives = models.TextField(default = "[]")
-    objectives_scores = models.JSONField(default = dict)
-    objectives_inconcistency = models.TextField(default = "[]")
-    objectives_vector = models.JSONField(default = dict)
-    pairwise_combinations_objectives = models.JSONField(default = dict)
+    #objectives = models.ManyToManyField(Objective)
+    objective = models.ForeignKey(Objective, to_field = 'name', 
+                                  on_delete = models.CASCADE,
+                                  null = True)
+    # selected_objectives = models.TextField(default = "[]")
+    # objectives_scores = models.JSONField(default = dict)
+    # objectives_inconcistency = models.TextField(default = "[]")
+    # objectives_vector = models.JSONField(default = dict)
+    # pairwise_combinations_objectives = models.JSONField(default = dict)
     
     ################# Criterion
     BSC_Weights = models.TextField(default = "[]")

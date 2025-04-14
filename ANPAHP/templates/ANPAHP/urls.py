@@ -25,28 +25,28 @@ urlpatterns = [
     path('myANPAHP', views.anpahp_management.my_anp_ahp, name = 'myANPAHP'),
     path('myANPAHPCreate', views.anpahp_management.my_anp_ahp_create, name = 'myANPAHPCreate'),
     path('myANPAHPDelete/<int:pk>', views.anpahp_management.my_anp_ahp_delete, name= 'myANPAHPDelete'),
-    path('myANPAHP/<int:pk>/Home', views.my_anpahp.my_anpahp_home_view, name = 'myANPAHPHome'),
+    path('myANPAHPHome/<int:pk>', views.my_anpahp.my_anpahp_home_view, name = 'myANPAHPHome'),
     
     # Objective selection:
-    path('myANPAHP/<int:pk>/Step1', views.steps.step1.step1_view, name = "myANPAHPStep1"),
+    path('myANPAHPStep1/<int:pk>', views.steps.step1.step1_view, name = "myANPAHPStep1"),
     
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
     # # Perspectives BSC
-    path('myANPAHPStep1_2/<int:pk>', old_views.MyANPAHPStep1_2, name='myANPAHPStep1_2'),
+    # path('myANPAHPStep1_2/<int:pk>', old_views.MyANPAHPStep1_2, name='myANPAHPStep1_2'),
     # #KPIs
     # path('myANPAHPStep2/<int:pk>', old_views.MyANPAHPStep2, name='myANPAHPStep2'),
     # path('myANPAHPStep3/<int:pk>', old_views.MyANPAHPStep3, name='myANPAHPStep3'),
     # path('myANPAHPStep4/<int:pk>', old_views.MyANPAHPStep4, name='myANPAHPStep4'),
     # path('myANPAHPStep5/<int:pk>', old_views.MyANPAHPStep5, name='myANPAHPStep5'),
-    path('newKPI/<int:pk>', old_views.NewKPI, name='newKPI'),
+    # path('newKPI/<int:pk>', old_views.NewKPI, name='newKPI'),
     # #objectives
     # path('myANPAHPStep6/<int:pk>', old_views.MyANPAHPStep6, name='myANPAHPStep6'),
-    path('newObjectives/<int:pk>', old_views.NewObjectives, name='newObjectives'),
+    # path('newObjectives/<int:pk>', old_views.NewObjectives, name='newObjectives'),
     # #criteria
     # path('myANPAHPStep7/<int:pk>', old_views.MyANPAHPStep7, name='myANPAHPStep7'),
     # path('myANPAHPStep8/<int:pk>', old_views.MyANPAHPStep8, name='myANPAHPStep8'),
-    path('newCriterion/<int:pk>', old_views.NewCriterion, name='newCriterion'),
+    # path('newCriterion/<int:pk>', old_views.NewCriterion, name='newCriterion'),
     
     # #Interanalysis
     # path('myANPAHPStep9/<int:pk>', old_views.MyANPAHPStep9, name='myANPAHPStep9'),

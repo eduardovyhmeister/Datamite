@@ -2,7 +2,7 @@
 {% load static %}
 
 {%block head%}
-    <title> DATAMITE - ANP-AHP Evaluation {{ANPAHP.title}}</title>
+    <title> DATAMITE - ANP-AHP Evaluation - {{ANPAHP.title}}</title>
 {%endblock%}
 
 
@@ -24,8 +24,10 @@
             <div data-bind="css: css.root, afterRender: koEventAfterRender" class="sv_main sv_bootstrap_css">
                 <div data-bind="css: css.header" class="panel-heading card-header">
                     <div data-bind="css: css.headerText" class="sv_header__text">
-                        <h3 data-bind="css: css.title"><span style="position: static;" data-bind="html: koRenderedHtml"> Notes</span></h3>
-                        <h5 data-bind="css: css.description"><span style="position: static;" data-bind="html: koRenderedHtml">Use this section to annotate your ANP-AHP. This is for your information only, should you wish to develop several ANP-AHP Evaluations and use them for varying purposes.</span></h5>
+                        <h3 data-bind="css: css.title"><span style="position: static;" data-bind="html: koRenderedHtml"> Notes:</span></h3>
+                        {% comment %} <h5 data-bind="css: css.description"><span style="position: static;" data-bind="html: koRenderedHtml"> {% endcomment %}<p style="text-align: justify;">
+                            Use this section to annotate your ANP-AHP. This is for your information only, should you wish to develop several ANP-AHP Evaluations and use them for varying purposes.</span></p>
+                        </h5>
                     </div>
                 </div>
                 <form method="POST">
@@ -47,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                        <input type="submit" value="Submit" class="btn btn-primary card-btn" style="text-align: center;">
+                        <input type="submit" value="Update notes" class="btn btn-primary card-btn" style="text-align: center;">
                     </div>
                 </form >
         </div>

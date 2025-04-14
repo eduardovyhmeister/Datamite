@@ -34,10 +34,10 @@ from .models import (BSCFamily,
 #             'user_type': forms.Select(choices=[('Service User','Service User'),('Data Provider','Data Provider'),('Service Stakeholder','Service Stakeholder')]),
 #         }
 
-class NotesForm(ModelForm):
-    class Meta:
-        model = Evaluation
-        fields = ('notes',)
+# class NotesForm(ModelForm):
+#     class Meta:
+#         model = Evaluation
+#         fields = ('notes',)
 
 
 class   Step1Form(forms.ModelForm):
@@ -86,14 +86,14 @@ class   Step5Form(forms.ModelForm):
             'FailureModes' : CheckboxSelectMultiple(),
         }
 
-class   Step6Form(forms.ModelForm):
-      class Meta:
-        model = Evaluation
-        objectives = forms.ModelMultipleChoiceField(queryset=Objective.objects.all())
-        fields = ['objectives']
-        widgets = {
-            'objectives' : CheckboxSelectMultiple(),
-        }
+# class   Step6Form(forms.ModelForm):
+#       class Meta:
+#         model = Evaluation
+#         objectives = forms.ModelMultipleChoiceField(queryset=Objective.objects.all())
+#         fields = ['objectives']
+#         widgets = {
+#             'objectives' : CheckboxSelectMultiple(),
+#         }
 
 class   Step8Form(forms.ModelForm):
       class Meta:

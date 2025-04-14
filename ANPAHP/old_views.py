@@ -315,14 +315,14 @@ def EXECUTE_ANALYSIS(ANPAHP):
 #     altai.delete()
 #     return redirect('myANPAHP')
 
-@login_required
-def MyANPAHPHome(request,pk):
-    ANPAHP = Evaluation.objects.get(pk=pk)
-    form = NotesForm(request.POST or None, instance=ANPAHP)
-    if form.is_valid():
-        form.save()
-        return render(request,'ANPAHP/ANPAHPHome.html',{'ANPAHP':ANPAHP,'form':form})
-    return render(request,'ANPAHP/ANPAHPHome.html',{'ANPAHP':ANPAHP,'form':form})
+# @login_required
+# def MyANPAHPHome(request,pk):
+#     ANPAHP = Evaluation.objects.get(pk=pk)
+#     form = NotesForm(request.POST or None, instance=ANPAHP)
+#     if form.is_valid():
+#         form.save()
+#         return render(request,'ANPAHP/ANPAHPHome.html',{'ANPAHP':ANPAHP,'form':form})
+#     return render(request,'ANPAHP/ANPAHPHome.html',{'ANPAHP':ANPAHP,'form':form})
 
 @login_required
 def NewKPI(request,pk):
@@ -380,38 +380,38 @@ def NewCriterion(request,pk):
 
 ############# Objectives/Strategies
 
-@login_required
-def MyANPAHPStep1(request,pk): # ex 6
-    ANPAHP = Evaluation.objects.get(pk=pk)
-    form = Step6Form(request.POST or None, instance=ANPAHP)
-    ids = eval(ANPAHP.selected_objectives)
-    lista = [True if x+1 in ids else False for x in range(Objective.objects.all().count())]
-    print(f"Debug: lista = {lista}")
-    ERROR = False
-    if ANPAHP.step_status1 == False:
-        ERROR = True
-    if request.method == "POST":
-        print("Debug: POST request")
-        selection =[]
+# @login_required
+# def MyANPAHPStep1(request,pk): # ex 6
+#     ANPAHP = Evaluation.objects.get(pk=pk)
+#     form = Step6Form(request.POST or None, instance=ANPAHP)
+#     ids = eval(ANPAHP.selected_objectives)
+#     lista = [True if x+1 in ids else False for x in range(Objective.objects.all().count())]
+#     print(f"Debug: lista = {lista}")
+#     ERROR = False
+#     if ANPAHP.step_status1 == False:
+#         ERROR = True
+#     if request.method == "POST":
+#         print("Debug: POST request")
+#         selection =[]
         
-        #selection = list(map(int,request.POST.getlist('Failure')))
-        KPIs=Objective.objects.all().values_list('name',flat=True)
-        for j in range(len(KPIs)):
-            selection+=list(map(int,request.POST.getlist(str(j+1))))
-        if form.is_valid() and len(selection)==1:
-            ANPAHP.selected_objectives = selection
-            ANPAHP.shapes = {"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}
-            ANPAHP.message = ''
-            ANPAHP.save()
-            form.save()
-            return redirect('myANPAHPStep1_2',pk=pk)
-        else:
-            message = 'You have to choose ONE OBJECTIVE / Strategies'
-            ERROR = True
-            ANPAHP.step_status1 = False
-            ANPAHP.save()
-            return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR})
-    return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message2':ANPAHP.message,'ERROR1':ERROR})
+#         #selection = list(map(int,request.POST.getlist('Failure')))
+#         KPIs=Objective.objects.all().values_list('name',flat=True)
+#         for j in range(len(KPIs)):
+#             selection+=list(map(int,request.POST.getlist(str(j+1))))
+#         if form.is_valid() and len(selection)==1:
+#             ANPAHP.selected_objectives = selection
+#             ANPAHP.shapes = {"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}
+#             ANPAHP.message = ''
+#             ANPAHP.save()
+#             form.save()
+#             return redirect('myANPAHPStep1_2',pk=pk)
+#         else:
+#             message = 'You have to choose ONE OBJECTIVE / Strategies'
+#             ERROR = True
+#             ANPAHP.step_status1 = False
+#             ANPAHP.save()
+#             return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR})
+#     return render(request,'ANPAHP/ANPAHPStep1.html',{'ANPAHP':ANPAHP,'form':form,'ids':ids,'lista':lista,'message2':ANPAHP.message,'ERROR1':ERROR})
 
 
 

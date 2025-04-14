@@ -11,13 +11,15 @@ from ..forms import ANPAHPForm
 
 @login_required
 def my_anp_ahp(request):
-     ANPAHPs = Evaluation.objects.all().filter(author = request.user)
-     context = {'ANPAHPs': ANPAHPs}
-     return render(request,'ANPAHP/myANPAHP.html', context)
+    """Main page where you can create new ANP-AHP Evaluations and manage them."""
+    ANPAHPs = Evaluation.objects.all().filter(author = request.user)
+    context = {'ANPAHPs': ANPAHPs}
+    return render(request,'ANPAHP/myANPAHP.html', context)
  
 
 @login_required
 def my_anp_ahp_create(request):
+    """Page used to create a new AHP-ANP Evaluation."""
     submitted = False
     if request.method == "POST":
         form = ANPAHPForm(request.POST)
@@ -36,6 +38,7 @@ def my_anp_ahp_create(request):
 
 @login_required
 def my_anp_ahp_delete(request, pk):
+    """Called when cliking on delete an ANP-AHP Evaluation, deletes it from the DB."""
     anpahp = Evaluation.objects.get(pk = pk)
     anpahp.delete()
     return redirect('myANPAHP')
