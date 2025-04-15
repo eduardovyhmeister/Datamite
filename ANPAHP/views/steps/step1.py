@@ -15,13 +15,13 @@ def step1_view(request, pk):
                }
     
     if request.method == "POST":
+        print("POST DATA:", request.POST)
         if request.POST.get("action") == "confirm": # Only present when clicking confirm
             if form.is_valid():
                 form.save()
                 ANPAHP.step_status1 = True
                 ANPAHP.save()
-                # return render(request, 'ANPAHP/ANPAHPStep1.html', content)
                 return redirect('myANPAHPStep2', pk = ANPAHP.pk)
         
-    return render(request, 'ANPAHP/ANPAHPStep1.html', content)
+    return render(request, 'ANPAHP/steps/ANPAHPStep1.html', content)
 

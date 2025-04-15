@@ -16,6 +16,7 @@ SHORT_NAME_MIN_LENGTH, SHORT_NAME_MAX_LENGTH = 1, 64
 class BSCFamily(models.Model):
     """Model representing BSC families in our DB (especially for content and
     the knowledge base)."""
+    # TODO: check that the slugify name is unique too.
     name = models.CharField(primary_key = True, unique = True, blank = False, 
                             null = False, max_length = NAME_MAX_LENGTH,
                             validators = [MinLengthValidator(NAME_MIN_LENGTH),
@@ -72,6 +73,7 @@ class BSCFamily(models.Model):
 class BSCSubfamily(models.Model):
     """Model representing the subcategories of the BSCFamilies in our DB 
     (especially for content and the knowledge base)."""
+    # TODO: check that the slugify name is unique too.
     name = models.CharField(primary_key = True, unique = True, blank = False, 
                             null = False, max_length = NAME_MAX_LENGTH,
                             validators = [MinLengthValidator(NAME_MIN_LENGTH),

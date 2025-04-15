@@ -9,3 +9,4 @@ from .notes import NotesForm
 from .objectives import (ObjectiveSelectionForm,
                          CreateObjectiveForm,
                          DeleteObjectiveForm)
+from .preferences import BSCPreferencesForm

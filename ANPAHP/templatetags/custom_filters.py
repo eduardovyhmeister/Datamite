@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/5.1/howto/custom-template-tags/
 """
 
 from django import template
+from django.utils import text
 register = template.Library()
 
 
@@ -31,3 +32,15 @@ def get_value_at(indexable, index_or_key):
     except (TypeError, IndexError, KeyError):
         return None
 
+
+@register.filter
+def slugify(string):
+    """Slugifies a string to make it usable in JS and URLs.
+    
+    Args:
+        string (str): The string to slugify.
+        
+    Returns:
+        str - A slugified version of the string, compatible with URLs and JS.
+    """
+    return text.slugify(string)

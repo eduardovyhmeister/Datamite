@@ -1,0 +1,117 @@
+
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{%block head%}
+    <title> DATAMITE - ANP-AHP - BSC Interests </title>
+{%endblock%}
+
+{% block navbar %}{% endblock%}
+{% block main1%}{%endblock%}
+
+{%block main2%}
+<div class="row">
+
+{% include "Shared/_survey.html" %}
+
+<div class="col-md-9">
+    <div id="surveyContainer">
+
+        <div class="panel-heading card-header">
+            <div class="sv_header__text">
+                <h3><span style="position: static;"> Step 2 - Balanced Scorecard (BSC) Interests: </span></h3>
+            </div>
+            <p style="text-align: justify;">
+                The Balanced Scorecard (BSC) is a strategic planning and management system that organizations use to align business activities to the vision and strategy of the organization, improve internal and external communications, and monitor organizational performance against strategic goals. The BSC transforms an organization's strategic plan from an attractive but passive document into the “marching orders” for the organization on a daily basis. It provides a framework that not only provides performance measurements, but helps planners identify what should be done and measured.
+            </p>
+            <p style="text-align: justify;">
+                In this section, you define which subfamilies of KPIs/metrics are more relevant to you and your business strategy. This is then automatically translated into the SATY Scale, a convenient matrix for analysis of your strategy.
+            </p>   
+        </div>
+        </br>
+
+        <form method='POST' onsubmit="return validatePreferences()">
+            {% csrf_token %}
+            <div style="display: inline-block; width:100%;">
+                <p  style="text-align: justify;">
+                    Please provide your preferences in terms of BSC: 0 means no interest at all, 100 means it is the highest priority.<br/>
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Perspective</th>
+                        <th scope="col">Preference level</th>
+                        <th scope="col">Definition</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for subfamily in subfamilies %}
+                            {% with field_name=subfamily.name|slugify %}
+                                <tr>
+                                    <td><b>{{ subfamily.name }}</b></td>
+                                    <td>
+                                        {% with field=form|get_value_at:field_name %}
+                                            {{ field }}
+                                            <input type="number" class="bsc-input"
+                                                id="value_{{ field_name }}"
+                                                min="0" max="100"
+                                                value="{{ field.value|default_if_none:0 }}"
+                                                oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
+                                        {% endwith %}
+                                    </td>
+                                    <td>{{ subfamily.short_definition }}</td>
+                                </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+            <div id="preferenceMessage" class="alert d-none" role="alert"></div>
+            <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm">Confirm preferences</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validatePreferences() {
+        //Use to valide the preferences:
+        // - If none are 0, then everything is okay.
+        // - If at least 1 is 0, show a warning and ask for confirmation.
+        // - If all are 0, raise an error.
+        const inputs = document.querySelectorAll('.bsc-input');
+        const values = Array.from(inputs).map(input => parseInt(input.value || "0"));
+        const allZero = values.every(v => v === 0);
+        const someZero = values.some(v => v === 0);
+        const messageDiv = document.getElementById('preferenceMessage');
+    
+        messageDiv.classList.remove('d-none', 'alert-danger', 'alert-warning');
+    
+        if (allZero) {
+            messageDiv.textContent = "⚠️ You cannot set all preferences to zero. Please adjust at least one value.";
+            messageDiv.classList.add('alert-danger');
+            return false; // Prevent submission
+        }
+    
+        if (someZero) {
+            const confirmProceed = confirm("Some preferences are set to 0. This will prevent you from selecting any KPI/metric from the concerned BSC families. Do you want to continue?");
+            if (!confirmProceed) {
+                messageDiv.textContent = "Preferences submission cancelled. Please adjust your inputs.";
+                messageDiv.classList.add('alert-warning');
+                return false;
+            }
+        }
+    
+        return true; // All good
+    }
+</script>
+
+{% endblock %}
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}
