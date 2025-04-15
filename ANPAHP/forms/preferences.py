@@ -11,17 +11,24 @@ class BSCPreferencesForm(forms.Form):
     """A form for defining preferences in terms of BSC Subfamilies
     in an ANP-AHP evaluation."""
     
-    def __init__(self, *args, **kwargs):
-        """Overrides the constructor."""
+    def __init__(self, *args, preferences = None, **kwargs):
+        """Overrides the constructor.
+        
+        Args:
+            preferences (dict): The dictionary of preferences saved in field
+                'bsc_preferences' in the DB.
+        """
         super().__init__(*args, **kwargs)
+        preferences = preferences or {} # empty dict if None
 
-        for subfamily in BSCFamily.objects.all():
-            slug = slugify(subfamily.name)
+        for family in BSCFamily.objects.all():
+            slug = slugify(family.name)
+            initial_value = preferences.get(family.name, 0) # Default value of 0
             self.fields[slug] = forms.IntegerField(
-                label = subfamily.name,
+                label = family.name,
                 min_value = 0,
                 max_value = 100,
-                initial = 0,
+                initial = initial_value,
                 widget = forms.NumberInput(attrs = {
                     'type': 'range',
                     'min': '0',

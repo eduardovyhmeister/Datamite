@@ -38,11 +38,13 @@ class Evaluation(models.Model):
     step_status7 = models.BooleanField(default = False)
     step_status8 = models.BooleanField(default = False)
     
-    # Step 1: Select an objective:
+    # Step 1 - Select an objective:
     objective = models.ForeignKey(Objective, to_field = 'name', 
                                   on_delete = models.CASCADE,
                                   null = True)
     
+    # Step 2 - BSC preferences:
+    bsc_preferences = models.JSONField(default = dict)
     
     # action = models.TextField(blank = True, default = "")
     # ANPAHP_recommendations = models.TextField(blank=True, default = "")

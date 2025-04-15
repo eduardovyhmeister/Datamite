@@ -23,18 +23,19 @@ def step2_view(request, pk):
                         preferences[family.name] = value
                         continue
             
-            print(preferences)
-            # Save those preferences and compute the matrix of preferences.
-            # TODO: Compute the matrix of preferences.
-            # Redirect to step 3
-            # Update step 2 status
+            # Save the preferences:
+            ANPAHP.bsc_preferences = preferences
+            ANPAHP.step_status2 = True
+            ANPAHP.save()
+            
+            # TODO: redirect step 3
             return render(request, 'ANPAHP/steps/ANPAHPStep2.html', {
                 'form': form,
                 'ANPAHP': ANPAHP,
                 'subfamilies': BSCFamily.objects.all(),
             })
     else:
-        form = BSCPreferencesForm()
+        form = BSCPreferencesForm(preferences = ANPAHP.bsc_preferences)
 
     return render(request, 'ANPAHP/steps/ANPAHPStep2.html', {
         'form': form,
