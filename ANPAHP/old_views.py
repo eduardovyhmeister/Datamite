@@ -343,20 +343,20 @@ def NewKPI(request,pk):
         formin=NewKPIForm()
         return render(request,'ANPAHP/newKPI.html',{'form':formin, 'submitted':submitted, 'ANPAHP':ANPAHP})
 
-@login_required
-def NewObjectives(request,pk):
-    ANPAHP = Evaluation.objects.get(pk=pk)
-    submitted = False
-    if request.method == "POST":
-        form=NewObjectivesForm(request.POST)
-        if form.is_valid():
-            KPI=form.save(commit=False) # this create the form but do not commit it so can be modified
-            KPI.author = request.user # modify the form
-            KPI.save()
-            submitted=True
-            return render(request,'ANPAHP/newObjectives.html',{'form':form, 'submitted':submitted, 'ANPAHP':ANPAHP})
-    form=NewObjectivesForm()
-    return render(request,'ANPAHP/newObjectives.html',{'form':form, 'submitted':submitted, 'ANPAHP':ANPAHP})
+# @login_required
+# def NewObjectives(request,pk):
+#     ANPAHP = Evaluation.objects.get(pk=pk)
+#     submitted = False
+#     if request.method == "POST":
+#         form=NewObjectivesForm(request.POST)
+#         if form.is_valid():
+#             KPI=form.save(commit=False) # this create the form but do not commit it so can be modified
+#             KPI.author = request.user # modify the form
+#             KPI.save()
+#             submitted=True
+#             return render(request,'ANPAHP/newObjectives.html',{'form':form, 'submitted':submitted, 'ANPAHP':ANPAHP})
+#     form=NewObjectivesForm()
+#     return render(request,'ANPAHP/newObjectives.html',{'form':form, 'submitted':submitted, 'ANPAHP':ANPAHP})
 
 @login_required
 def NewCriterion(request,pk):
@@ -415,34 +415,34 @@ def NewCriterion(request,pk):
 
 
 
-@login_required
-def MyANPAHPStep1_2(request,pk): # ex 2
-    ANPAHP = Evaluation.objects.get(pk=pk)
-    ERROR1 = False
-    ERROR2 = False
-    message = ''
-    if len(ANPAHP.message)!=0:
-        ERROR2 = True
-    if request.method == "POST":
-        selection = []
-        for j in range(6):
-            id_list = request.POST.getlist(str(j+1))
-            selection+=list(map(float,id_list))
-        elements = [(2,1),(3,1),(4,1),(3,2),(4,2),(4,3)]
-        matrix, vector, inconcistency = construct_matrix(selection,elements,dim=4)
-        if abs(inconcistency) < 0.4:
-            print(inconcistency)
-            ANPAHP.step_status1 = True
-            ANPAHP.BSC_Weights = vector.tolist()
-            ANPAHP.save()
-            return redirect('myANPAHPStep2',pk=pk)
-        else:
-            ANPAHP.step_status1 = False
-            message = f'There is huge inconcistency  ({inconcistency}) in the information provided. Please re-evaluate.'
-            ERROR1 = True
-            return render(request,'ANPAHP/ANPAHPStep1_2.html',{'ANPAHP':ANPAHP,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR1,'ERROR2':ERROR2})
-    else:
-        return render(request,'ANPAHP/ANPAHPStep1_2.html',{'ANPAHP':ANPAHP,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR1,'ERROR2':ERROR2})
+# @login_required
+# def MyANPAHPStep1_2(request,pk): # ex 2
+#     ANPAHP = Evaluation.objects.get(pk=pk)
+#     ERROR1 = False
+#     ERROR2 = False
+#     message = ''
+#     if len(ANPAHP.message)!=0:
+#         ERROR2 = True
+#     if request.method == "POST":
+#         selection = []
+#         for j in range(6):
+#             id_list = request.POST.getlist(str(j+1))
+#             selection+=list(map(float,id_list))
+#         elements = [(2,1),(3,1),(4,1),(3,2),(4,2),(4,3)]
+#         matrix, vector, inconcistency = construct_matrix(selection,elements,dim=4)
+#         if abs(inconcistency) < 0.4:
+#             print(inconcistency)
+#             ANPAHP.step_status1 = True
+#             ANPAHP.BSC_Weights = vector.tolist()
+#             ANPAHP.save()
+#             return redirect('myANPAHPStep2',pk=pk)
+#         else:
+#             ANPAHP.step_status1 = False
+#             message = f'There is huge inconcistency  ({inconcistency}) in the information provided. Please re-evaluate.'
+#             ERROR1 = True
+#             return render(request,'ANPAHP/ANPAHPStep1_2.html',{'ANPAHP':ANPAHP,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR1,'ERROR2':ERROR2})
+#     else:
+#         return render(request,'ANPAHP/ANPAHPStep1_2.html',{'ANPAHP':ANPAHP,'message':message,'message2':ANPAHP.message,'ERROR1':ERROR1,'ERROR2':ERROR2})
 
 
 

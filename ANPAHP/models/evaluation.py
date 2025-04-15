@@ -74,7 +74,7 @@ class Evaluation(models.Model):
     criteria_selected_names = models.TextField(default = "[]")
     
     ############### RESULTS
-    shapes = models.TextField(default = "[]") # Sizes of the subdomain of the supermatrix
+    shapes = models.TextField(default = '{"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}') # Sizes of the subdomain of the supermatrix
     matrix_data = models.JSONField(default = dict) # The 4 matrics (bsc families)
     matrix_data_pre = models.TextField(default = "[]")
     results = models.TextField(default = "[]") 

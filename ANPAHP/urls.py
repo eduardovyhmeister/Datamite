@@ -31,10 +31,10 @@ urlpatterns = [
     path('myANPAHP/<int:pk>/createobjective', views.content_management.create_objective_view, name = 'create_objective'),
     path('myANPAHP/<int:pk>/deleteobjective', views.content_management.delete_objective_view, name = 'delete_objective'),
 
-    
 
-    path('newKPI', old_views.NewObjectives, name='newKPI'),
-    path('newcriterion', old_views.NewObjectives, name='newcriterion'),
+
+    # path('newKPI', old_views.NewObjectives, name='newKPI'),
+    # path('newcriterion', old_views.NewObjectives, name='newcriterion'),
 
 
     
@@ -44,7 +44,7 @@ urlpatterns = [
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
     # # Perspectives BSC
-    path('myANPAHPStep1_2/<int:pk>', old_views.MyANPAHPStep1_2, name='myANPAHPStep1_2'),
+    path('myANPAHP/<int:pk>/Step2', views.steps.step2.step2_view, name='myANPAHPStep2'),
     # #KPIs
     # path('myANPAHPStep2/<int:pk>', old_views.MyANPAHPStep2, name='myANPAHPStep2'),
     # path('myANPAHPStep3/<int:pk>', old_views.MyANPAHPStep3, name='myANPAHPStep3'),

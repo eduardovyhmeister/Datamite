@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from ...models import Evaluation, Objective
+from ...models import Evaluation
 from ...forms import ObjectiveSelectionForm
 
 @login_required
@@ -14,10 +14,14 @@ def step1_view(request, pk):
                                               instance = ANPAHP),
                }
     
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        return render(request, 'ANPAHP/ANPAHPStep1.html', content)
-        # TODO: return redirect('myANPAHPStep2', pk = ANPAHP.pk)
+    if request.method == "POST":
+        if request.POST.get("action") == "confirm": # Only present when clicking confirm
+            if form.is_valid():
+                form.save()
+                ANPAHP.step_status1 = True
+                ANPAHP.save()
+                # return render(request, 'ANPAHP/ANPAHPStep1.html', content)
+                return redirect('myANPAHPStep2', pk = ANPAHP.pk)
         
     return render(request, 'ANPAHP/ANPAHPStep1.html', content)
 

@@ -25,10 +25,28 @@
             {% endif %}
 
             <a class="btn btn-secondary" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">Cancel</a>
-            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete the selected objective? This action cannot be undone.')">Delete Selected Objective</button>
-            {% comment %} TODO: Add the name of the selected objective the confirmation message. {% endcomment %}
+            <button class="btn btn-danger" type="submit" onclick="return confirmObjectiveDelete();">
+                Delete selected objective
+            </button>
         </form>
     </div>
 </div>
+
+<script>
+    function confirmObjectiveDelete() {
+        // Used to display the name of the selected objective in the confirm message.
+        const select = document.getElementById('id_objective');
+        const selectedIndex = select.selectedIndex;
+    
+        if (selectedIndex === -1 || !select.value) {
+            alert("Please select an objective to delete.");
+            return false;
+        }
+    
+        const selectedName = select.options[selectedIndex].text;
+        return confirm(`Are you sure you want to delete objective "${selectedName}"? This action cannot be undone.`);
+    }
+</script>
+
 {% endblock %}
 
