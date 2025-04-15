@@ -44,7 +44,7 @@
                         <div class="progress-bar bg-warning" role="progressbar" style="width: {{x.percentage}}" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <a class="btn btn-primary card-btn" style="text-align: center;" href="{% url 'myANPAHPHome' x.pk %}"> View </a>
-                    <a onclick="return confirm('Are you sure you want to delete {{ x.title }} ?')" class="btn btn-danger card-btn" href="{% url 'myANPAHPDelete' x.pk %}"> Delete </a>
+                    <a onclick="return confirm('Are you sure you want to delete evaluation \'{{ x.name }}\'?')" class="btn btn-danger card-btn" href="{% url 'myANPAHPDelete' x.pk %}"> Delete </a>
                 </div>
             </div>
             {% endfor %}

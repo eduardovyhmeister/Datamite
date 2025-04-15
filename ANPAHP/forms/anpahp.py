@@ -12,6 +12,6 @@ class ANPAHPForm(ModelForm):
         fields = ('name', 'user_type')
         exclude = ('author',)
         widgets = {
-            'name': TextInput(attrs = {'class':'input', 'placeholder':'Name for your Evaluation'}), # top set an input format with bootstrap form
+            'name': TextInput(attrs = {'class':'input', 'placeholder':'Name of your evaluation'}), # top set an input format with bootstrap form
             'user_type': Select(choices = UserType),
         }
