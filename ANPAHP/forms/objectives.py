@@ -31,9 +31,12 @@ class CreateObjectiveForm(ModelForm):
         exclude = ('author',)
         widgets = {
             'name': forms.Textarea(attrs = {'class': 'input',
-                                            'placeholder': 'Name for your objective (has to be unique).'}), 
+                                            'placeholder': 'Name for your objective (has to be unique).',
+                                            'rows': 1 # Controls the size of the widget to show.
+                                            }), 
             'short_definition': forms.Textarea(attrs = {'class': 'input',
-                                                        'placeholder': 'A short definition of the objective (shown in the objective selection).'}),
+                                                        'placeholder': 'A short definition of the objective (shown in the objective selection).',
+                                                        'rows': 2}),
             'explanation': forms.Textarea(attrs = {'class': 'input',
                                                    'placeholder':'The long explanation of your objective (used in the knowledge base).'}),
             }

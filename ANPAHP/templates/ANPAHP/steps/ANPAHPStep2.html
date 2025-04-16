@@ -27,7 +27,7 @@
                 The Balanced Scorecard (BSC) is a strategic planning and management system that organizations use to align business activities to the vision and strategy of the organization, improve internal and external communications, and monitor organizational performance against strategic goals. The BSC transforms an organization's strategic plan from an attractive but passive document into the “marching orders” for the organization on a daily basis. It provides a framework that not only provides performance measurements, but helps planners identify what should be done and measured.
             </p>
             <p style="text-align: justify;">
-                In this section, you define which subfamilies of KPIs/metrics are more relevant to you and your business strategy. This is then automatically translated into the SATY Scale, a convenient matrix for analysis of your strategy.
+                In this section, you define which families of KPIs/metrics are more relevant to you and your business strategy. This is then automatically translated into the SATY Scale, a convenient matrix for analysis of your strategy.
             </p>   
         </div>
         </br>
@@ -50,10 +50,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {% for subfamily in subfamilies %}
-                            {% with field_name=subfamily.name|slugify %}
+                        {% for family in families %}
+                            {% with field_name=family.name|slugify %}
                                 <tr>
-                                    <td><b>{{ subfamily.name }}</b></td>
+                                    <td><b>{{ family.name }}</b></td>
                                     <td>
                                         {% with field=form|get_value_at:field_name %}
                                             {{ field }}
@@ -64,7 +64,7 @@
                                                 oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
                                         {% endwith %}
                                     </td>
-                                    <td>{{ subfamily.short_definition }}</td>
+                                    <td style="text-align: justify;">{{ family.short_definition }}</td>
                                 </tr>
                             {% endwith %}
                         {% endfor %}

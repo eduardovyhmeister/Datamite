@@ -8,6 +8,8 @@ from ...models import Evaluation, BSCFamily
 
 @login_required
 def step2_view(request, pk):
+    """View for step 2: selection of BSC families preferences."""
+    
     ANPAHP = Evaluation.objects.get(pk = pk)
     
     if request.method == 'POST':
@@ -28,17 +30,12 @@ def step2_view(request, pk):
             ANPAHP.step_status2 = True
             ANPAHP.save()
             
-            # TODO: redirect step 3
-            return render(request, 'ANPAHP/steps/ANPAHPStep2.html', {
-                'form': form,
-                'ANPAHP': ANPAHP,
-                'subfamilies': BSCFamily.objects.all(),
-            })
+            return redirect('myANPAHPStep3', pk = ANPAHP.pk)
     else:
         form = BSCPreferencesForm(preferences = ANPAHP.bsc_preferences)
 
     return render(request, 'ANPAHP/steps/ANPAHPStep2.html', {
         'form': form,
         'ANPAHP': ANPAHP,
-        'subfamilies': BSCFamily.objects.all(),
+        'families': BSCFamily.objects.all(),
     })

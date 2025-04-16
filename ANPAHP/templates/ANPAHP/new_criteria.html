@@ -2,18 +2,14 @@
 {% load static %}
 
 {%block head%}
-    <title>Create - Objective </title>
+    <title>DATAMITE - Create criterion </title>
 {%endblock%}
 
 
 
 {%block main2%}
 <div class="row">
-
-
 {% include "Shared/_survey.html" %}
-
-
 <div class="col-md-9">
     {% if submitted == True %}
             <h1> The Criteria Have Been Created Correctly. Please Return to The Step You Want To Continue </h1>
@@ -53,12 +49,9 @@
     {% endif %}
 </div>
 
+{% include "Shared/_privacystatement.html" %}
 {% endblock %}
 
-
-{% block footer%}
-{%endblock%}
-
-{%block lastk%}
-{% endblock %}
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}
 

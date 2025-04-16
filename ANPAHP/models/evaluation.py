@@ -46,6 +46,9 @@ class Evaluation(models.Model):
     # Step 2 - BSC preferences:
     bsc_preferences = models.JSONField(default = dict)
     
+    # Step 3 - KPIs selection:
+    kpis = models.ManyToManyField(KPI)
+    
     # action = models.TextField(blank = True, default = "")
     # ANPAHP_recommendations = models.TextField(blank=True, default = "")
     

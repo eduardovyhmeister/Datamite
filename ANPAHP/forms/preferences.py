@@ -24,6 +24,7 @@ class BSCPreferencesForm(forms.Form):
         for family in BSCFamily.objects.all():
             slug = slugify(family.name)
             initial_value = preferences.get(family.name, 0) # Default value of 0
+            
             self.fields[slug] = forms.IntegerField(
                 label = family.name,
                 min_value = 0,

@@ -5,3 +5,4 @@ things ordered, clean and easy to nagivate."""
 # Enables imports in the form of 'from .views.steps import step1'
 from . import step1
 from . import step2
+from . import step3

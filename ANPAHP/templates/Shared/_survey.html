@@ -8,53 +8,41 @@
 <br/><br/>
 
 <h2>Steps of the process:</h2>
-<nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-    <li class="nav-item nav-item-clear req-menu-item">
-        <a class="nav-link req-menu-link" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
-            </i>Step 1: Identification of the main objective
+<nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
+    <li class="nav-item nav-item-clear req-menu-item w-100">
+        <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
+            Step 1: Identification of the main objective
+            {% if ANPAHP.step_status1 %}
+                <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
+                {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
+            {% endif %}
         </a>
     </li>
 </ul></nav></br>
 
 {% if ANPAHP.step_status1 %}
-    <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-        <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
-            </i>Step 2: Balanced Scorecard (BSC) preferences</a>
+    <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100">
+            <a class="nav-link req-menu-link  w-100 d-block" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
+                </i>Step 2: Balanced Scorecard (BSC) preferences
+                {% if ANPAHP.step_status1 %}
+                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
+                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
+                {% endif %}
+            </a>
         </li>
     </ul></nav></br>
     
-    {% comment %} {% if ANPAHP.step_status2 %}
-        <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-            <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
-                </i>Step 3: KPIs Pairwise Comparison Identification of Objectives </a>
+    {% if ANPAHP.step_status2 %}
+        <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
+            <li class="nav-item nav-item-clear req-menu-item w-100">
+                <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
+                    </i>Step 3: KPI/metrics selection
+                </a>
             </li>
         </ul></nav></br>
-        {% if ANPAHP.step_status6 %}
-            <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-                <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
-                    </i>Step 4: Identification of Criteria </a>
-                </li>
-            </ul></nav></br>
-        
-            {%if ANPAHP.step_status7 %}
-            <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-                <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPStep9' pk=ANPAHP.pk %}">
-                    </i>Step 5: Internal Relation Analyses </a>
-                </li>
-            </ul></nav></br>
-
-                {% if ANPAHP.step_status8 %}
-
-
-                <nav class="navbar req-menu"><ul class="navbar-nav bg-ecblue">
-                    <li class="nav-item nav-item-clear req-menu-item"><a class="nav-link req-menu-link" href="{% url 'myANPAHPResults' pk=ANPAHP.pk %}">
-                        </i> Results </a>
-                    </li>
-                </ul></nav></br>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    {% endif %} {% endcomment %}
+        {% comment %} TODO: Add other steps here. {% endcomment %}
+    {% endif %} 
 {% endif %}
 
 

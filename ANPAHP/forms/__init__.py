@@ -9,4 +9,7 @@ from .notes import NotesForm
 from .objectives import (ObjectiveSelectionForm,
                          CreateObjectiveForm,
                          DeleteObjectiveForm)
+from .kpis import (KPISelectionForm,
+                   CreateKPIForm,
+                   DeleteKPIForm)
 from .preferences import BSCPreferencesForm

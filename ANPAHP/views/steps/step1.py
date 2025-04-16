@@ -6,6 +6,8 @@ from ...forms import ObjectiveSelectionForm
 
 @login_required
 def step1_view(request, pk):
+    """View for step 1: selection of an objective."""
+    
     ANPAHP = Evaluation.objects.get(pk = pk)
     form = ObjectiveSelectionForm(request.POST or None, instance = ANPAHP)
     
@@ -15,7 +17,6 @@ def step1_view(request, pk):
                }
     
     if request.method == "POST":
-        print("POST DATA:", request.POST)
         if request.POST.get("action") == "confirm": # Only present when clicking confirm
             if form.is_valid():
                 form.save()

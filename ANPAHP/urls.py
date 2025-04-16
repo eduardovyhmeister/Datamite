@@ -30,8 +30,9 @@ urlpatterns = [
     # New content creation pages:
     path('myANPAHP/<int:pk>/createobjective', views.content_management.create_objective_view, name = 'create_objective'),
     path('myANPAHP/<int:pk>/deleteobjective', views.content_management.delete_objective_view, name = 'delete_objective'),
+    path('myANPAHP/<int:pk>/createKPI', views.content_management.create_kpi_view, name = 'create_kpi'),
+    path('myANPAHP/<int:pk>/deleteKPI', views.content_management.delete_kpi_view, name = 'delete_kpi'),
 
-    # path('newKPI', old_views.NewObjectives, name='newKPI'),
     # path('newcriterion', old_views.NewObjectives, name='newcriterion'),
 
 
@@ -41,6 +42,9 @@ urlpatterns = [
 
     # Perspectives BSC
     path('myANPAHP/<int:pk>/Step2', views.steps.step2.step2_view, name='myANPAHPStep2'),
+    
+    # KPI selection:
+    path('myANPAHP/<int:pk>/Step3', views.steps.step3.step3_view, name='myANPAHPStep3'),
     
     
     # #Objectives

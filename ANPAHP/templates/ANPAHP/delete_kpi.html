@@ -1,0 +1,55 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title>DATAMITE - Delete a KPI</title>
+{%endblock%}
+
+{% block main2 %}
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <h1>Delete one of your KPIs/metrics:</h1>
+        <p>Select one of your created KPIs/metrics and confirm its deletion.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.kpi.label_tag }}
+                {{ form.kpi }}
+            </div>
+
+            {% if form.kpi.errors %}
+                <div class="text-danger">
+                    {{ form.kpi.errors }}
+                </div>
+            {% endif %}
+
+            <a class="btn btn-secondary" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">Cancel</a>
+            <button class="btn btn-danger" type="submit" onclick="return confirmKPIDelete();">
+                Delete selected KPI/metric
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function confirmKPIDelete() {
+        // Used to display the name of the selected kpi in the confirm message.
+        // And show an error message if nothing is selected.
+        const select = document.getElementById('id_kpi');
+        const selectedIndex = select.selectedIndex;
+    
+        if (selectedIndex === -1 || !select.value) {
+            alert("Please select a KPI to delete.");
+            return false;
+        }
+    
+        const selectedName = select.options[selectedIndex].text;
+        return confirm(`Are you sure you want to delete KPI/metric "${selectedName}"? This action cannot be undone.`);
+    }
+</script>
+
+{% endblock %}
+
