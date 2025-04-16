@@ -50,8 +50,14 @@
                         {% for choice in form.objective %}
                             {% for obj in form.objective.field.queryset %}
                                 {% if choice.data.value == obj.pk|stringformat:"s" %}
-                                    <tr>
-                                        <td>{{ choice.tag }}</td>
+                                    <tr class="radio-row" data-radio-id="radio-{{ obj.pk }}">
+                                        <td>
+                                            <input type="radio"
+                                                id="radio-{{ obj.pk }}"
+                                                name="objective"
+                                                value="{{ obj.pk }}"
+                                                {% if choice.data.selected %}checked{% endif %}>
+                                        </td>
                                         <td><b>{{ obj.name }}<b/></td>
                                         <td style="text-align: justify;">{{ obj.short_definition }} {% if obj.author %}(<b>Created by:</b> {{ obj.author }}{% endif%})</td>
                                     </tr>

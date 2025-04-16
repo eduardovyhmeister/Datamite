@@ -47,17 +47,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for choice in form.kpis %}
-                        {% for obj in form.kpis.field.queryset %}
-                            {% if choice.data.value == obj.pk|stringformat:"s" %}
-                                <tr>
-                                    <td>{{ choice.tag }}</td>
-                                    <td><b>{{ obj.name }}<b/></td>
-                                    <td style="text-align: justify;">{{ obj.short_definition }} {% if obj.author %}(<b>Created by: </b>{{ obj.author }}){% endif%}</td>
-                                </tr>
-                            {% endif %}
+                        {% for choice in form.kpis %}
+                            {% for obj in form.kpis.field.queryset %}
+                                {% if choice.data.value == obj.pk|stringformat:"s" %}
+                                    <tr class="checkable-row" data-checkbox-id="checkbox-{{ obj.pk }}">
+                                        <td>
+                                            <input type="checkbox" id="checkbox-{{ obj.pk }}" name="{{ choice.name }}" value="{{ choice.data.value }}"
+                                                {% if choice.data.selected %}checked{% endif %}>
+                                        </td>
+                                        <td><b>{{ obj.name }}</b></td>
+                                        <td style="text-align: justify;">
+                                            {{ obj.short_definition }}
+                                            {% if obj.author %}(<b>Created by: </b>{{ obj.author }}){% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
                     </tbody>
                 </table>
             </div>
