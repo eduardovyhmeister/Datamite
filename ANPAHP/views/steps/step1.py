@@ -20,8 +20,9 @@ def step1_view(request, pk):
         if request.POST.get("action") == "confirm": # Only present when clicking confirm
             if form.is_valid():
                 form.save()
-                ANPAHP.step_status1 = True
-                ANPAHP.save()
+                if ANPAHP.current_step == 1: # Only update if not more advanced into the process
+                    ANPAHP.current_step += 1
+                    ANPAHP.save()
                 return redirect('myANPAHPStep2', pk = ANPAHP.pk)
         
     return render(request, 'ANPAHP/steps/ANPAHPStep1.html', content)

@@ -10,6 +10,7 @@ from .enumerations import UserType, UserDomain
 
 NAME_MIN_LENGTH = 1
 NAME_MAX_LENGTH = 255
+NB_OF_STEPS = 8 # The number of steps currently present in the process.
 
 
 class Evaluation(models.Model):
@@ -21,22 +22,19 @@ class Evaluation(models.Model):
                                           MaxLengthValidator(NAME_MAX_LENGTH)])
     notes = models.TextField(blank = True, default = "")
     user_type = models.CharField(max_length = 100, choices = UserType)
+    user_domain = models.CharField(max_length = 100, choices = UserDomain)
     
     # Automatically assigned information:
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete = models.CASCADE)
     created = models.DateTimeField(auto_now_add = True, editable = False)
     last_modified = models.DateTimeField(auto_now = True)
     percentage = models.TextField(default = r"0%") # completion percentage
     
-    #Stages
-    step_status1 = models.BooleanField(default = False)
-    step_status2 = models.BooleanField(default = False)
-    step_status3 = models.BooleanField(default = False)
-    step_status4 = models.BooleanField(default = False)
-    step_status5 = models.BooleanField(default = False)
-    step_status6 = models.BooleanField(default = False)
-    step_status7 = models.BooleanField(default = False)
-    step_status8 = models.BooleanField(default = False)
+    # The current step of the process the user is at for their evaluation.
+    # Used to determine which steps should be shown or not, for example,
+    # if current_step == 3, then the first 2 steps have been completed,
+    # and the user needs to complete the 3rd step before going further.
+    current_step = models.IntegerField(default = 1)
     
     # Step 1 - Select an objective:
     objective = models.ForeignKey(Objective, to_field = 'name', 
@@ -44,10 +42,15 @@ class Evaluation(models.Model):
                                   null = True)
     
     # Step 2 - BSC preferences:
+    # Dict[BSCFamily.name: preference_value (0 to 100)]
     bsc_preferences = models.JSONField(default = dict)
     
     # Step 3 - KPIs selection:
     kpis = models.ManyToManyField(KPI)
+    
+    # Step 4 - KPIs preferences:
+    # Dict[KPI.name: preference_value (1 to 100)]
+    kpis_preferences = models.JSONField(default = dict)
     
     # action = models.TextField(blank = True, default = "")
     # ANPAHP_recommendations = models.TextField(blank=True, default = "")
@@ -98,19 +101,11 @@ class Evaluation(models.Model):
     # comments = models.TextField(default = "") # Comments by user
     # message = models.TextField(default = "") # Error message displayed in HTML
     # ##################################
-    user_domain = models.CharField(max_length = 100, choices = UserDomain)
     
     
     def save(self,*args,**kwargs):
-        """Allows to automatically save the 'last_modified' field and recompute the completion 'percentage'."""
-        self.percentage = str(int(100*(int(self.step_status1) + 
-                                       int(self.step_status2) + 
-                                       int(self.step_status3) + 
-                                       int(self.step_status4) + 
-                                       int(self.step_status5) + 
-                                       int(self.step_status6) + 
-                                       int(self.step_status7) + 
-                                       int(self.step_status8))/8))+"%"
+        """Allows to automatically recompute the completion 'percentage'."""
+        self.percentage = str(int(100 * (self.current_step - 1) / NB_OF_STEPS)) + "%"
         super(Evaluation, self).save(*args, **kwargs)
         
         

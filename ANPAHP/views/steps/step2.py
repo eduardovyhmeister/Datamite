@@ -27,7 +27,7 @@ def step2_view(request, pk):
             
             # Save the preferences:
             ANPAHP.bsc_preferences = preferences
-            ANPAHP.step_status2 = True
+            ANPAHP.current_step = 3
             ANPAHP.save()
             
             return redirect('myANPAHPStep3', pk = ANPAHP.pk)
