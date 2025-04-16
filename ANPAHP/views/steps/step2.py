@@ -13,7 +13,6 @@ def step2_view(request, pk):
     ANPAHP = Evaluation.objects.get(pk = pk)
     
     if request.method == 'POST':
-        print("POST DATA:", request.POST)
         form = BSCPreferencesForm(request.POST)
         if form.is_valid():
             preferences = {}
@@ -27,7 +26,8 @@ def step2_view(request, pk):
             
             # Save the preferences:
             ANPAHP.bsc_preferences = preferences
-            ANPAHP.current_step = 3
+            if ANPAHP.tracker.has_changed('bsc_preferences'):
+                ANPAHP.current_step = 2
             ANPAHP.save()
             
             return redirect('myANPAHPStep3', pk = ANPAHP.pk)

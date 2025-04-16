@@ -12,7 +12,7 @@
     <li class="nav-item nav-item-clear req-menu-item w-100">
         <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
             Step 1: Identification of the main objective
-            {% if ANPAHP.current_step > 1 %}
+            {% if ANPAHP.current_step >= 1 %}
                 <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                 {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
             {% endif %}
@@ -20,12 +20,12 @@
     </li>
 </ul></nav></br>
 
-{% if ANPAHP.current_step > 1 %}
+{% if ANPAHP.current_step >= 1 %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link  w-100 d-block" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
                 </i>Step 2: Balanced Scorecard (BSC) preferences
-                {% if ANPAHP.current_step > 2 %}
+                {% if ANPAHP.current_step >= 2 %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
@@ -33,12 +33,12 @@
         </li>
     </ul></nav></br>
     
-    {% if ANPAHP.current_step > 2 %}
+    {% if ANPAHP.current_step >= 2 %}
         <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
             <li class="nav-item nav-item-clear req-menu-item w-100">
                 <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
                     </i>Step 3: KPI/metrics selection
-                    {% if ANPAHP.current_step > 3 %}
+                    {% if ANPAHP.current_step >= 3 %}
                         <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                         {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                     {% endif %}

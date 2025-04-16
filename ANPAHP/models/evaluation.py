@@ -1,6 +1,9 @@
+from collections import defaultdict
+
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
+from model_utils import FieldTracker # https://django-model-utils.readthedocs.io/en/latest/index.html
 
 from .criterion import Criterion
 from .objective import Objective
@@ -12,10 +15,35 @@ NAME_MIN_LENGTH = 1
 NAME_MAX_LENGTH = 255
 NB_OF_STEPS = 8 # The number of steps currently present in the process.
 
+# To use in combination with tracker.has_changed(current_step).
+# If you detect changes in some fields in certain steps, you need
+# to reset to default values some of the fields. If you add fields
+# to evaluation, or any new step, please update this. This is used
+# to make sure there is consistency in the database and that any
+# modification through a step is propagated nicely to the following
+# steps.
+# The format is simple: dict[step_number: list['field_names']].
+FIELDS_TO_RESET = defaultdict(list,
+{
+    0: [],
+    1: [],
+    2: ['kpis', 'kpis_preferences'],
+    3: ['kpis_preferences'],
+})
+# Use this to set the default value to which the field will be reset
+# to when a step change is detected. If a callable is provided (e.g. dict),
+# then it will be called with no arguments.
+# Format: dict[field_name: default_value or callable]
+FIELDS_DEFAULT_VALUE = {
+    'bsc_preferences': dict,
+    'kpis': None, # Actually unnecessary since it's a ManyToManyField (.clear() is used instead)
+    'kpis_preferences': dict,
+}
+
 
 class Evaluation(models.Model):
     """Model representing an AHP-ANP Evaluation in our DB."""
-    # User-provided information
+    # User-provided information:
     name = models.CharField(unique = True, null = False, 
                             max_length = NAME_MAX_LENGTH,
                             validators = [MinLengthValidator(NAME_MIN_LENGTH),
@@ -32,9 +60,9 @@ class Evaluation(models.Model):
     
     # The current step of the process the user is at for their evaluation.
     # Used to determine which steps should be shown or not, for example,
-    # if current_step == 3, then the first 2 steps have been completed,
+    # if current_step == 2, then the first 2 steps have been completed,
     # and the user needs to complete the 3rd step before going further.
-    current_step = models.IntegerField(default = 1)
+    current_step = models.IntegerField(default = 0)
     
     # Step 1 - Select an objective:
     objective = models.ForeignKey(Objective, to_field = 'name', 
@@ -52,41 +80,14 @@ class Evaluation(models.Model):
     # Dict[KPI.name: preference_value (1 to 100)]
     kpis_preferences = models.JSONField(default = dict)
     
+    # Used to track changes in a field, prevents resetting the whole
+    # Evaluation model when coming back to a previous step a clicking confirm
+    # without having changed anything to the actual values submitted:
+    tracker = FieldTracker()
+    
+    
     # action = models.TextField(blank = True, default = "")
     # ANPAHP_recommendations = models.TextField(blank=True, default = "")
-    
-    ############### these are exclusive for the KPIs.
-    # KPIs = models.ManyToManyField(KPI)
-    # selected_KPIs = models.TextField(default = "[]") #list of booleans
-    
-    # financial_scores = models.JSONField(default = dict)
-    # financial_inconcistency = models.TextField(default = "[]")
-    # financial_vector = models.JSONField(default = dict)
-    # internal_processes_scores = models.JSONField(default = dict)
-    # internal_processes_inconcistency = models.TextField(default = "[]")
-    # internal_processes_vector = models.JSONField(default = dict)
-    # learn_growth_scores = models.JSONField(default = dict)
-    # learn_growth_inconcistency = models.TextField(default = "[]")
-    # learn_growth_vector = models.JSONField(default = dict)
-    # clients_scores = models.JSONField(default = dict)
-    # clients_inconcistency = models.TextField(default = "[]")
-    # clients_vector = models.JSONField(default = dict)
-    
-    # pairwise_combinations = models.JSONField(default = dict) # key = tuple (index, index), value = user defined score
-    # KPIs_selected_names = models.TextField(default = "[]") # list of names
-    
-
-    
-    ################# Criterion
-    # BSC_Weights = models.TextField(default = "[]")
-    # criteria = models.ManyToManyField(Criterion)
-    # selected_criteria = models.TextField(default = "[]")
-    # criteria_scores = models.JSONField(default = dict)
-    # criteria_inconcistency = models.TextField(default = "[]")
-    # criteria_vector = models.JSONField(default = dict)
-    # pairwise_combinations_criteria = models.JSONField(default = dict)
-    # criteria_selected_names = models.TextField(default = "[]")
-    
     ############### RESULTS
     # shapes = models.TextField(default = '{"Objectives":1, "Criterions":0,"KPIs":0, "BSC":4}') # Sizes of the subdomain of the supermatrix
     # matrix_data = models.JSONField(default = dict) # The 4 matrics (bsc families)
@@ -96,18 +97,36 @@ class Evaluation(models.Model):
     # supermatrix = models.TextField(default = "[]") # Matrix of the 4 bsc families matrices
     # rows = models.TextField(default = "[]")
     
-    # ############## these are for the risk register ################################
-    # # general comments
-    # comments = models.TextField(default = "") # Comments by user
-    # message = models.TextField(default = "") # Error message displayed in HTML
-    # ##################################
-    
     
     def save(self,*args,**kwargs):
-        """Allows to automatically recompute the completion 'percentage'."""
+        """Override 'save()' to enable an automatic reset of certain fields when
+        going back to a previous step in the process. Also allows to automatically 
+        recompute the completion 'percentage'."""
+        # Track if the current_step has changed a reset fields as required:
+        reset_m2m_fields = []
+        if self.tracker.has_changed('current_step'):
+            for field_name in FIELDS_TO_RESET[self.current_step]:
+                field_object = self._meta.get_field(field_name)
+            
+                # Save ManyToManyFields' names for later reset:
+                if isinstance(field_object, models.ManyToManyField):
+                    reset_m2m_fields.append(field_name)
+                    continue
+                
+                # Reset regular fields:
+                default = FIELDS_DEFAULT_VALUE[field_name]
+                setattr(self, field_name, default() if callable(default) else default)
+                
+        # Compute the completion percentage for the whole process:
         self.percentage = str(int(100 * (self.current_step - 1) / NB_OF_STEPS)) + "%"
+        
+        # Effectively save:
         super(Evaluation, self).save(*args, **kwargs)
         
+        # ManyToManyFields can only be reset after the model is saved for some reason:
+        for field_name in reset_m2m_fields:
+            getattr(self, field_name).set([])
+            
         
     def __str__(self):
         """Overrides the str() methods. Used for a human readable form of the model."""

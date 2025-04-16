@@ -62,9 +62,16 @@
                 </table>
             </div>
 
+            {% if ANPAHP.current_step > 3 %}
+                <div class="alert alert-warning">
+                    <p  style="text-align: justify;">
+                        <b>Warning:</b> Changing your selection of KPIs/metrics here and confirming these changes will reset every subsequent step, meaning you will have to redo these steps.<br/>
+                    </p>
+                </div>
+            {% endif %}
+
             <a class="btn btn-outline-secondary" href="{% url 'create_kpi' pk=ANPAHP.pk %}" > Create a new KPI/metric </a>
             <a class="btn btn-outline-secondary" href="{% url 'delete_kpi' pk=ANPAHP.pk %}" > Delete a KPI/metric </a>
-
             <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>
         </form>
     </div>

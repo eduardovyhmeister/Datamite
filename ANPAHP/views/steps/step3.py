@@ -19,11 +19,10 @@ def step3_view(request, pk):
                }
     
     if request.method == "POST":
-        print("POST DATA:", request.POST)
         if request.POST.get("action") == "confirm": # Only present when clicking confirm
             if form.is_valid():
                 form.save()
-                ANPAHP.current_step = 4
+                ANPAHP.current_step = 3
                 ANPAHP.save()
                 return render(request, 'ANPAHP/steps/ANPAHPStep3.html', content)
                 #return redirect('myANPAHPStep4', pk = ANPAHP.pk)
