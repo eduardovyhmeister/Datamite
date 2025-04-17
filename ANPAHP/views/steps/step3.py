@@ -14,8 +14,7 @@ def step3_view(request, pk):
                             instance = ANPAHP)
     
     content = {'ANPAHP': ANPAHP,
-               'form': KPISelectionForm(request.POST or None, 
-                                        instance = ANPAHP),
+               'form': form,
                }
     
     if request.method == "POST":
@@ -24,7 +23,7 @@ def step3_view(request, pk):
                 form.save()
                 ANPAHP.current_step = 3
                 ANPAHP.save()
-                return render(request, 'ANPAHP/steps/ANPAHPStep3.html', content)
-                #return redirect('myANPAHPStep4', pk = ANPAHP.pk)
+                #return render(request, 'ANPAHP/steps/ANPAHPStep3.html', content)
+                return redirect('myANPAHPStep4', pk = ANPAHP.pk)
         
     return render(request, 'ANPAHP/steps/ANPAHPStep3.html', content)

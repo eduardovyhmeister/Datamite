@@ -29,7 +29,7 @@
         </div>
         </br>
 
-        <form method='POST'>
+        <form method='POST' id="kpiForm">
             {% csrf_token %}
             <div style="display: inline-block; width:100%;">
                 <p  style="text-align: justify;">
@@ -47,22 +47,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {% for choice in form.kpis %}
-                            {% for obj in form.kpis.field.queryset %}
-                                {% if choice.data.value == obj.pk|stringformat:"s" %}
-                                    <tr class="checkable-row" data-checkbox-id="checkbox-{{ obj.pk }}">
-                                        <td>
-                                            <input type="checkbox" id="checkbox-{{ obj.pk }}" name="{{ choice.name }}" value="{{ choice.data.value }}"
-                                                {% if choice.data.selected %}checked{% endif %}>
-                                        </td>
-                                        <td><b>{{ obj.name }}</b></td>
-                                        <td style="text-align: justify;">
-                                            {{ obj.short_definition }}
-                                            {% if obj.author %}(<b>Created by: </b>{{ obj.author }}){% endif %}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                        {% for kpi in form.kpis.field.queryset %}
+                            <tr class="checkable-row" data-checkbox-id="checkbox-{{ kpi.pk }}">
+                                <td>
+                                    <input type="checkbox"
+                                           id="checkbox-{{ kpi.pk }}"
+                                           name="kpis"
+                                           value="{{ kpi.pk }}"
+                                           {% if kpi in form.instance.kpis.all %}checked{% endif %}>
+                                </td>
+                                <td><b>{{ kpi.name }}</b></td>
+                                <td style="text-align: justify;">
+                                    {{ kpi.short_definition }}
+                                    {% if kpi.author %}(<b>Created by:</b> {{ kpi.author }}){% endif %}
+                                </td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -71,10 +70,14 @@
             {% if ANPAHP.current_step > 3 %}
                 <div class="alert alert-warning">
                     <p  style="text-align: justify;">
-                        <b>Warning:</b> Changing your selection of KPIs/metrics here and confirming these changes will reset every subsequent step, meaning you will have to redo these steps.<br/>
+                        ⚠️ Changing your selection of KPIs/metrics here and confirming these changes will reset every subsequent step, meaning you will have to redo these steps.<br/>
                     </p>
                 </div>
             {% endif %}
+
+            <div id="kpiError" class="alert alert-danger d-none" role="alert">
+                ⚠️ Please select at least one KPI/metric to proceed.
+            </div>
 
             <a class="btn btn-outline-secondary" href="{% url 'create_kpi' pk=ANPAHP.pk %}" > Create a new KPI/metric </a>
             <a class="btn btn-outline-secondary" href="{% url 'delete_kpi' pk=ANPAHP.pk %}" > Delete a KPI/metric </a>
@@ -82,6 +85,23 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('kpiForm').addEventListener('submit', function (e) {
+            const checkboxes = document.querySelectorAll('input[name="kpis"]:checked');
+            const errorDiv = document.getElementById('kpiError');
+            
+            if (checkboxes.length === 0) {
+                e.preventDefault(); // Stop form from submitting
+                errorDiv.classList.remove('d-none');
+            } else {
+                errorDiv.classList.add('d-none');
+            }
+        });
+    });
+</script>
+
 
 {% endblock %}
 

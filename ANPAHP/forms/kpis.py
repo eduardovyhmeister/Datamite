@@ -17,9 +17,6 @@ class KPISelectionForm(ModelForm):
     class Meta:
         model = Evaluation
         fields = ['kpis']
-        widgets = {
-            'kpis': CheckboxSelectMultiple,
-        }
         
     def __init__(self, *args, **kwargs):
         """Overrides constructor to be able to filter out KPIs that are not relevant

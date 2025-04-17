@@ -12,4 +12,5 @@ from .objectives import (ObjectiveSelectionForm,
 from .kpis import (KPISelectionForm,
                    CreateKPIForm,
                    DeleteKPIForm)
-from .preferences import BSCPreferencesForm
+from .preferences import (BSCPreferencesForm,
+                          KPIPreferencesForm)

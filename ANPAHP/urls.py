@@ -46,6 +46,9 @@ urlpatterns = [
     # KPI selection:
     path('myANPAHP/<int:pk>/Step3', views.steps.step3.step3_view, name='myANPAHPStep3'),
     
+    # KPI preferences:
+    path('myANPAHP/<int:pk>/Step4', views.steps.step4.step4_view, name='myANPAHPStep4'),
+    
     
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),

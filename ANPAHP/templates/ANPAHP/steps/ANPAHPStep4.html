@@ -5,7 +5,7 @@
 
 
 {%block head%}
-    <title> DATAMITE - ANP-AHP - BSC Interests </title>
+    <title> DATAMITE - ANP-AHP - KPIs/metrics preferences </title>
 {%endblock%}
 
 {% block navbar %}{% endblock%}
@@ -21,13 +21,13 @@
 
         <div class="panel-heading card-header">
             <div class="sv_header__text">
-                <h3><span style="position: static;"> Step 2 - Balanced Scorecard (BSC) Interests: </span></h3>
+                <h3><span style="position: static;"> Step 4 - KPIs/metrics preferences: </span></h3>
             </div>
             <p style="text-align: justify;">
-                The Balanced Scorecard (BSC) is a strategic planning and management system that organizations use to align business activities to the vision and strategy of the organization, improve internal and external communications, and monitor organizational performance against strategic goals. The BSC transforms an organization's strategic plan from an attractive but passive document into the “marching orders” for the organization on a daily basis. It provides a framework that not only provides performance measurements, but helps planners identify what should be done and measured.
+                TODO : Explanation of the step
             </p>
             <p style="text-align: justify;">
-                In this section, you define which families of KPIs/metrics are more relevant to you and your business strategy. This is then automatically translated into the SATY Scale, a convenient matrix for analysis of your strategy.
+                TODO
             </p>   
         </div>
         </br>
@@ -36,7 +36,7 @@
             {% csrf_token %}
             <div style="display: inline-block; width:100%;">
                 <p  style="text-align: justify;">
-                    Please provide your preferences in terms of BSC: 0 means no interest at all (which will prevent you from selecting any KPI/metric from this family), 100 means it is the highest priority.<br/>
+                    Please provide your preferences in terms of KPIs/metrics: 1 means barely any interest, 100 means it is the highest priority.<br/>
                 </p>
             </div>
             
@@ -44,27 +44,27 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Perspective</th>
+                        <th scope="col">KPI/metric</th>
                         <th scope="col">Preference level</th>
                         <th scope="col">Definition</th>
                     </tr>
                     </thead>
                     <tbody>
-                        {% for family in families %}
-                            {% with field_name=family.name|slugify %}
+                        {% for kpi in selected_kpis %}
+                            {% with field_name=kpi.name|slugify %}
                                 <tr>
-                                    <td><b>{{ family.name }}</b></td>
+                                    <td><b>{{ kpi.name }}</b></td>
                                     <td>
                                         {% with field=form|get_value_at:field_name %}
                                             {{ field }}
-                                            <input type="number" class="bsc-input"
+                                            <input type="number" class="kpi-input"
                                                 id="value_{{ field_name }}"
-                                                min="0" max="100"
+                                                min="1" max="100"
                                                 value="{{ field.value|default_if_none:0 }}"
                                                 oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
                                         {% endwith %}
                                     </td>
-                                    <td style="text-align: justify;">{{ family.short_definition }}</td>
+                                    <td style="text-align: justify;">{{ kpi.short_definition }}</td>
                                 </tr>
                             {% endwith %}
                         {% endfor %}
@@ -72,7 +72,7 @@
                 </table>
             </div>
 
-            {% if ANPAHP.current_step > 2 %}
+            {% if ANPAHP.current_step > 4 %}
                 <div class="alert alert-warning">
                     <p  style="text-align: justify;">
                         ⚠️ Changing any value here and confirming the change will reset every subsequent step, meaning you will have to redo these steps.<br/>
@@ -89,10 +89,9 @@
 <script>
     function validatePreferences() {
         //Use to valide the preferences:
-        // - If none are 0, then everything is okay.
-        // - If at least 1 is 0, show a warning and ask for confirmation.
-        // - If all are 0, raise an error.
-        const inputs = document.querySelectorAll('.bsc-input');
+        // - Send an warning if all values are equal, reminding the user they should
+        //   set preferences for the analysis to be useful.
+        const inputs = document.querySelectorAll('.kpi-input');
         const values = Array.from(inputs).map(input => parseInt(input.value || "0"));
         const allZero = values.every(v => v === 0);
         const someZero = values.some(v => v === 0);
