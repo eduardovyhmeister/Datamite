@@ -12,7 +12,7 @@
     <li class="nav-item nav-item-clear req-menu-item w-100">
         <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
             Step 1: Identification of the main objective
-            {% if ANPAHP.current_step >= 1 %}
+            {% if ANPAHP.objective %}
                 <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                 {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
             {% endif %}
@@ -20,12 +20,12 @@
     </li>
 </ul></nav></br>
 
-{% if ANPAHP.current_step >= 1 %}
+{% if ANPAHP.objective or ANPAHP.bsc_preferences %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link  w-100 d-block" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
                 </i>Step 2: Balanced Scorecard (BSC) preferences
-                {% if ANPAHP.current_step >= 2 %}
+                {% if ANPAHP.bsc_preferences %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
@@ -34,12 +34,12 @@
     </ul></nav></br>
 {% endif %}
     
-{% if ANPAHP.current_step >= 2 %}
+{% if ANPAHP.bsc_preferences or ANPAHP.kpis.count %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
                 </i>Step 3: KPI/metrics selection
-                {% if ANPAHP.current_step >= 3 %}
+                {% if ANPAHP.kpis.count %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
@@ -48,12 +48,12 @@
     </ul></nav></br>
 {% endif %}
 
-{% if ANPAHP.current_step >= 3 %}
+{% if ANPAHP.kpis.count or ANPAHP.kpis_preferences %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep4' pk=ANPAHP.pk %}">
                 </i>Step 4: KPI/metrics preferences
-                {% if ANPAHP.current_step >= 4 %}
+                {% if ANPAHP.kpis_preferences %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
@@ -62,12 +62,12 @@
     </ul></nav></br>
 {% endif %}
 
-{% if ANPAHP.current_step >= 4 %}
+{% if ANPAHP.kpis_preferences or ANPAHP.criteria.count %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep5' pk=ANPAHP.pk %}">
                 </i>Step 5: Criteria selection
-                {% if ANPAHP.current_step >= 5 %}
+                {% if ANPAHP.criteria.count %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
