@@ -23,7 +23,7 @@ def step5_view(request, pk):
                 form.save()
                 ANPAHP.current_step = 5
                 ANPAHP.save()
-                return render(request, 'ANPAHP/steps/ANPAHPStep5.html', content)
-                #return redirect('myANPAHPStep6', pk = ANPAHP.pk)
+                # return render(request, 'ANPAHP/steps/ANPAHPStep5.html', content)
+                return redirect('myANPAHPStep6', pk = ANPAHP.pk)
         
     return render(request, 'ANPAHP/steps/ANPAHPStep5.html', content)

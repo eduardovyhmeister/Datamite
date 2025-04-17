@@ -16,4 +16,5 @@ from .criteria import (CriteriaSelectionForm,
                        CreateCriterionForm,
                        DeleteCriterionForm)
 from .preferences import (BSCPreferencesForm,
-                          KPIPreferencesForm)
+                          KPIPreferencesForm,
+                          CriteriaPreferencesForm)

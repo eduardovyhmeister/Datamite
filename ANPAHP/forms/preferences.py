@@ -86,3 +86,45 @@ class KPIPreferencesForm(forms.Form):
                     'name': slug
                 })
             )
+
+            
+# -----------------------------------------------------------------------------
+
+    
+class CriteriaPreferencesForm(forms.Form):
+    """A form for defining preferences in terms of criteria
+    in an ANP-AHP evaluation."""
+    
+    def __init__(self, selected_criteria, *args, preferences = None, **kwargs):
+        """Overrides the constructor.
+        
+        Args:
+            selected_criteria (ManyToManyField): The criteria selected by the
+                user. Can be found in 'Evaluation.criteria'
+            preferences (dict): The dictionary of preferences saved in field
+                'criteria_preferences' in the 'Evaluation' model.
+        """
+        super().__init__(*args, **kwargs)
+        preferences = preferences or {} # empty dict if None
+
+        # The order_by isn't honoured here since selected_criteria is a ManyRelatedManager.
+        # So instead, selected_criteria is passed already ordered in the view directly.
+        for criterion in selected_criteria.order_by(Lower('name')):
+            slug = slugify(criterion.name)
+            initial_value = preferences.get(criterion.name, 1) # Default value of 1
+            
+            self.fields[slug] = forms.IntegerField(
+                label = criterion.name,
+                min_value = 1,
+                max_value = 100,
+                initial = initial_value,
+                widget = forms.NumberInput(attrs = {
+                    'type': 'range',
+                    'min': '1',
+                    'max': '100',
+                    'step': '1',
+                    'class': 'slider',
+                    'oninput': f'document.getElementById("value_{slug}").value = this.value',
+                    'name': slug
+                })
+            )

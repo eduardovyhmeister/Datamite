@@ -45,3 +45,4 @@ Here is a list of stuff that could be done to improve this project:
 * Redo the unit tests for the new version of the code.
 * Change the theme used by Bootstap to fit the identity of DATAMITE.
 * Improve the overall visual of the website.
+* Refactor code of similar steps (e.g. preference steps use very similar code).
