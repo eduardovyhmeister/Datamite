@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Lower
 
 from ..helpers import slug_equal
 from ...forms import KPIPreferencesForm
@@ -30,17 +31,17 @@ def step4_view(request, pk):
                 ANPAHP.current_step = 4
             ANPAHP.save()
             
-            return render(request, 'ANPAHP/steps/ANPAHPStep4.html', {
-                'form': form,
-                'ANPAHP': ANPAHP,
-                'selected_kpis': ANPAHP.kpis.all().order_by('name'),
-            })
-            #return redirect('myANPAHPStep5', pk = ANPAHP.pk)
+            # return render(request, 'ANPAHP/steps/ANPAHPStep4.html', {
+            #     'form': form,
+            #     'ANPAHP': ANPAHP,
+            #     'selected_kpis': ANPAHP.kpis.all().order_by(Lower('name')),
+            # })
+            return redirect('myANPAHPStep5', pk = ANPAHP.pk)
     else:
         form = KPIPreferencesForm(ANPAHP.kpis, preferences = ANPAHP.kpis_preferences)
 
     return render(request, 'ANPAHP/steps/ANPAHPStep4.html', {
         'form': form,
         'ANPAHP': ANPAHP,
-        'selected_kpis': ANPAHP.kpis.all().order_by('name'), # Required to be able to iterate in the HTML
+        'selected_kpis': ANPAHP.kpis.all().order_by(Lower('name')), # Required to be able to iterate in the HTML
     })

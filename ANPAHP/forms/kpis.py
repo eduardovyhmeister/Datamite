@@ -1,6 +1,7 @@
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django import forms 
 from django.core.exceptions import ValidationError
+from django.db.models.functions import Lower
 
 from ..models import Evaluation, KPI, BSCFamily, BSCSubfamily
 
@@ -10,7 +11,7 @@ class KPISelectionForm(ModelForm):
     
     # The name here has to match the name of the field to update in Evaluation:
     kpis = forms.ModelMultipleChoiceField(
-        queryset = KPI.objects.all().order_by('name'),
+        queryset = KPI.objects.all().order_by(Lower('name')),
         widget = CheckboxSelectMultiple
     )
     
@@ -31,7 +32,8 @@ class KPISelectionForm(ModelForm):
         filtered_KPIs = KPI.objects.filter(bsc_subfamilies__in = subfamily_list).distinct()
         
         # Order the remaining KPIs alphabetically:
-        self.fields['kpis'].queryset = filtered_KPIs.order_by('name')
+        self.fields['kpis'].queryset = filtered_KPIs.order_by(Lower('name'))
+        
         
 # ----------------------------------------------------------------------------
 

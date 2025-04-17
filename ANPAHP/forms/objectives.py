@@ -1,6 +1,7 @@
 from django.forms import ModelForm, RadioSelect
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models.functions import Lower
 
 from ..models import Evaluation, Objective
 
@@ -10,7 +11,7 @@ class ObjectiveSelectionForm(ModelForm):
     
     # The name here has to match the name of the field to update in Evaluation:
     objective = forms.ModelChoiceField(
-        queryset = Objective.objects.all(),
+        queryset = Objective.objects.all().order_by(Lower('name')),
         widget = RadioSelect  # or use forms.Select for dropdown
     )
     

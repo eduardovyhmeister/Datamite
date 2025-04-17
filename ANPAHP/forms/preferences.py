@@ -3,6 +3,7 @@ selecting preferences about BSCFamily/Subfamily, KPIs, etc."""
 
 from django.utils.text import slugify
 from django import forms
+from django.db.models.functions import Lower
 
 from ..models import BSCFamily
 
@@ -24,7 +25,7 @@ class BSCPreferencesForm(forms.Form):
         super().__init__(*args, **kwargs)
         preferences = preferences or {} # empty dict if None
 
-        for family in BSCFamily.objects.all():
+        for family in BSCFamily.objects.all().order_by(Lower('name')):
             slug = slugify(family.name)
             initial_value = preferences.get(family.name, 0) # Default value of 0
             
@@ -64,7 +65,9 @@ class KPIPreferencesForm(forms.Form):
         super().__init__(*args, **kwargs)
         preferences = preferences or {} # empty dict if None
 
-        for kpi in selected_kpis.order_by('name'):
+        # The order_by isn't honoured here since selected_kpis is a ManyRelatedManager.
+        # So instead, selected_kpis is passed already ordered in the view directly.
+        for kpi in selected_kpis.order_by(Lower('name')):
             slug = slugify(kpi.name)
             initial_value = preferences.get(kpi.name, 1) # Default value of 1
             

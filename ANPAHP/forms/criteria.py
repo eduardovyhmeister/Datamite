@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django import forms
+from django.db.models.functions import Lower
 
 from ..models import Evaluation, Criterion
 
@@ -10,7 +11,7 @@ class CriteriaSelectionForm(ModelForm):
     
     # The name here has to match the name of the field to update in Evaluation:
     criteria = forms.ModelMultipleChoiceField(
-        queryset = Criterion.objects.all().order_by('name'),
+        queryset = Criterion.objects.all().order_by(Lower('name')),
         widget = CheckboxSelectMultiple  # or use forms.Select for dropdown
     )
     
