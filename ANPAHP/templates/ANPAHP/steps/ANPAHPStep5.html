@@ -1,0 +1,107 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{%block head%}
+    <title> DATAMITE - ANP-AHP - Criteria selection </title>
+{%endblock%}
+
+{% block navbar %}{% endblock%}
+{% block main1%}{%endblock%}
+
+
+{%block main2%}
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+
+        <div class="panel-heading card-header">
+            <div class="sv_header__text">
+                <h3><span style="position: static;"> Step 5 - Criteria selection: </span></h3>
+            </div>
+            <p style="text-align: justify;">
+                In this section, you select the criteria that are the most relevant to your business objective. They will be used in the analysis this ANP-AHP tool provides. 
+            </p>
+        </div>
+        </br>
+
+        <form method='POST' id="criterionForm">
+            {% csrf_token %}
+            <div style="display: inline-block; width:100%;">
+                <p  style="text-align: justify;">
+                    Please select the criteria that you would like to incorporate into your ANP-AHP Evaluation. If you want to add a new criterion, please use the "Create a new criterion" button at the end of the page.<br/>
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Selected</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Definition</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for criterion in form.criteria.field.queryset %}
+                            <tr class="checkable-row" data-checkbox-id="checkbox-{{ criterion.pk }}">
+                                <td>
+                                    <input type="checkbox"
+                                           id="checkbox-{{ criterion.pk }}"
+                                           name="criteria"
+                                           value="{{ criterion.pk }}"
+                                           {% if criterion in form.instance.criteria.all %}checked{% endif %}>
+                                </td>
+                                <td><b>{{ criterion.name }}</b></td>
+                                <td style="text-align: justify;">
+                                    {{ criterion.explanation }}
+                                    {% if criterion.author %}(<b>Created by:</b> {{ criterion.author }}){% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if ANPAHP.current_step > 5 %}
+                <div class="alert alert-warning">
+                    <p  style="text-align: justify;">
+                        ⚠️ Changing your selection of criteria here and confirming these changes will reset the next step (criteria preferences).
+                    </p>
+                </div>
+            {% endif %}
+
+            <div id="criterionError" class="alert alert-danger d-none" role="alert">
+                ⚠️ Please select at least one criterion to proceed.
+            </div>
+
+            <a class="btn btn-outline-secondary" href="{% url 'create_criterion' pk=ANPAHP.pk %}" > Create a new criterion </a>
+            <a class="btn btn-outline-secondary" href="{% url 'delete_criterion' pk=ANPAHP.pk %}" > Delete a criterion </a>
+            <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('criterionForm').addEventListener('submit', function (e) {
+            const checkboxes = document.querySelectorAll('input[name="criteria"]:checked');
+            const errorDiv = document.getElementById('criterionError');
+            
+            if (checkboxes.length === 0) {
+                e.preventDefault(); // Stop form from submitting
+                errorDiv.classList.remove('d-none');
+            } else {
+                errorDiv.classList.add('d-none');
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}
+
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}

@@ -4,7 +4,6 @@ path('URL_you_want', 'corresponding_view', name = 'name used in redirection and 
 """
 
 from django.urls import path
-from . import old_views
 from . import views
 
 
@@ -32,23 +31,19 @@ urlpatterns = [
     path('myANPAHP/<int:pk>/deleteobjective', views.content_management.delete_objective_view, name = 'delete_objective'),
     path('myANPAHP/<int:pk>/createKPI', views.content_management.create_kpi_view, name = 'create_kpi'),
     path('myANPAHP/<int:pk>/deleteKPI', views.content_management.delete_kpi_view, name = 'delete_kpi'),
+    path('myANPAHP/<int:pk>/createcriterion', views.content_management.create_criterion_view, name = 'create_criterion'),
+    path('myANPAHP/<int:pk>/deletecriterion', views.content_management.delete_criterion_view, name = 'delete_criterion'),
 
-    # path('newcriterion', old_views.NewObjectives, name='newcriterion'),
-
-
-    
     # Objective selection:
     path('myANPAHP/<int:pk>/Step1', views.steps.step1.step1_view, name = "myANPAHPStep1"),
-
-    # Perspectives BSC
+    # Perspectives/BSC preferences:
     path('myANPAHP/<int:pk>/Step2', views.steps.step2.step2_view, name='myANPAHPStep2'),
-    
     # KPI selection:
     path('myANPAHP/<int:pk>/Step3', views.steps.step3.step3_view, name='myANPAHPStep3'),
-    
     # KPI preferences:
     path('myANPAHP/<int:pk>/Step4', views.steps.step4.step4_view, name='myANPAHPStep4'),
-    
+    # Criteria selection:
+    path('myANPAHP/<int:pk>/Step5', views.steps.step5.step5_view, name='myANPAHPStep5'),
     
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),

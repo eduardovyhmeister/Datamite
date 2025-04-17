@@ -24,11 +24,8 @@
                 <h3><span style="position: static;"> Step 4 - KPIs/metrics preferences: </span></h3>
             </div>
             <p style="text-align: justify;">
-                TODO : Explanation of the step
-            </p>
-            <p style="text-align: justify;">
-                TODO
-            </p>   
+                In this section, you define which KPIs/metrics are more relevant to you and your business strategy. This is then automatically translated into the SATY Scale, a convenient matrix for analysis of your strategy.
+            </p>  
         </div>
         </br>
 
@@ -72,13 +69,13 @@
                 </table>
             </div>
 
-            {% if ANPAHP.current_step > 4 %}
+            {% comment %} {% if ANPAHP.current_step > 4 %}
                 <div class="alert alert-warning">
                     <p  style="text-align: justify;">
                         ⚠️ Changing any value here and confirming the change will reset every subsequent step, meaning you will have to redo these steps.<br/>
                     </p>
                 </div>
-            {% endif%}
+            {% endif%} {% endcomment %}
 
             <div id="preferenceMessage" class="alert d-none" role="alert"></div>
             <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm">Confirm preferences</button>

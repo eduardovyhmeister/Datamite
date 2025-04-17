@@ -29,6 +29,9 @@ FIELDS_TO_RESET = defaultdict(list,
     1: [],
     2: ['kpis', 'kpis_preferences'],
     3: ['kpis_preferences'],
+    4: [],
+    5: ['criteria_preferences'],
+    6: [],
 })
 # Use this to set the default value to which the field will be reset
 # to when a step change is detected. If a callable is provided (e.g. dict),
@@ -38,6 +41,8 @@ FIELDS_DEFAULT_VALUE = {
     'bsc_preferences': dict,
     'kpis': None, # Actually unnecessary since it's a ManyToManyField (.clear() is used instead)
     'kpis_preferences': dict,
+    'criteria': None,
+    'criteria_preferences': dict
 }
 
 
@@ -80,8 +85,14 @@ class Evaluation(models.Model):
     # Dict[KPI.name: preference_value (1 to 100)]
     kpis_preferences = models.JSONField(default = dict)
     
+    # Step 5 - Criteria selection:
+    criteria = models.ManyToManyField(Criterion)
+    
+    # Step 6 - Criteria preferences:
+    criteria_preferences = models.JSONField(default = dict)
+    
     # Used to track changes in a field, prevents resetting the whole
-    # Evaluation model when coming back to a previous step a clicking confirm
+    # Evaluation model when coming back to a previous step and clicking confirm
     # without having changed anything to the actual values submitted:
     tracker = FieldTracker()
     

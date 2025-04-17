@@ -7,7 +7,9 @@ from ..models import Evaluation, Objective, Criterion, KPI
 from ..forms import (CreateObjectiveForm, 
                      DeleteObjectiveForm,
                      CreateKPIForm,
-                     DeleteKPIForm,)
+                     DeleteKPIForm,
+                     CreateCriterionForm,
+                     DeleteCriterionForm,)
 
 
 # -----------------------------------------------------------------------------
@@ -121,3 +123,53 @@ def delete_kpi_view(request, pk):
 
 # -----------------------------------------------------------------------------
 # Criteria management:
+
+@login_required
+def create_criterion_view(request, pk):
+    """View used in creating a new Criterion.
+    
+    Args:
+        pk (any): The primary key of the Evaluation model. Used for
+            redirecting the user to the right page after the criterion
+            has been created successfully.
+    """
+    ANPAHP = Evaluation.objects.get(pk = pk)
+    
+    if request.method == "POST":
+        form = CreateCriterionForm(request.POST)
+        if form.is_valid():
+            criterion = form.save(commit=False)
+            criterion.author = request.user
+            criterion.save()
+            return redirect('myANPAHPStep5', pk = pk) # Return to the criterion selection step
+    else:
+        form = CreateCriterionForm()
+        
+    return render(request,'ANPAHP/new_criterion.html', {'form': form,
+                                                  'ANPAHP': ANPAHP})
+    
+
+@login_required
+def delete_criterion_view(request, pk):
+    """View to delete one of the user's criteria by selecting from a list.
+    
+    Args:
+        pk (any): The primary key of the Evaluation model. Used for
+            redirecting the user to the right page after the criterion
+            has been deleted successfully.
+    """
+    ANPAHP = Evaluation.objects.get(pk = pk)
+
+    if request.method == 'POST':
+        form = DeleteCriterionForm(request.POST)
+        form.fields['criterion'].queryset = Criterion.objects.filter(author = request.user)
+        if form.is_valid():
+            criterion = form.cleaned_data['criterion']
+            criterion.delete()
+            return redirect('myANPAHPStep5', pk = pk)
+    else:
+        form = DeleteCriterionForm()
+        form.fields['criterion'].queryset = Criterion.objects.filter(author = request.user)
+
+    content = {'form': form, 'ANPAHP': ANPAHP}
+    return render(request, 'ANPAHP/delete_criterion.html', content)

@@ -1,0 +1,54 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+
+{%block head%}
+    <title>DATAMITE - Delete a criterion</title>
+{%endblock%}
+
+{% block main2 %}
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+        <h1>Delete one of your criteria:</h1>
+        <p>Select one of your created criteria and confirm its deletion.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.criterion.label_tag }}
+                {{ form.criterion }}
+            </div>
+
+            {% if form.criterion.errors %}
+                <div class="text-danger">
+                    {{ form.criterion.errors }}
+                </div>
+            {% endif %}
+
+            <a class="btn btn-secondary" href="{% url 'myANPAHPStep5' pk=ANPAHP.pk %}">Cancel</a>
+            <button class="btn btn-danger" type="submit" onclick="return confirmCriterionDelete();">
+                Delete selected criterion
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function confirmCriterionDelete() {
+        // Used to display the name of the selected criterion in the confirm message.
+        const select = document.getElementById('id_criterion');
+        const selectedIndex = select.selectedIndex;
+    
+        if (selectedIndex === -1 || !select.value) {
+            alert("Please select an criterion to delete.");
+            return false;
+        }
+    
+        const selectedName = select.options[selectedIndex].text;
+        return confirm(`Are you sure you want to delete criterion "${selectedName}"? This action cannot be undone.`);
+    }
+</script>
+
+{% endblock %}
+
