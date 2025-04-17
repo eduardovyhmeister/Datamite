@@ -93,22 +93,15 @@
         //   set preferences for the analysis to be useful.
         const inputs = document.querySelectorAll('.kpi-input');
         const values = Array.from(inputs).map(input => parseInt(input.value || "0"));
-        const allZero = values.every(v => v === 0);
-        const someZero = values.some(v => v === 0);
+        const allEqual = values.every(v => v === values[0]);
         const messageDiv = document.getElementById('preferenceMessage');
     
         messageDiv.classList.remove('d-none', 'alert-danger', 'alert-warning');
-    
-        if (allZero) {
-            messageDiv.textContent = "⚠️ You cannot set all preferences to zero. Please adjust at least one value.";
-            messageDiv.classList.add('alert-danger');
-            return false; // Prevent submission
-        }
-    
-        if (someZero) {
-            const confirmProceed = confirm("Some preferences are set to 0. This will prevent you from selecting any KPI/metric from the concerned BSC families. Do you want to continue?");
-            if (!confirmProceed) {
-                messageDiv.textContent = "Preferences submission cancelled. Please adjust your inputs.";
+
+        if (allEqual) {
+            const confirmEqual = confirm("All preference values are equal. Are you sure this is intentional? This would mean that all KPIs/metrics will have the same weight in the ANP-AHP analysis.");
+            if (!confirmEqual) {
+                messageDiv.textContent = "Submission cancelled. Please adjust your inputs.";
                 messageDiv.classList.add('alert-warning');
                 return false;
             }
