@@ -15,17 +15,7 @@ def step2_view(request, pk):
     if request.method == 'POST':
         form = BSCPreferencesForm(request.POST)
         if form.is_valid():
-            preferences = {}
-            # Extract preferences properly by matching names:
-            # Necessary because JS doesn't like non-slug names.
-            for family in BSCFamily.objects.all():
-                for slug_name, value in form.cleaned_data.items():
-                    if slug_equal(family.name, slug_name):
-                        preferences[family.name] = value
-                        continue
-            
-            # Save the preferences:
-            ANPAHP.bsc_preferences = preferences
+            ANPAHP.bsc_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('bsc_preferences'):
                 ANPAHP.current_step = 2
             ANPAHP.save()

@@ -16,17 +16,8 @@ def step6_view(request, pk):
     if request.method == 'POST':
         form = CriteriaPreferencesForm(ANPAHP.criteria, request.POST)
         if form.is_valid():
-            preferences = {}
-            # Extract preferences properly by matching names:
-            # Necessary because JS doesn't like non-slug names.
-            for criterion in Criterion.objects.all():
-                for slug_name, value in form.cleaned_data.items():
-                    if slug_equal(criterion.name, slug_name):
-                        preferences[criterion.name] = value
-                        continue
-            
             # Save the preferences:
-            ANPAHP.criteria_preferences = preferences
+            ANPAHP.criteria_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('criteria_preferences'):
                 ANPAHP.current_step = 6
             ANPAHP.save()

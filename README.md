@@ -46,3 +46,4 @@ Here is a list of stuff that could be done to improve this project:
 * Change the theme used by Bootstap to fit the identity of DATAMITE.
 * Improve the overall visual of the website.
 * Refactor code of similar steps (e.g. preference steps use very similar code).
+* Refactor code to make it easy to change the order or add new steps.

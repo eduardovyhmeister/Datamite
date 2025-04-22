@@ -16,17 +16,8 @@ def step4_view(request, pk):
     if request.method == 'POST':
         form = KPIPreferencesForm(ANPAHP.kpis, request.POST)
         if form.is_valid():
-            preferences = {}
-            # Extract preferences properly by matching names:
-            # Necessary because JS doesn't like non-slug names.
-            for kpi in KPI.objects.all():
-                for slug_name, value in form.cleaned_data.items():
-                    if slug_equal(kpi.name, slug_name):
-                        preferences[kpi.name] = value
-                        continue
-            
             # Save the preferences:
-            ANPAHP.kpis_preferences = preferences
+            ANPAHP.kpis_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('kpis_preferences'):
                 ANPAHP.current_step = 4
             ANPAHP.save()
