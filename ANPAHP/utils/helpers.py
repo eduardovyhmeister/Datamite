@@ -1,4 +1,4 @@
-"""Module for helper functions used in the views."""
+"""Module for helper functions used in the views and forms."""
 
 from django.utils import text
 

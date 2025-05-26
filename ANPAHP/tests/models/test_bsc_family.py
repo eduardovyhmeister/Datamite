@@ -1,3 +1,5 @@
+"""Tests for module 'models.bsc_family.'"""
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -10,10 +12,10 @@ from ...models.bsc_family import (BSCFamily,
 
 
 class BSCFamilyModelTests(TestCase):
-    """Class to test model 'BSCFamily' in ANPAHP app."""
+    """Class to test model 'BSCFamily' in the ANPAHP app."""
     # TODO
     
     
 class BSCSubfamilyModelTests(TestCase):
-    """Class to test model 'BSCSubfamily' in ANPAHP app."""
+    """Class to test model 'BSCSubfamily' in the ANPAHP app."""
     # TODO

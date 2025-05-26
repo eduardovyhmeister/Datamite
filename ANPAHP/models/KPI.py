@@ -14,7 +14,7 @@ class KPI(models.Model):
     # User-provided fields:
     name = models.TextField(primary_key = True, unique = True, 
                             validators=[MinLengthValidator(NAME_MIN_LENGTH)])
-    alternative_names = models.JSONField(default = list)
+    alternative_names = models.JSONField(default = list, blank = True)
     bsc_subfamilies = models.ManyToManyField(BSCSubfamily)
     short_definition = models.TextField(default = "", blank = True)
     explanation = models.TextField(default = "", blank = True)
@@ -23,6 +23,21 @@ class KPI(models.Model):
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True)
     created = models.DateTimeField(auto_now_add = True, editable = False)
     last_updated = models.DateTimeField(auto_now = True)
+    
+    
+    def get_bsc_families(self):
+        """Gets the list of BSC families to which the KPI is associated.
+        
+        Return:
+            list[BSCFamily] - The list of BSC families to which the KPI is associated.
+        """
+        families = []
+        for subfamily in self.bsc_subfamilies:
+            print(subfamily)
+    
+    
+    def is_from_same_family(self, other_kpi):
+        pass
     
     
     def save(self, *args, **kwargs):

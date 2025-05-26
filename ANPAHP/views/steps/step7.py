@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import Lower
 
-from ..helpers import slug_equal
+from ...utils.helpers import slug_equal
 from ...forms import CriteriaPreferencesForm
 from ...models import Evaluation, Criterion
 

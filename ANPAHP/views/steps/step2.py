@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from ..helpers import slug_equal
+from ...utils.helpers import slug_equal
 from ...forms import BSCPreferencesForm
 from ...models import Evaluation, BSCFamily
 

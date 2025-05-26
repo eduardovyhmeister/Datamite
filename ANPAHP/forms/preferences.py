@@ -10,7 +10,7 @@ from django import forms
 from django.db.models.functions import Lower
 
 from ..models import BSCFamily
-from ..views.helpers import slug_equal
+from ..utils.helpers import slug_equal
 
 
 # -----------------------------------------------------------------------------

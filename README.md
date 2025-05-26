@@ -40,6 +40,15 @@ python -m coverage run --source='.' manage.py test
 python -m coverage report
 ```
 
+# Checklist of things to do when adding code
+Here is a checklist of things to not forget if you add code:
+* **If you add a step to the ANP-AHP process:** add a view (in views/steps/), add a form (if forms/, if necessary), add/update the models (to store the new info, in particular in Evaluation), add the required HTML templates (in templates/), add the link to the page to the step list on the left by adding it to `templates/ANPAHP/Shared/_survey.html`.
+* **If you add/update a model:** don't forget to rerun `python manage.py makemigration` and `python manage.py migrate`.
+* **If you add a new view file:** add it to the `__init__.py` of the corresponding folder, as the others, to keep imports short.
+* **If you add a model:** add it to `models/__init__.py` like other models.
+* **If you add a form:** add it to `forms/__init__.py` like other forms.
+
+
 # TODOs
 Here is a list of stuff that could be done to improve this project:
 * Redo the unit tests for the new version of the code.
