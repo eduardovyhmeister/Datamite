@@ -89,7 +89,12 @@ class Evaluation(models.Model):
     criteria = models.ManyToManyField(Criterion)
     
     # Step 6 - Criteria preferences:
+    # Dict[Criterion.name: preference_value (1 to 100)]
     criteria_preferences = models.JSONField(default = dict)
+    
+    # Step 7 - Interfamily relationships:
+    # Dict[KPI.name: list[KPI.name]]
+    interfamily_relationships = models.JSONField(default = dict)
     
     # Used to track changes in a field, prevents resetting the whole
     # Evaluation model when coming back to a previous step and clicking confirm

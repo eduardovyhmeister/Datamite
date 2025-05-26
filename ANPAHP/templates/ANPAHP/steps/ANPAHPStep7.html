@@ -1,0 +1,64 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{%block head%}
+    <title> DATAMITE - ANP-AHP - Interfamily Relationships </title>
+{%endblock%}
+
+{% block navbar %}{% endblock%}
+{% block main1%}{%endblock%}
+
+
+{%block main2%}
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+
+        <div class="panel-heading card-header">
+            <div class="sv_header__text">
+                <h3><span style="position: static;"> Step 3 - Interfamily relationships: </span></h3>
+            </div>
+            <p style="text-align: justify;">
+                So far, you have selected KPIs/metrics that you would like to include in your ANP-AHP evaluation and set the preferences between these KPIs/metrics. However, some metrics might influence others. In this section, you can select KPIs/metrics and assign to them other KPIs/metrics that will influence their weighthing in the overall analysis.
+            </p>
+            <p style="text-align: justify;">
+                The weighting of KPIs/metrics within the same BSC family has been done when you set the preferences for KPIs/metrics. Now, you can set interfamily relationships and the preferences will be set in the next step.
+            </p>
+        </div>
+        </br>
+
+        <form method='POST' id="kpiForm">
+            {% csrf_token %}
+            <div style="display: inline-block; width:100%;">
+                <p  style="text-align: justify;">
+                    1) Select a KPI/metric that you think will depend on other KPIs/metrics for another BSC family. 2) Select the KPIs/metrics that will influence the selected KPI/metric (use control + click to select multiple ones). 3) Click "Add" to add another KPI/metric selection.<br/>
+                </p>
+            </div>
+            
+            TODO
+
+            {% comment %} {% if ANPAHP.current_step > 6 %}
+                <div class="alert alert-warning">
+                    <p  style="text-align: justify;">
+                        ⚠️ Changing your selection of KPIs/metrics here and confirming these changes will reset the next step (KPIs/metrics preferences).
+                    </p>
+                </div>
+            {% endif %} {% endcomment %}
+
+            {% comment %} <div id="kpiError" class="alert alert-danger d-none" role="alert">
+                ⚠️ Please select at least one KPI/metric to proceed.
+            </div> {% endcomment %}
+
+            <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}

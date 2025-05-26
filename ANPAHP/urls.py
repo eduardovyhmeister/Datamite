@@ -37,16 +37,17 @@ urlpatterns = [
     # Objective selection:
     path('myANPAHP/<int:pk>/Step1', views.steps.step1_view, name = "myANPAHPStep1"),
     # Perspectives/BSC preferences:
-    path('myANPAHP/<int:pk>/Step2', views.steps.step2_view, name='myANPAHPStep2'),
+    path('myANPAHP/<int:pk>/Step2', views.steps.step2_view, name = 'myANPAHPStep2'),
     # KPI selection:
-    path('myANPAHP/<int:pk>/Step3', views.steps.step3_view, name='myANPAHPStep3'),
+    path('myANPAHP/<int:pk>/Step3', views.steps.step3_view, name = 'myANPAHPStep3'),
     # KPI preferences:
-    path('myANPAHP/<int:pk>/Step4', views.steps.step4_view, name='myANPAHPStep4'),
+    path('myANPAHP/<int:pk>/Step4', views.steps.step4_view, name = 'myANPAHPStep4'),
     # Criteria selection:
-    path('myANPAHP/<int:pk>/Step5', views.steps.step5_view, name='myANPAHPStep5'),
+    path('myANPAHP/<int:pk>/Step5', views.steps.step5_view, name = 'myANPAHPStep5'),
     # Criteria preferences:
-    path('myANPAHP/<int:pk>/Step6', views.steps.step6_view, name='myANPAHPStep6'),
-    
+    path('myANPAHP/<int:pk>/Step6', views.steps.step6_view, name = 'myANPAHPStep6'),
+    # Interfamily relationships:
+    path('myANPAHP/<int:pk>/Step7', views.steps.step7_view, name = 'myANPAHPStep7'),
     
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
