@@ -1,3 +1,5 @@
+"""Forms to manage Objectives: selection, creation & deletion."""
+
 from django.forms import ModelForm, RadioSelect
 from django import forms
 from django.core.exceptions import ValidationError

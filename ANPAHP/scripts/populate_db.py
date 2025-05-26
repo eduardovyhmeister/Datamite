@@ -1,7 +1,7 @@
 """Script used to populate the DB with the DATAMITE KPIs, criteria, and objectives.
-To run this script, use the 'python manage.py runscript populate_db' while inside the
-project folder. This scripts provide human-readable logs to let you know if anything
-went wrong."""
+To run this script, use the 'python manage.py runscript populate_db' command while 
+inside the project folder. This scripts provide human-readable logs to let you know 
+if anything went wrong."""
 
 import csv
 import json

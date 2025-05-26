@@ -1,3 +1,5 @@
+"""The form used to manage the ANP-AHP evaluations (e.g. creation)."""
+
 from django.forms import ModelForm, TextInput, Select
 
 from ..models import Evaluation

@@ -1,3 +1,5 @@
+"""A simple form for adding notes to evaluations (basically a doc string)."""
+
 from django.forms import ModelForm
 
 from ..models import Evaluation

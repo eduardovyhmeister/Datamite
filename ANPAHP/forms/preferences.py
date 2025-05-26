@@ -1,5 +1,9 @@
 """A module for forms concerning user preferences. Contains forms for
-selecting preferences about BSCFamily/Subfamily, KPIs, etc."""
+selecting preferences about BSCFamily/Subfamily, KPIs, etc.
+
+`PreferencesSelectionForm` offers a generic preference selection which will,
+given a selection of objects, provide a slider and a text box (both linked to it via
+JS) for a user to select a preference score (by default, from 0 to 100)."""
 
 from django.utils.text import slugify
 from django import forms
@@ -13,7 +17,7 @@ from ..views.helpers import slug_equal
 
 
 class PreferencesSelectionForm(forms.Form):
-    """A generic form for selectring preferences (with sliders, etc.)."""
+    """A generic form for selecting preferences (with sliders, etc.)."""
 
     def __init__(self, selected_objs, *args, 
                  min_value = 0, max_value = 100, step = 1,

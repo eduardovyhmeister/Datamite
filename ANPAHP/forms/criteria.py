@@ -1,3 +1,5 @@
+"""Forms to manage Criteria: selection, creation & deletion."""
+
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django import forms
