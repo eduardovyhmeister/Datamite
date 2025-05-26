@@ -1,3 +1,11 @@
+"""Model for an AHP-ANP evaluation in our DB. In here, you can set the number
+of steps currently present in the process (used to update the progression bar),
+the fields to reset at each step when changes are detected, the default values
+for the fields of the evaluation. 
+
+If you plan on modifying this file, please make sure to read all the doc/comments
+to not forget to update what needs to be updated and not break anything."""
+
 from collections import defaultdict
 
 from django.contrib.auth.models import User
@@ -27,8 +35,8 @@ FIELDS_TO_RESET = defaultdict(list,
 {
     0: [],
     1: [],
-    2: ['kpis', 'kpis_preferences'],
-    3: ['kpis_preferences'],
+    2: ['kpis', 'kpis_preferences', 'interfamily_relationships'],
+    3: ['kpis_preferences', 'interfamily_relationships'],
     4: [],
     5: ['criteria_preferences'],
     6: [],
@@ -42,7 +50,8 @@ FIELDS_DEFAULT_VALUE = {
     'kpis': None, # Actually unnecessary since it's a ManyToManyField (.clear() is used instead)
     'kpis_preferences': dict,
     'criteria': None,
-    'criteria_preferences': dict
+    'criteria_preferences': dict,
+    'interfamily_relationships': dict,
 }
 
 

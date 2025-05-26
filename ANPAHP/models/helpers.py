@@ -73,7 +73,7 @@ def get_unique_custom_fields(model_class: Type[Model]) -> list[Field]:
     
 def get_custom_foreign_keys(model_class: Type[Model]) -> list[Field]:
     """Gets the list of all custom fields (fields you implemented yourself
-    in your model classes) that foreign keys. Will not return  any automatically 
+    in your model classes) that are foreign keys. Will not return any automatically 
     created fields such 'ManyToOne' relationships or unique IDs.
     
     Args:
@@ -87,7 +87,17 @@ def get_custom_foreign_keys(model_class: Type[Model]) -> list[Field]:
     
 
 def get_custom_many_to_many_fields(model_class):
-    """TODO"""
+    """Gets the list of all custom fields (fields you implemented yourself in
+    your model classes) that are ManyToManyFields. Will not return any automatically
+    created fields.
+    
+    Args:
+        model_class (class): The 'Model' to extract the fields from, must inherit
+            from django.db.models.Model.
+    
+    Returns:
+        list[django.db.models.Field] - The list of ManyToManyFields in the model.        
+    """
     return [field for field in get_custom_fields(model_class) if isinstance(field, ManyToManyField)]
     
 
@@ -97,9 +107,12 @@ def get_casting_function(field_class: type[Field]) -> Callable:
     is where to add it.
 
     Args:
-        field_class:
+        field_class: The 'Field' to get the casting function for. Must inherit from
+            django.db.models.Field.
     
     Returns:
-        Callable - A callable used to perform type casting.
+        Callable - A callable used to perform type casting for that field from text.
     """
+    # This could be a set of if statements on the subclasses of Field with
+    # a callable (e.g. int) returned for each one.
     pass # TODO

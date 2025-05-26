@@ -11,6 +11,7 @@ NAME_MIN_LENGTH = 1
 
 class KPI(models.Model):
     """Model representing KPIs in our DB."""
+    # User-provided fields:
     name = models.TextField(primary_key = True, unique = True, 
                             validators=[MinLengthValidator(NAME_MIN_LENGTH)])
     alternative_names = models.JSONField(default = list)
@@ -18,6 +19,7 @@ class KPI(models.Model):
     short_definition = models.TextField(default = "", blank = True)
     explanation = models.TextField(default = "", blank = True)
     
+    # Automatically set fields:
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True)
     created = models.DateTimeField(auto_now_add = True, editable = False)
     last_updated = models.DateTimeField(auto_now = True)

@@ -1,3 +1,5 @@
+"""Model for storing Criteria in our DB."""
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -12,11 +14,14 @@ NAME_MIN_LENGTH = 1
 
 class Criterion(models.Model):
     """Model representing a criterion in our DB."""
+    # User provided fields:
     name = models.TextField(primary_key = True, unique = True, 
                             validators=[MinLengthValidator(NAME_MIN_LENGTH)])
     explanation = models.TextField(default = "", blank = True)
     option = models.CharField(max_length = 100, choices = CriterionOption, 
                               null = True, blank = True, default = "")
+    
+    # Automatically set fields:
     author = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True)
     created = models.DateTimeField(auto_now_add = True, editable = False)
     last_updated = models.DateTimeField(auto_now = True)

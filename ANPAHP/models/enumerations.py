@@ -14,14 +14,6 @@ class CriterionOption(models.TextChoices):
     USER_SATISFACTION = "USER_SATISFACTION", "User Satisfaction"
     
     
-# class BSCFamily(models.TextChoices):
-#     """The possible choices for the BSC family (for KPIs)."""
-#     CUSTOMER = "CUSTOMER", "Customer"
-#     FINANCIAL = "FINANCIAL", "Financial"
-#     EDUCATION_AND_GROWTH = "EDUCATION AND GROWTH", "Education and Growth"
-#     INTERNAL_PROCESSES = "INTERNAL PROCESSES", "Internal Processes"
-        
-
 class UserType(models.TextChoices):
     """The possible types of datamite users (for Evaluation)."""
     SERVICE_USER = "SERVICE_USER", "Service User"
