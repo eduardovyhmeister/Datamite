@@ -18,3 +18,4 @@ from .criteria import (CriteriaSelectionForm,
 from .preferences import (BSCPreferencesForm,
                           KPIPreferencesForm,
                           CriteriaPreferencesForm)
+from .relations import (KPIRelationshipForm,)

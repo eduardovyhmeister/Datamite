@@ -22,12 +22,12 @@ def step6_view(request, pk):
                 ANPAHP.current_step = 6
             ANPAHP.save()
             
-            return render(request, 'ANPAHP/steps/ANPAHPStep6.html', {
-                'form': form,
-                'ANPAHP': ANPAHP,
-                'selected_criteria': ANPAHP.criteria.all().order_by(Lower('name')),
-            })
-            # return redirect('myANPAHPStep7', pk = ANPAHP.pk)
+            # return render(request, 'ANPAHP/steps/ANPAHPStep6.html', {
+            #     'form': form,
+            #     'ANPAHP': ANPAHP,
+            #     'selected_criteria': ANPAHP.criteria.all().order_by(Lower('name')),
+            # })
+            return redirect('myANPAHPStep7', pk = ANPAHP.pk)
     else:
         form = CriteriaPreferencesForm(ANPAHP.criteria, preferences = ANPAHP.criteria_preferences)
 
