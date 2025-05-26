@@ -66,7 +66,7 @@ class BSCFamily(models.Model):
         Returns:
             bool - 'True' if the value is valid, 'False' otherwise.
         """
-        return value in [subfamily.name for subfamily in BSCSubfamily.objects.all()]
+        return value in [subfamily.name for subfamily in BSCFamily.objects.all()]
     
     
 # -----------------------------------------------------------------------------
