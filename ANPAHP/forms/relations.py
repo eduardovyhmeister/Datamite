@@ -11,7 +11,7 @@ class KPIRelationshipForm(forms.Form):
     """
     
     main_kpi = forms.ModelChoiceField(
-        queryset = KPI.objects.none(),  # set dynamically in the view
+        queryset = KPI.objects.none(),  # Set dynamically in the view
         label = "Select a KPI/metric:",
         widget = forms.Select(attrs = {'class': 'form-control'})
     )

@@ -12,6 +12,7 @@
 
 {%block main2%}
 {{ kpi_lists|json_script:"kpi-dependency-data" }}
+{{ ANPAHP.interfamily_relationships|json_script:"initial-selection-data" }}
 
 <div class="row">
 {% include "Shared/_survey.html" %}
@@ -60,10 +61,12 @@
                                     {{ form.main_kpi }}
                                     <button type="button" class="btn btn-sm btn-danger mt-2 delete-form">Delete this relationship</button>
                                 </div>
-                                <div class="col-md-6 form-group dependency-container" style="display: none;">
-                                    <label>{{ form.dependencies.label }}</label>
-                                    <select name="{{ form.dependencies.name }}" multiple class="form-control" size="6"></select>
-                                </div>
+                                
+                                    <div class="col-md-6 form-group dependency-container" style="display: none;">
+                                        <label>{{ form.dependencies.label }}</label>
+                                        <select name="{{ form.prefix }}-dependencies" multiple class="form-control" size="6"></select>
+                                    </div>
+
                             </div>
                         </div>
                     </div>
@@ -87,13 +90,16 @@
 
 
 <script>
+// Function for managing indices correctly and keeping the selections when deleting a form:
 document.getElementById("formset-container").addEventListener("click", function (event) {
     if (event.target.classList.contains("delete-form")) {
         const wrapper = event.target.closest(".form-wrapper");
         wrapper.remove();
-        reindexForms(); // ✅ safe and preserves input values
+        reindexForms(); // safe and preserves input values
     }
 
+    // Reindex forms when one is deleted, to keep the django naming conventions
+    // of formset consistent:
     function reindexForms() {
         const forms = document.querySelectorAll(".form-wrapper");
         const totalForms = document.getElementById("id_form-TOTAL_FORMS");
@@ -101,18 +107,13 @@ document.getElementById("formset-container").addEventListener("click", function 
 
         forms.forEach((wrapperEl, index) => {
             wrapperEl.querySelectorAll("input, select, label").forEach(el => {
-                // Update `name`
-                if (el.name) {
+                if (el.name) { // Update `name`
                     el.name = el.name.replace(/form-\d+/, `form-${index}`);
                 }
-
-                // Update `id`
-                if (el.id) {
+                if (el.id) { // Update `id`
                     el.id = el.id.replace(/form-\d+/, `form-${index}`);
                 }
-
-                // Update `for` (label tag)
-                if (el.htmlFor) {
+                if (el.htmlFor) { // Update `for` (label tag)
                     el.htmlFor = el.htmlFor.replace(/form-\d+/, `form-${index}`);
                 }
             });
@@ -120,58 +121,107 @@ document.getElementById("formset-container").addEventListener("click", function 
     }
 });
 
+// Used as a template empty form when all forms are deleted:
 let blankFormHTML;
 
+// Manages the dynamic part of the page, with the selection appearing only
+// when a main_kpi is selected and adding new forms when the add new relationship
+// button is clicked.
 document.addEventListener("DOMContentLoaded", function () {
     const firstWrapper = document.querySelector(".form-wrapper");
-    blankFormHTML = firstWrapper.outerHTML;
-    
+    // Ensure that if there are no initial forms, a blank one is created to get the HTML
+    if (firstWrapper) {
+        blankFormHTML = firstWrapper.outerHTML;
+    } else {
+        // Fallback for when there are no initial forms (e.g., first time visiting)  
+        blankFormHTML = `
+            <div class="form-wrapper">
+                <div class="kpi-form">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Main KPI</label>
+                            <select name="form-__prefix__-main_kpi" class="form-control"></select>
+                            <button type="button" class="btn btn-sm btn-danger mt-2 delete-form">Delete this relationship</button>
+                        </div>
+                        <div class="col-md-6 form-group dependency-container" style="display: none;">
+                            <label>Dependencies</label>
+                            <select name="form-__prefix__-dependencies" multiple class="form-control" size="6"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     const kpiMap = JSON.parse(document.getElementById("kpi-dependency-data").textContent);
+    const initialSavedRelationships = JSON.parse(document.getElementById("initial-selection-data").textContent);
+
     const formsetContainer = document.getElementById("formset-container");
     const addButton = document.getElementById("add-form");
     const totalForms = document.getElementById("id_form-TOTAL_FORMS");
 
-    // Hook up dynamic form cloning
+    // Function to populate dependencies based on main KPI selection.
+    // mainKPISelect: the KPI selected (main_kpi)
+    // preSelectedDeps: the selected options (passed only for already saved data, [] otherwise)
+    function populateDependencies(mainKPISelect, preSelectedDeps = []) {
+        const selectedText = mainKPISelect.options[mainKPISelect.selectedIndex].text;
+        const formDiv = mainKPISelect.closest(".kpi-form");
+        const dependenciesBox = formDiv.querySelector("select[name$='dependencies']");
+        const container = formDiv.querySelector(".dependency-container");
+
+        dependenciesBox.innerHTML = ""; // Clear existing options
+
+        const deps = kpiMap[selectedText] || []; // Get possible dependencies from kpiMap
+        deps.forEach(name => {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            if (preSelectedDeps.includes(name)) { // Select the preselected options
+                opt.selected = true;
+            }
+            dependenciesBox.appendChild(opt);
+        });
+
+        // Only display if there are actual potential dependencies
+        container.style.display = deps.length > 0 ? "block" : "none";
+    }
+
+
+    // Add form logic
     addButton.addEventListener("click", function () {
         const formCount = parseInt(totalForms.value);
-
-        // Clone the clean backup form
         const wrapper = document.createElement("div");
         wrapper.className = "form-wrapper";
-        wrapper.innerHTML = blankFormHTML.replace(/form-\d+/g, `form-${formCount}`);
+        // Ensure prefix replacement for new forms
+        wrapper.innerHTML = blankFormHTML.replace(/form-(__prefix__|\d+)/g, `form-${formCount}`);
 
-        // Reset fields
-        const select = wrapper.querySelector("select[name$='main_kpi']");
-        if (select) select.selectedIndex = 0;
+        const mainKpiSelect = wrapper.querySelector("select[name$='main_kpi']");
+        if (mainKpiSelect) mainKpiSelect.selectedIndex = 0; // Reset to default/first option
 
+        // Clear and hide dependencies for new forms (they start blank)
         const depContainer = wrapper.querySelector(".dependency-container");
         const depSelect = wrapper.querySelector("select[multiple]");
-        depSelect.innerHTML = "";
-        depContainer.style.display = "none";
+        if (depSelect) depSelect.innerHTML = "";
+        if (depContainer) depContainer.style.display = "none";
 
         formsetContainer.appendChild(wrapper);
         totalForms.value = formCount + 1;
     });
 
-    // Dynamic population logic for dependencies (delegated binding)
+    // Delegate dynamic change logic for main KPI selection
     formsetContainer.addEventListener("change", function (event) {
         if (event.target.matches("select[name$='main_kpi']")) {
-            const mainKPI = event.target;
-            const selectedText = mainKPI.options[mainKPI.selectedIndex].text;
-            const formDiv = mainKPI.closest(".kpi-form");
-            const dependenciesBox = formDiv.querySelector("select[multiple]");
-            const container = formDiv.querySelector(".dependency-container");
+            populateDependencies(event.target, []); // Pass an empty array for new selections
+        }
+    });
 
-            dependenciesBox.innerHTML = "";
-            const deps = kpiMap[selectedText] || [];
-            deps.forEach(name => {
-                const opt = document.createElement("option");
-                opt.value = name;
-                opt.textContent = name;
-                dependenciesBox.appendChild(opt);
-            });
-
-            container.style.display = deps.length > 0 ? "block" : "none";
+    // Initialisation for pre-populated form entries (on page load)
+    document.querySelectorAll(".form-wrapper").forEach((formWrapper, index) => {
+        const mainKPISelect = formWrapper.querySelector("select[name$='main_kpi']");
+        if (mainKPISelect) {
+            const initialMainKpiText = mainKPISelect.options[mainKPISelect.selectedIndex]?.text;
+            const savedDependenciesForThisForm = initialSavedRelationships[initialMainKpiText] || [];
+            populateDependencies(mainKPISelect, savedDependenciesForThisForm);
         }
     });
 });
