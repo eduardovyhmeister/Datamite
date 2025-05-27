@@ -51,7 +51,7 @@ FIELDS_DEFAULT_VALUE = {
     'kpis_preferences': dict,
     'criteria': None,
     'criteria_preferences': dict,
-    'interfamily_relationships': dict,
+    'interfamily_relationships': None,
 }
 
 
@@ -103,7 +103,7 @@ class Evaluation(models.Model):
     
     # Step 7 - Interfamily relationships:
     # Dict[KPI.name: list[KPI.name]]
-    interfamily_relationships = models.JSONField(default = dict)
+    interfamily_relationships = models.JSONField(default = None)
     
     # Used to track changes in a field, prevents resetting the whole
     # Evaluation model when coming back to a previous step and clicking confirm

@@ -90,12 +90,12 @@
     </ul></nav></br>
 {% endif %}
 
-{% if ANPAHP.criteria_preferences or ANPAHP.interfamily_relationships %}
+{% if ANPAHP.criteria_preferences or ANPAHP.interfamily_relationships is not None %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
                 </i>Step 7: Interfamily relationships
-                {% if ANPAHP.interfamily_relationships %}
+                {% if ANPAHP.interfamily_relationships is not None %}
                     <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
                     {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
                 {% endif %}
