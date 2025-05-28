@@ -35,11 +35,12 @@ FIELDS_TO_RESET = defaultdict(list,
 {
     0: [],
     1: [],
-    2: ['kpis', 'kpis_preferences', 'interfamily_relationships'],
-    3: ['kpis_preferences', 'interfamily_relationships'],
+    2: ['kpis', 'kpis_preferences', 'interfamily_relationships', 'interfamily_preferences'],
+    3: ['kpis_preferences', 'interfamily_relationships', 'interfamily_preferences'],
     4: [],
     5: ['criteria_preferences'],
     6: [],
+    7: ['interfamily_preferences'],
 })
 # Use this to set the default value to which the field will be reset
 # to when a step change is detected. If a callable is provided (e.g. dict),
@@ -52,6 +53,7 @@ FIELDS_DEFAULT_VALUE = {
     'criteria': None,
     'criteria_preferences': dict,
     'interfamily_relationships': None,
+    'interfamily_preferences': None,
 }
 
 
@@ -103,7 +105,18 @@ class Evaluation(models.Model):
     
     # Step 7 - Interfamily relationships:
     # Dict[KPI.name: list[KPI.name]]
-    interfamily_relationships = models.JSONField(default = None)
+    # Defaults to None to differentiate between an empty dict (which
+    # is a valid input from the user) and the absence of value.
+    interfamily_relationships = models.JSONField(default = None, null = True)
+    
+    # Step 8 - Interfamily relationships preferences:
+    # Dict[KPI.name: Dict[KPI.name: preference_value (1 to 100)]]
+    # If only 1 KPI influence has been selected, the default preference
+    # value will be 100.
+    # Defaults to None to differentiate between an empty dict (which
+    # is a valid input from the user if there was no interfamily relationships)
+    # and the absence of value.
+    interfamily_preferences = models.JSONField(default = None, null = True)
     
     # Used to track changes in a field, prevents resetting the whole
     # Evaluation model when coming back to a previous step and clicking confirm

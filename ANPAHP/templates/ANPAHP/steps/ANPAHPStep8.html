@@ -1,0 +1,101 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{%block head%}
+    <title> DATAMITE - ANP-AHP - Interfamily Relationships Preferences </title>
+{%endblock%}
+
+{% block navbar %}{% endblock%}
+{% block main1%}{%endblock%}
+
+
+{%block main2%}
+
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+
+        <div class="panel-heading card-header">
+            <div class="sv_header__text">
+                <h3><span style="position: static;"> Step 8 - Interfamily relationships preferences: </span></h3>
+            </div>
+            <p style="text-align: justify;">
+                Now that you have selected KPIs/metrics that may influence each other, in this step, you are asked to provide the relative importance of their influence. 
+            </p>
+            <p style="text-align: justify;">
+                For each KPI/metric selected in the previous step, if you selected 2 or more KPIs/metrics that may influence it, you need to set the relative importance of their influence.
+            </p>
+        </div>
+        </br>
+
+        <form method='POST'>
+            {% csrf_token %}
+            <div style="display: inline-block; width:100%;">
+                <p  style="text-align: justify;">
+                    Please provide the relative importance of the influence KPIs/metrics have on the main KPI: 1 means barely any influence, 100 means it is the largest influence.
+                </p>
+            </div>
+            
+            {{ formset.management_form }}
+
+            <div id="formset-container">
+                {% for form in formset %}
+                    {% with main_kpi=main_kpis|get_value_at:forloop.counter0 %}
+                        <div class="form-group">
+                            <div {% if form.selected_objs|length <= 1 %}style="display: none;"{% endif %}>
+                                <div style="display: inline-block; width:100%;">
+                                    <hr>
+                                    <h3><span style="position: static;">Main KPI - {{ main_kpi.name }} </span></h3>
+                                    <p style="text-align: justify;">
+                                        <b>Definition:</b> {{ main_kpi.short_definition }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">KPI/metric</th>
+                                            <th scope="col">Preference level</th>
+                                            <th scope="col">Definition</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for kpi in form.selected_objs %}
+                                                {% with field_name=kpi.name|slugify %}
+                                                    <tr>
+                                                        <td><b>{{ kpi.name }}</b></td>
+                                                        <td>
+                                                            {% with field=form|get_value_at:field_name %}
+                                                                {{ field }}
+                                                                <input type="number" class="kpi-input"
+                                                                    id="value_{{ field_name }}"
+                                                                    min="1" max="100"
+                                                                    value="{{ field.value|default_if_none:0 }}"
+                                                                    oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
+                                                            {% endwith %}
+                                                        </td>
+                                                        <td style="text-align: justify;">{{ kpi.short_definition }}</td>
+                                                    </tr>
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}

@@ -10,3 +10,4 @@ from .step4 import step4_view
 from .step5 import step5_view
 from .step6 import step6_view
 from .step7 import step7_view
+from .step8 import step8_view

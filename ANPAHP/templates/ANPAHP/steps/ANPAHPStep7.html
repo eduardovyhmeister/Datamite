@@ -21,7 +21,7 @@
 
         <div class="panel-heading card-header">
             <div class="sv_header__text">
-                <h3><span style="position: static;"> Step 3 - Interfamily relationships: </span></h3>
+                <h3><span style="position: static;"> Step 7 - Interfamily relationships: </span></h3>
             </div>
             <p style="text-align: justify;">
                 So far, you have selected KPIs/metrics that you would like to include in your ANP-AHP evaluation and set the preferences between these KPIs/metrics. However, some metrics might influence others. In this section, you can select KPIs/metrics and assign to them other KPIs/metrics that will influence their weighthing in the overall analysis.
@@ -64,12 +64,10 @@
                                     {{ form.main_kpi }}
                                     <button type="button" class="btn btn-sm btn-danger mt-2 delete-form">Delete this relationship</button>
                                 </div>
-                                
-                                    <div class="col-md-6 form-group dependency-container" style="display: none;">
-                                        <label>{{ form.dependencies.label }}</label>
-                                        <select name="{{ form.prefix }}-dependencies" multiple class="form-control" size="6"></select>
-                                    </div>
-
+                                <div class="col-md-6 form-group dependency-container" style="display: none;">
+                                    <label>{{ form.dependencies.label }}</label>
+                                    <select name="{{ form.prefix }}-dependencies" multiple class="form-control" size="6"></select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,13 +75,13 @@
             </div>
         </div>
 
-            {% comment %} {% if ANPAHP.current_step > 6 %}
+            {% if ANPAHP.current_step > 7 %}
                 <div class="alert alert-warning">
                     <p  style="text-align: justify;">
                         ⚠️ Changing your selection of KPIs/metrics here and confirming these changes will reset the next step (KPIs/metrics preferences).
                     </p>
                 </div>
-            {% endif %} {% endcomment %}
+            {% endif %}
 
             <button type="button" id="add-form" class="btn btn-outline-primary">Add another relationship</button>
             <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>

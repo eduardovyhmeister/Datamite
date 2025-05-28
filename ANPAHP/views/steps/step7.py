@@ -47,14 +47,16 @@ def step7_view(request, pk):
                 relationships[main_kpi.name] = [dep.name for dep in dependencies]
 
         ANPAHP.interfamily_relationships = relationships
-        ANPAHP.save()  
+        if ANPAHP.tracker.has_changed('interfamily_relationships'):
+            ANPAHP.current_step = 7
+        ANPAHP.save()
             
-        return render(request, 'ANPAHP/steps/ANPAHPStep7.html', {
-            'formset': formset,
-            'ANPAHP': ANPAHP,
-            'kpi_lists': kpi_lists,
-        })
-        # return redirect('myANPAHPStep8', pk = ANPAHP.pk)
+        # return render(request, 'ANPAHP/steps/ANPAHPStep7.html', {
+        #     'formset': formset,
+        #     'ANPAHP': ANPAHP,
+        #     'kpi_lists': kpi_lists,
+        # })
+        return redirect('myANPAHPStep8', pk = ANPAHP.pk)
     else: # GET request
         # Set the formset with the already existing data if it exists:
         initial_data = []
