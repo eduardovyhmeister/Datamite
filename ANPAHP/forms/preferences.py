@@ -50,21 +50,13 @@ class PreferencesSelectionForm(forms.Form):
             slug = slugify(str(getattr(obj, preference_field))) # Required to be JS-friendly
             initial_value = preferences.get(getattr(obj, preference_field), min_value) # Default to min_value
             
-            self.fields[slug] = forms.IntegerField(
-                label = str(getattr(obj, preference_field)),
+            self.fields[slug] = _SliderWithNumberMultiValueField(
+                name = slug,
                 min_value = min_value,
                 max_value = max_value,
-                initial = initial_value,
-                widget = forms.NumberInput(attrs = {
-                    'type': 'range',
-                    'min': str(min_value),
-                    'max': str(max_value),
-                    'step': str(step),
-                    'class': 'slider',
-                    'oninput': f'document.getElementById("value_{slug}").value = this.value',
-                    'name': slug
-                })
+                initial_value = initial_value,
             )
+
             
     def retrieve_preferences(self):
         """Provides the dictionary of preferences with un-slugified fields. Use this
@@ -162,3 +154,88 @@ class CriteriaPreferencesForm(PreferencesSelectionForm):
             **kwargs
             )
 
+
+# -----------------------------------------------------------------------------
+# Private classes used for creating the multi-widget element for preferences
+# (slider + text number input) and the multi-value field that uses such a widget.
+
+
+class _SliderWithNumberWidget(forms.MultiWidget):
+    """Private class for combining the slider and the number input as text
+    into a single widget."""
+    
+    def __init__(self, name, min_value=0, max_value=100, step=1):
+        """Constructor of the multi-widget.
+        
+        Args:
+            name (str): The name used for IDs (will be slugified).
+            min_value (int/float): The minimum value for the slider/number
+                input (defaults to 0).
+            max_value (int/float): The maximum value for the slider/number
+                input (defaults to 100).
+            step (int/float): The step for increments of the value of the
+                widget (defaults to 1).
+        """
+        widgets = [
+            forms.NumberInput(attrs={
+                'type': 'range',
+                'class': 'slider',
+                'min': str(min_value),
+                'max': str(max_value),
+                'step': str(step),
+                'id': f'slider_{slugify(name)}',
+                'oninput': f'this.nextElementSibling.value = this.value'
+            }),
+            forms.NumberInput(attrs={
+                'type': 'number',
+                'class': 'numeric_value',
+                'min': str(min_value),
+                'max': str(max_value),
+                'step': str(step),
+                'id': f'num_{slugify(name)}',
+                'oninput': 'this.previousElementSibling.value = this.value'
+            }),
+        ]
+        super().__init__(widgets)
+
+    def decompress(self, value):
+        """Returns the value corresponding to the widget as a whole.
+        DOT NOT DELETE THIS METHOD, you'll get NotImplementedError."""
+        return value
+    
+    
+class _SliderWithNumberMultiValueField(forms.MultiValueField):
+    """Private class for a multi-value field using the multi-widget defined above.
+    Will effectively contain a single value because both widgets synchronise their
+    values."""
+    
+    def __init__(self, name, min_value=0, max_value=100, step=1, initial_value=None, **kwargs):
+        """Constructor of the multi-value field.
+        
+        Args:
+            name (str): Name of the field, used as an ID for widgets, will be slugified.
+            min_value (int/float): The minimum value for the slider/number
+                input (defaults to 0).
+            max_value (int/float): The maximum value for the slider/number
+                input (defaults to 100).
+            step (int/float): The step for increments of the value of the
+                widget (defaults to 1).
+            initial_value (int/float): The initial value the field should have
+                (specify this to display your loaded data for instance). If set
+                to `None` will default to `min_value` (defaults to `None`).
+        """
+        initial_value = initial_value if initial_value is not None else min_value
+        super().__init__(
+            fields = [
+                forms.IntegerField(min_value=min_value, max_value=max_value),
+                forms.IntegerField(min_value=min_value, max_value=max_value),
+            ],
+            initial = [initial_value, initial_value],
+            widget = _SliderWithNumberWidget(slugify(name), min_value=min_value, max_value=max_value, step=step),
+            **kwargs
+        )
+    
+    def compress(self, data_list):
+        """Returns the value corresponding to the field.
+        DOT NOT DELETE THIS METHOD, you'll get NotImplementedError."""
+        return data_list[0]

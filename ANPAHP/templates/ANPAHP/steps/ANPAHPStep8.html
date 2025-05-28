@@ -57,7 +57,7 @@
                                         <thead>
                                         <tr>
                                             <th scope="col">KPI/metric</th>
-                                            <th scope="col">Preference level</th>
+                                            <th scope="col">Importance</th>
                                             <th scope="col">Definition</th>
                                         </tr>
                                         </thead>
@@ -66,16 +66,7 @@
                                                 {% with field_name=kpi.name|slugify %}
                                                     <tr>
                                                         <td><b>{{ kpi.name }}</b></td>
-                                                        <td>
-                                                            {% with field=form|get_value_at:field_name %}
-                                                                {{ field }}
-                                                                <input type="number" class="kpi-input"
-                                                                    id="value_{{ field_name }}"
-                                                                    min="1" max="100"
-                                                                    value="{{ field.value|default_if_none:0 }}"
-                                                                    oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
-                                                            {% endwith %}
-                                                        </td>
+                                                        <td>{{ form|get_value_at:field_name }}</td>
                                                         <td style="text-align: justify;">{{ kpi.short_definition }}</td>
                                                     </tr>
                                                 {% endwith %}

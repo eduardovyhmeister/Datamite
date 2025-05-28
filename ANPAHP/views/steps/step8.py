@@ -17,11 +17,6 @@ def step8_view(request, pk):
     # Build the form set:
     KPIRelationshipPreferenceFormSet = formset_factory(KPIPreferencesForm, extra = 0)
     formset = KPIRelationshipPreferenceFormSet()
-    # for kpi in main_kpis:
-    #     formset.forms.append(KPIPreferencesForm(
-    #         selected_kpis = KPI.objects.filter(name__in = ANPAHP.interfamily_relationships[kpi.name]),
-    #         preferences = None if ANPAHP.interfamily_preferences is None else ANPAHP.interfamily_preferences[kpi.name],
-    #     ))
 
     if request.method == 'POST':
         # Create the formset by manually generating the KPIPreferencesForms.
@@ -48,11 +43,6 @@ def step8_view(request, pk):
         if ANPAHP.tracker.has_changed('interfamily_preferences'):
             ANPAHP.current_step = 8
         ANPAHP.save()
-        
-        # for kpi, dependencies in interfamily_preferences.items():
-        #     print(f"KPI: {kpi.name}")
-        #     for dep, value in dependencies.items():
-        #         print(f" - {dep}: {value}")
         
         return render(request, 'ANPAHP/steps/ANPAHPStep8.html', {
             'formset': formset,
