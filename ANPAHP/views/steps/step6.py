@@ -20,7 +20,7 @@ def step6_view(request, pk):
             ANPAHP.criteria_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('criteria_preferences'):
                 ANPAHP.current_step = 6
-            ANPAHP.save()
+                ANPAHP.save()
             
             # return render(request, 'ANPAHP/steps/ANPAHPStep6.html', {
             #     'form': form,

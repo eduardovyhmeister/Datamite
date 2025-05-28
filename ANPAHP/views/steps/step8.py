@@ -42,7 +42,7 @@ def step8_view(request, pk):
         ANPAHP.interfamily_preferences = interfamily_preferences
         if ANPAHP.tracker.has_changed('interfamily_preferences'):
             ANPAHP.current_step = 8
-        ANPAHP.save()
+            ANPAHP.save()
         
         return render(request, 'ANPAHP/steps/ANPAHPStep8.html', {
             'formset': formset,

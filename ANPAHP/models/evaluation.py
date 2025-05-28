@@ -156,7 +156,7 @@ class Evaluation(models.Model):
                 setattr(self, field_name, default() if callable(default) else default)
                 
         # Compute the completion percentage for the whole process:
-        self.percentage = str(int(100 * (self.current_step - 1) / NB_OF_STEPS)) + "%"
+        self.percentage = str(int(100 * (self.current_step) / NB_OF_STEPS)) + "%"
         
         # Effectively save:
         super(Evaluation, self).save(*args, **kwargs)

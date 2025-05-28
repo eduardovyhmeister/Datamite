@@ -20,7 +20,7 @@ def step4_view(request, pk):
             ANPAHP.kpis_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('kpis_preferences'):
                 ANPAHP.current_step = 4
-            ANPAHP.save()
+                ANPAHP.save()
             
             # return render(request, 'ANPAHP/steps/ANPAHPStep4.html', {
             #     'form': form,

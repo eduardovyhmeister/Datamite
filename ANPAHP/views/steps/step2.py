@@ -18,7 +18,7 @@ def step2_view(request, pk):
             ANPAHP.bsc_preferences = form.retrieve_preferences()
             if ANPAHP.tracker.has_changed('bsc_preferences'):
                 ANPAHP.current_step = 2
-            ANPAHP.save()
+                ANPAHP.save()
             
             return redirect('myANPAHPStep3', pk = ANPAHP.pk)
     else:
