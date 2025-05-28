@@ -51,16 +51,7 @@
                             {% with field_name=kpi.name|slugify %}
                                 <tr>
                                     <td><b>{{ kpi.name }}</b></td>
-                                    <td>
-                                        {% with field=form|get_value_at:field_name %}
-                                            {{ field }}
-                                            <input type="number" class="kpi-input"
-                                                id="value_{{ field_name }}"
-                                                min="1" max="100"
-                                                value="{{ field.value|default_if_none:0 }}"
-                                                oninput="document.getElementsByName('{{ field_name }}')[0].value = this.value">
-                                        {% endwith %}
-                                    </td>
+                                    <td>{{ form|get_value_at:field_name }}</td>
                                     <td style="text-align: justify;">{{ kpi.short_definition }}</td>
                                 </tr>
                             {% endwith %}
@@ -82,31 +73,6 @@
         </form>
     </div>
 </div>
-
-<script>
-    function validatePreferences() {
-        //Use to valide the preferences:
-        // - Send an warning if all values are equal, reminding the user they should
-        //   set preferences for the analysis to be useful.
-        const inputs = document.querySelectorAll('.kpi-input');
-        const values = Array.from(inputs).map(input => parseInt(input.value || "0"));
-        const allEqual = values.every(v => v === values[0]);
-        const messageDiv = document.getElementById('preferenceMessage');
-    
-        messageDiv.classList.remove('d-none', 'alert-danger', 'alert-warning');
-
-        if (allEqual) {
-            const confirmEqual = confirm("All preference values are equal. Are you sure this is intentional? This would mean that all KPIs/metrics will have the same weight in the ANP-AHP analysis.");
-            if (!confirmEqual) {
-                messageDiv.textContent = "Submission cancelled. Please adjust your inputs.";
-                messageDiv.classList.add('alert-warning');
-                return false;
-            }
-        }
-    
-        return true; // All good
-    }
-</script>
 
 {% endblock %}
 
