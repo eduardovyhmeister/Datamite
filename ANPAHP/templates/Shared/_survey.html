@@ -8,112 +8,94 @@
 <br/><br/>
 
 <h2>Steps of the process:</h2>
-<nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-    <li class="nav-item nav-item-clear req-menu-item w-100">
-        <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
-            Step 1: Identification of the main objective
-            {% if ANPAHP.objective %}
-                <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-            {% endif %}
-        </a>
-    </li>
-</ul></nav></br>
+<nav class="navbar req-menu w-100">
+    <ul class="navbar-nav bg-ecblue w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
+            <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep1' pk=ANPAHP.pk %}">
+                Step 1: Identification of the main objective
+            </a>
+            {% if ANPAHP.objective %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
+        </li>
+    </ul>
+</nav>
+</br>
 
 {% if ANPAHP.objective or ANPAHP.bsc_preferences %}
-    <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
-            <a class="nav-link req-menu-link  w-100 d-block" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
-                </i>Step 2: Balanced Scorecard (BSC) preferences
-                {% if ANPAHP.bsc_preferences %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
-            </a>
-        </li>
-    </ul></nav></br>
+    <nav class="navbar req-menu w-100">
+        <ul class="navbar-nav bg-ecblue w-100">
+            <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
+                <a class="nav-link req-menu-link  w-100 d-block" href="{% url 'myANPAHPStep2' pk=ANPAHP.pk %}">
+                    </i>Step 2: Balanced Scorecard (BSC) preferences
+                </a>
+                {% if ANPAHP.bsc_preferences %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
+            </li>
+        </ul>
+    </nav>
+</br>
 {% endif %}
     
 {% if ANPAHP.bsc_preferences or ANPAHP.kpis.count %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep3' pk=ANPAHP.pk %}">
                 </i>Step 3: KPI/metrics selection
-                {% if ANPAHP.kpis.count %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.kpis.count %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
 {% if ANPAHP.kpis.count or ANPAHP.kpis_preferences %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep4' pk=ANPAHP.pk %}">
                 </i>Step 4: KPI/metrics preferences
-                {% if ANPAHP.kpis_preferences %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.kpis_preferences %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
 {% if ANPAHP.kpis_preferences or ANPAHP.criteria.count %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep5' pk=ANPAHP.pk %}">
                 </i>Step 5: Criteria selection
-                {% if ANPAHP.criteria.count %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.criteria.count %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
 {% if ANPAHP.criteria.count or ANPAHP.criteria_preferences %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep6' pk=ANPAHP.pk %}">
                 </i>Step 6: Criteria preferences
-                {% if ANPAHP.criteria_preferences %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.criteria_preferences %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
 {% if ANPAHP.criteria_preferences or ANPAHP.interfamily_relationships is not None %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
                 </i>Step 7: Interfamily relationships
-                {% if ANPAHP.interfamily_relationships is not None %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.interfamily_relationships is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
 {% if ANPAHP.interfamily_relationships is not None or ANPAHP.interfamily_preferences is not None %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
-        <li class="nav-item nav-item-clear req-menu-item w-100">
+        <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep8' pk=ANPAHP.pk %}">
                 </i>Step 8: Interfamily relationships preferences
-                {% if ANPAHP.interfamily_preferences is not None %}
-                    <span style="color: #cd8431 !important;" class="ms-2">&#10004;</span> 
-                    {% comment %} TODO: Find a way to take the correct colour into account. {% endcomment %}
-                {% endif %}
             </a>
+            {% if ANPAHP.interfamily_preferences is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
