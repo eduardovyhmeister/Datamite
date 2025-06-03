@@ -1,0 +1,52 @@
+{% extends "Shared/_layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{%block head%}
+    <title> DATAMITE - ANP-AHP - Results </title>
+{%endblock%}
+
+{% block navbar %}{% endblock%}
+{% block main1%}{%endblock%}
+
+
+{%block main2%}
+
+<div class="row">
+{% include "Shared/_survey.html" %}
+<div class="col-md-9">
+    <div id="surveyContainer">
+
+        <div class="panel-heading card-header">
+            <div class="sv_header__text">
+                <h3><span style="position: static;"> ANP-AHP Results: </span></h3>
+            </div>
+            <p style="text-align: justify;">
+                Well done, you have successfully completed your ANP-AHP evaluation. Please find below the detail of the results. You can also download a PDF version of this report.
+            </p>
+        </div>
+        </br>
+
+        TODO!
+        TODO!
+        TODO!
+        {% comment %} <form method='POST'>
+            {% csrf_token %}
+            <div style="display: inline-block; width:100%;">
+                <p  style="text-align: justify;">
+                    TODO
+                </p>
+            </div>
+            
+            
+
+            <button type="submit" class="btn btn-primary card-btn" name="action" value="confirm"> Confirm selection </button>
+        </form> {% endcomment %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer%}{%endblock%}
+{%block lastk%}{% endblock %}

@@ -51,6 +51,9 @@ urlpatterns = [
     # Intefamily preferences:
     path('myANPAHP/<int:pk>/Step8', views.steps.step8_view, name = 'myANPAHPStep8'),
     
+    # Once everything has been completed:
+    path('myANPAHP/<int:pk>/Results', views.steps.results_view, name = "myANPAHPResults"),
+    
     
     # #Objectives
     # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
