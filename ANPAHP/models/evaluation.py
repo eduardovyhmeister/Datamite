@@ -35,12 +35,12 @@ FIELDS_TO_RESET = defaultdict(list,
 {
     0: [],
     1: [],
-    2: ['kpis', 'kpis_preferences', 'interfamily_relationships', 'interfamily_preferences'],
-    3: ['kpis_preferences', 'interfamily_relationships', 'interfamily_preferences'],
+    2: ['kpis', 'kpis_preferences', 'intermetric_relationships', 'intermetric_preferences'],
+    3: ['kpis_preferences', 'intermetric_relationships', 'intermetric_preferences'],
     4: [],
     5: ['criteria_preferences'],
     6: [],
-    7: ['interfamily_preferences'],
+    7: ['intermetric_preferences'],
 })
 # Use this to set the default value to which the field will be reset
 # to when a step change is detected. If a callable is provided (e.g. dict),
@@ -52,8 +52,8 @@ FIELDS_DEFAULT_VALUE = {
     'kpis_preferences': dict,
     'criteria': None,
     'criteria_preferences': dict,
-    'interfamily_relationships': None,
-    'interfamily_preferences': None,
+    'intermetric_relationships': None,
+    'intermetric_preferences': None,
 }
 
 
@@ -103,20 +103,20 @@ class Evaluation(models.Model):
     # Dict[Criterion.name: preference_value (1 to 100)]
     criteria_preferences = models.JSONField(default = dict)
     
-    # Step 7 - Interfamily relationships:
+    # Step 7 - Intermetric relationships:
     # Dict[KPI.name: list[KPI.name]]
     # Defaults to None to differentiate between an empty dict (which
     # is a valid input from the user) and the absence of value.
-    interfamily_relationships = models.JSONField(default = None, null = True)
+    intermetric_relationships = models.JSONField(default = None, null = True)
     
-    # Step 8 - Interfamily relationships preferences:
+    # Step 8 - Intermetric relationships preferences:
     # Dict[KPI.name: Dict[KPI.name: preference_value (1 to 100)]]
     # If only 1 KPI influence has been selected, the default preference
     # value will be 100.
     # Defaults to None to differentiate between an empty dict (which
-    # is a valid input from the user if there was no interfamily relationships)
+    # is a valid input from the user if there was no intermetric relationships)
     # and the absence of value.
-    interfamily_preferences = models.JSONField(default = None, null = True)
+    intermetric_preferences = models.JSONField(default = None, null = True)
     
     # Used to track changes in a field, prevents resetting the whole
     # Evaluation model when coming back to a previous step and clicking confirm

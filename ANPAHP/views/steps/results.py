@@ -13,8 +13,7 @@ def results_view(request, pk):
     ANPAHP = Evaluation.objects.get(pk = pk)
     keys, supermatrix = anp.build_supermatrix(ANPAHP.bsc_preferences, 
                                               ANPAHP.kpis_preferences,
-                                              ANPAHP.interfamily_preferences)
-    
+                                              ANPAHP.intermetric_preferences)
     limiting_matrix = anp.compute_limiting_matrix(supermatrix)
     
     content = {

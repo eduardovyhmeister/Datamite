@@ -78,24 +78,24 @@
     </ul></nav></br>
 {% endif %}
 
-{% if ANPAHP.criteria_preferences or ANPAHP.interfamily_relationships is not None %}
+{% if ANPAHP.criteria_preferences or ANPAHP.intermetric_relationships is not None %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
-                </i>Step 7: Interfamily relationships
+                </i>Step 7: Intermetric relationships
             </a>
-            {% if ANPAHP.interfamily_relationships is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
+            {% if ANPAHP.intermetric_relationships is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}
 
-{% if ANPAHP.interfamily_relationships is not None or ANPAHP.interfamily_preferences is not None %}
+{% if ANPAHP.intermetric_relationships is not None or ANPAHP.intermetric_preferences is not None %}
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep8' pk=ANPAHP.pk %}">
-                </i>Step 8: Interfamily relationships preferences
+                </i>Step 8: Intermetric relationships importance
             </a>
-            {% if ANPAHP.interfamily_preferences is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
+            {% if ANPAHP.intermetric_preferences is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
     </ul></nav></br>
 {% endif %}

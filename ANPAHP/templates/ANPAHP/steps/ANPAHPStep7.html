@@ -12,7 +12,7 @@
 
 {%block main2%}
 {{ kpi_lists|json_script:"kpi-dependency-data" }}
-{{ ANPAHP.interfamily_relationships|json_script:"initial-selection-data" }}
+{{ ANPAHP.intermetric_relationships|json_script:"initial-selection-data" }}
 
 <div class="row">
 {% include "Shared/_survey.html" %}
@@ -24,10 +24,10 @@
                 <h3><span style="position: static;"> Step 7 - Interfamily relationships: </span></h3>
             </div>
             <p style="text-align: justify;">
-                So far, you have selected KPIs/metrics that you would like to include in your ANP-AHP evaluation and set the preferences between these KPIs/metrics. However, some metrics might influence others. In this section, you can select KPIs/metrics and assign to them other KPIs/metrics that will influence their weighthing in the overall analysis.
+                So far, you have selected KPIs/metrics that you would like to include in your ANP-AHP evaluation and set the preferences between these KPIs/metrics to compute the value of each BSC family. However, some KPIs/metrics may not be measured directly but computed from others. In this step, you specify which KPIs/metrics depend on which other KPIs/metrics.
             </p>
             <p style="text-align: justify;">
-                The weighting of KPIs/metrics within the same BSC family has been done when you set the preferences for KPIs/metrics. Now, you can set interfamily relationships and the preferences will be set in the next step.
+                In the next step, you will setup the importance of each of these dependencies.
             </p>
         </div>
         </br>
@@ -36,7 +36,7 @@
             {% csrf_token %}
             <div style="display: inline-block; width:100%;">
                 <p  style="text-align: justify;">
-                    1) Select a KPI/metric that you think will depend on other KPIs/metrics from another BSC family. 
+                    1) Select a KPI/metric that you think will depend on other KPIs/metrics. 
                 </p>
                 <p  style="text-align: justify;">
                     2) Select the KPIs/metrics that will influence the selected KPI/metric (use control + click to select multiple ones). 
@@ -48,7 +48,7 @@
                     4) You can delete any relationship you have created using the delete button of that relationship.<br/>
                 </p>
                 <p  style="text-align: justify;">
-                    If you think you do not need interfamily relationships, you can just confirm to save that no relationships exist. Also, any incomplete kpi-dependencies subform will not be taken into account when confirming (it won't create any issue).
+                    If you think you do not need intermetric relationships, you can just confirm to save that no relationships exist. Also, any incomplete kpi-dependencies subform will not be taken into account when confirming (it won't create any issue).
                 </p>
             </div>
             
@@ -78,7 +78,7 @@
             {% if ANPAHP.current_step > 7 %}
                 <div class="alert alert-warning">
                     <p  style="text-align: justify;">
-                        ⚠️ Changing your selection of KPIs/metrics here and confirming these changes will reset the next step (KPIs/metrics preferences).
+                        ⚠️ Changing your selection of KPIs/metrics here and confirming these changes will reset the next step (KPIs/metrics importance).
                     </p>
                 </div>
             {% endif %}

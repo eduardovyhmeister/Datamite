@@ -8,11 +8,11 @@ from ...models import Evaluation, KPI
 
 @login_required
 def step8_view(request, pk):
-    """View for step 8: selection of interfamily relationships preferences."""
+    """View for step 8: selection of intermetric relationships preferences."""
     ANPAHP = Evaluation.objects.get(pk = pk)
     
     # Retrieve the names of the KPIs selected in the previous step:
-    main_kpis = KPI.objects.filter(name__in = list(ANPAHP.interfamily_relationships))
+    main_kpis = KPI.objects.filter(name__in = list(ANPAHP.intermetric_relationships))
 
     # Build the form set:
     KPIRelationshipPreferenceFormSet = formset_factory(KPIPreferencesForm, extra = 0)
@@ -26,21 +26,21 @@ def step8_view(request, pk):
         # (the order matter in the HTML template later on).
         for kpi in main_kpis:
             formset.forms.append(KPIPreferencesForm(
-                KPI.objects.filter(name__in = ANPAHP.interfamily_relationships[kpi.name]), # selected_kpis (required positional argument)
+                KPI.objects.filter(name__in = ANPAHP.intermetric_relationships[kpi.name]), # selected_kpis (required positional argument)
                 request.POST,
-                preferences = None if ANPAHP.interfamily_preferences is None else ANPAHP.interfamily_preferences[kpi.name],
+                preferences = None if ANPAHP.intermetric_preferences is None else ANPAHP.intermetric_preferences[kpi.name],
             ))
         
         # Retrieve all the preferences (in this case they indicate influence importance):
         # KPIs that have only 1 KPI influencing them still appear in the forms, even if not
         # displayed on the webpage. They will have the default "preference" value of 1.
-        interfamily_preferences = {}
+        intermetric_preferences = {}
         for i, form in enumerate(formset):
             if form.is_valid():
-                interfamily_preferences[main_kpis[i].name] = form.retrieve_preferences()
+                intermetric_preferences[main_kpis[i].name] = form.retrieve_preferences()
         
-        ANPAHP.interfamily_preferences = interfamily_preferences
-        if ANPAHP.tracker.has_changed('interfamily_preferences'):
+        ANPAHP.intermetric_preferences = intermetric_preferences
+        if ANPAHP.tracker.has_changed('intermetric_preferences'):
             ANPAHP.current_step = 8
             ANPAHP.save()
         
@@ -53,8 +53,8 @@ def step8_view(request, pk):
     else: # GET request
         for kpi in main_kpis:
             formset.forms.append(KPIPreferencesForm(
-                selected_kpis = KPI.objects.filter(name__in = ANPAHP.interfamily_relationships[kpi.name]),
-                preferences = None if ANPAHP.interfamily_preferences is None else ANPAHP.interfamily_preferences[kpi.name],
+                selected_kpis = KPI.objects.filter(name__in = ANPAHP.intermetric_relationships[kpi.name]),
+                preferences = None if ANPAHP.intermetric_preferences is None else ANPAHP.intermetric_preferences[kpi.name],
             ))
         return render(request, 'ANPAHP/steps/ANPAHPStep8.html', {
             'formset': formset,

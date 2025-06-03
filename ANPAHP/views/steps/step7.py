@@ -13,19 +13,13 @@ KPIRelationshipFormSet = formset_factory(KPIRelationshipForm, extra=1, can_delet
 
 @login_required
 def step7_view(request, pk):
-    """View for step 7: selection of interfamily relationships."""
+    """View for step 7: selection of intermetric relationships."""
     ANPAHP = Evaluation.objects.get(pk = pk)
     
-    # Generate for each selected KPI, the list of other selected KPIs
-    # that are NOT from the same BSC Family.
+    # Generate the lists for each KPI, basically without the one selected:
     kpi_lists = {}
-    for kpi1 in ANPAHP.kpis.all():
-        kpi_lists[kpi1.name] = []
-        for kpi2 in ANPAHP.kpis.all():
-            if not kpi1.shares_same_family(kpi2):
-                kpi_lists[kpi1.name].append(kpi2.name)
-        if not kpi_lists[kpi1.name]: # If empty list
-            del kpi_lists[kpi1.name]
+    for kpi in ANPAHP.kpis.all():
+        kpi_lists[kpi.name] = [x.name for x in ANPAHP.kpis.exclude(name=kpi.name)]
     
     if request.method == 'POST':
         # Construct the formset and enable the validity check by adding the
@@ -46,8 +40,8 @@ def step7_view(request, pk):
                 dependencies = form.cleaned_data['dependencies']
                 relationships[main_kpi.name] = [dep.name for dep in dependencies]
 
-        ANPAHP.interfamily_relationships = relationships
-        if ANPAHP.tracker.has_changed('interfamily_relationships'):
+        ANPAHP.intermetric_relationships = relationships
+        if ANPAHP.tracker.has_changed('intermetric_relationships'):
             ANPAHP.current_step = 7
         ANPAHP.save()
             
@@ -60,14 +54,15 @@ def step7_view(request, pk):
     else: # GET request
         # Set the formset with the already existing data if it exists:
         initial_data = []
-        if ANPAHP.interfamily_relationships:
-            for main_kpi, dependencies in ANPAHP.interfamily_relationships.items():
+        if ANPAHP.intermetric_relationships:
+            for main_kpi, dependencies in ANPAHP.intermetric_relationships.items():
                 initial_data.append({
                     'main_kpi': KPI.objects.get(name = main_kpi),
                     'dependencies': list(KPI.objects.filter(name__in = dependencies))
                 })
+                
         formset = KPIRelationshipFormSet(initial = initial_data)
-        # formset = KPIRelationshipFormSet()
+
         for form in formset:
             form.fields['main_kpi'].queryset = ANPAHP.kpis.all()
             form.fields['dependencies'].queryset = ANPAHP.kpis.all()

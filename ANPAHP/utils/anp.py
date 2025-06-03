@@ -113,41 +113,40 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
             dictionary of intermetrics relationships (for each kpi/metric, a
             dictionary of dependencies and their importance is provided).
             (Defaults to `None`, e.g. if the user didn't specify any of them).
-            Corresponds to `models.Evaluation.interfamily_preferences`.
+            Corresponds to `models.Evaluation.intermetric_preferences`.
         
     Returns:
         (list[str], list[list[float]]) - A tuple (names of the columns, matrix)
         with the matrix being the supermatrix of the hierarchy (the AHP). The 
         matrix is given as a list of columns.
     """
-    matrix_size = 1 + len(bsc_prefs) + len(kpi_prefs)
-    bsc_keys = list(bsc_prefs.keys())
+    bsc_keys = [key for key in bsc_prefs.keys() if bsc_prefs[key] != 0] # Filter out excluded families
     kpi_keys = list(kpi_prefs.keys())
     
+    # 1st column = strategy
+    # Following columns = BSC families
+    # Last columns = KPIs/metrics
+    matrix_size = 1 + len(bsc_keys) + len(kpi_prefs)
     supermatrix = []
     
     # Construct the first column for the strategy:
     # The strategy depends on the BSC Families selected.
     # It uses the expressed preferences in terms of BSC families (the pairwise comparisons).
-    _, bsc_weights = normalise_columns(build_matrix(bsc_prefs, keys = bsc_keys))
-    supermatrix.append([0] + bsc_weights[0] + [0] * (matrix_size - 5))
+    bsc_weights = normalise_columns(build_matrix(bsc_prefs, keys = bsc_keys)[1])[0]
+    supermatrix.append([0] + bsc_weights + [0] * len(kpi_keys))
     
     # Construct the columns for the BSC families:
     # Each family depends on the KPIs/metrics it contains.
     # It uses the expressed preferences in terms of KPIs (the pairwise comparison).
-    kpi_preferences = __separate_family_preferences()
+    kpi_preferences = __separate_family_preferences(kpi_prefs)
     for bsc_family in bsc_keys:
-        # Family preference was set to 0, exclude family:
-        if bsc_prefs[bsc_family] == 0:
-            supermatrix.append([0] * matrix_size)
-            continue
-        
-        keys, kpi_weights = normalise_columns(build_matrix(kpi_preferences[bsc_family]))
-        quick_access = {name: value for name, value in zip(keys, kpi_weights[0])}
-        column = [0] * 5 + [quick_access.get(key, 0) for key in kpi_keys]
+        keys, pref_matrix = build_matrix(kpi_preferences[bsc_family])
+        kpi_weights = normalise_columns(pref_matrix)[0]
+        quick_access = {name: value for name, value in zip(keys, kpi_weights)}
+        column = [0] * (1 + len(bsc_keys)) + [quick_access.get(key, 0) for key in kpi_keys]
         supermatrix.append(column)
     
-    # Construct the columns for all the metrics (if some metrics depend on others):
+    # Construct the columns for all the metrics:
     if intermetrics_relationships:
         for kpi in kpi_keys:
             # No dependencies, metric depends only on itself:
@@ -157,9 +156,11 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
                 supermatrix.append(kpi_column)
                 continue
             
-            keys, kpi_weights = normalise_columns(build_matrix(intermetrics_relationships[kpi]))
-            quick_access = {name: value for name, value in zip(keys, kpi_weights[0])}
-            column = [0] * 5 + [quick_access.get(key, 0) for key in kpi_keys]
+            # There are dependencies, compute the weights:
+            keys, importance_matrix = build_matrix(intermetrics_relationships[kpi])
+            kpi_weights = normalise_columns(importance_matrix)[0]
+            quick_access = {name: value for name, value in zip(keys, kpi_weights)}
+            column = [0] * (1 + len(bsc_keys)) + [quick_access.get(key, 0) for key in kpi_keys]
             supermatrix.append(column)
     
     keys = ["strategy"] + bsc_keys + kpi_keys
@@ -193,9 +194,6 @@ def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6):
         if distance < error: break
         previous_matrix = new_matrix
     
-    # print("\n", "*"*80)
-    # for row in new_matrix:
-    #     print(row.tolist())
     return np.transpose(new_matrix).tolist()
 
 
