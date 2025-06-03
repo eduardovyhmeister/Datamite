@@ -27,9 +27,25 @@
         </div>
         </br>
 
-        TODO!
-        TODO!
-        TODO!
+        {% for insight in insights %}
+            <div>
+                <h3 class="display-6 text-primary font-weight-bold" style="text-align: justify;"> {{ insight|get_value_at:"title"|safe}} </h3>
+                <p style="text-align: justify;">{{ insight|get_value_at:"description"|safe}}</p>
+            </div>
+            <div>
+                {{ insight|get_value_at:"html_table"|safe }}
+            </div>
+            <div>
+                <p style="text-align: right;"><i>*{{ insight|get_value_at:"extra" }}</i></p>
+            </div>
+            {% if insight|get_value_at:"graph" %}
+                <div style="margin-left: 50px; margin-right: 50px;">
+                    <img src="data:image/png;base64, {{insight|get_value_at:"graph"|safe}}">
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        
         {% comment %} <form method='POST'>
             {% csrf_token %}
             <div style="display: inline-block; width:100%;">

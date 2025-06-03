@@ -152,7 +152,7 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
             # No dependencies, metric depends only on itself:
             if kpi not in intermetrics_relationships:
                 kpi_column = [0] * matrix_size
-                kpi_column[kpi_keys.index(kpi)] = 1
+                kpi_column[1 + len(bsc_keys) + kpi_keys.index(kpi)] = 1
                 supermatrix.append(kpi_column)
                 continue
             
@@ -167,7 +167,7 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
     return (keys, supermatrix)
 
 
-def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6):
+def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6, rounding=6):
     """Computes the limiting matrix of the provided matrix by raising to a power
     until it converges. The matrix has to be a square matrix.
     
@@ -181,6 +181,7 @@ def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6):
             a list of columns.
         max_iter (int): The maximum number of iterations in the process. (Defaults to 1000)
         error (float): The error used to compute if the process has converged.
+        rounding (int): The number of decimals to keep in the rounding process. (Defaults to 6)
         
     Returns:
         list[list[float]] - The limiting matrix as a list of columns.
@@ -194,7 +195,7 @@ def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6):
         if distance < error: break
         previous_matrix = new_matrix
     
-    return np.transpose(new_matrix).tolist()
+    return np.around(np.transpose(new_matrix), rounding).tolist()
 
 
 # -----------------------------------------------------------------------------

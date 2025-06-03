@@ -82,7 +82,7 @@
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep7' pk=ANPAHP.pk %}">
-                </i>Step 7: Intermetric relationships
+                </i>Step 7: KPIs/metrics dependencies
             </a>
             {% if ANPAHP.intermetric_relationships is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
@@ -93,7 +93,7 @@
     <nav class="navbar req-menu w-100"><ul class="navbar-nav bg-ecblue w-100">
         <li class="nav-item nav-item-clear req-menu-item w-100 d-flex justify-content-between align-items-center">
             <a class="nav-link req-menu-link w-100 d-block" href="{% url 'myANPAHPStep8' pk=ANPAHP.pk %}">
-                </i>Step 8: Intermetric relationships importance
+                </i>Step 8: KPIs/metrics dependencies importance
             </a>
             {% if ANPAHP.intermetric_preferences is not None %}{% include "Shared/_checkmark.svg.html" %}{% endif %}
         </li>
