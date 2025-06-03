@@ -2,6 +2,47 @@
 datamite ANPAHP
 
 
+# Use Docker for the service
+First, you need to setup a secure secret key for Django to use. To generate a key, you can use:
+```
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+Set it as "DJANGO_SECRET_KEY" in your environment variables. On Linux, you can set it in your `.bashrc` by adding the following line:
+```
+export DJANGO_SECRET_KEY="my_secret_key_I_generated
+```
+And finally, DO NOT FORGET TO CHANGE `datamite/settings.py`, change the following lines:
+```
+SECRET_KEY = 'django-insecure-a52&$)8&u8^hqrov$ndwp1oaie-y(@*gi)i2b#j%6s_hkul%75'
+#SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+DEBUG = True
+#DEBUG = bool(int(os.environ.get('DEBUG',0)))
+```
+to:
+```
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+DEBUG = bool(int(os.environ.get('DEBUG',0)))
+```
+
+
+To build the service image:
+```
+docker build .
+```
+
+Start the service with Docker:
+```
+docker compose up
+```
+
+Stop the service:
+```
+docker ps # To get the ID
+docker stop id
+```
+
+
 # Reset the database
 If you made changes to the models that might not be compatible with the current schema (e.g. modifying the name/type of column), then you can recreate the database by using the following commands:
 ```

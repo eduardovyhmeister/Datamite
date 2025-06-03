@@ -1,5 +1,5 @@
-FROM python:3.13
-LABEL maintainer="eduardo vyhmeister - insight centre"
+FROM python:3.13-alpine3.22
+LABEL maintainer="Bastien Pietropaoli - Insight Centre for Data Analytics / UCC"
 
 #define that all errors are sent to terminal
 ENV PYTHONUNBUFFERED=1
@@ -25,4 +25,4 @@ EXPOSE 8000
 
 # Define the command to run the application
 # (change "your_script.py" to the main script of your application)
-CMD ["python3","manage.py","runserver","0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

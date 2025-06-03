@@ -9,12 +9,11 @@ services:
     volumes:
       - .:/ANPAHP #this is the link between folders (if something change locali will later on be applied to the container)
     environment:
-      - SECRET_KEY=eduardosecretkey
-      - DEBUG=1
+      - DEBUG=0
     ports:
       - 8000:8000 #expose from 8000 in our computer to the other port in the image
     image: app:ANPAHP
-    container_name: ANPAHP_container
+    container_name: ANPAHP_container_v2.0.0
     command: >
       sh -c "python manage.py makemigrations &&
             python manage.py migrate &&

@@ -53,30 +53,6 @@ urlpatterns = [
     
     # Once everything has been completed:
     path('myANPAHP/<int:pk>/Results', views.steps.results_view, name = "myANPAHPResults"),
-    
-    
-    # #Objectives
-    # path('myANPAHPStep1/<int:pk>', old_views.MyANPAHPStep1, name='myANPAHPStep1'),
-    # #KPIs
-    # path('myANPAHPStep2/<int:pk>', old_views.MyANPAHPStep2, name='myANPAHPStep2'),
-    # path('myANPAHPStep3/<int:pk>', old_views.MyANPAHPStep3, name='myANPAHPStep3'),
-    # path('myANPAHPStep4/<int:pk>', old_views.MyANPAHPStep4, name='myANPAHPStep4'),
-    # path('myANPAHPStep5/<int:pk>', old_views.MyANPAHPStep5, name='myANPAHPStep5'),
-    # path('newKPI/<int:pk>', old_views.NewKPI, name='newKPI'),
-    # #objectives
-    # path('myANPAHPStep6/<int:pk>', old_views.MyANPAHPStep6, name='myANPAHPStep6'),
-    # path('newObjectives/<int:pk>', old_views.NewObjectives, name='newObjectives'),
-    # #criteria
-    # path('myANPAHPStep7/<int:pk>', old_views.MyANPAHPStep7, name='myANPAHPStep7'),
-    # path('myANPAHPStep8/<int:pk>', old_views.MyANPAHPStep8, name='myANPAHPStep8'),
-    # path('newCriterion/<int:pk>', old_views.NewCriterion, name='newCriterion'),
-    
-    # #Interanalysis
-    # path('myANPAHPStep9/<int:pk>', old_views.MyANPAHPStep9, name='myANPAHPStep9'),
-    # path('myANPAHPStep10/<int:pk>', old_views.MyANPAHPStep10, name='myANPAHPStep10'),
-    # #Results
-    # path('myANPAHPResults/<int:pk>', old_views.myANPAHPResult, name='myANPAHPResults'),
-
     #path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
 ]
