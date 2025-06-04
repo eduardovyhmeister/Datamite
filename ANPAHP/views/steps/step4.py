@@ -27,7 +27,8 @@ def step4_view(request, pk):
             #     'ANPAHP': ANPAHP,
             #     'selected_kpis': ANPAHP.kpis.all().order_by(Lower('name')),
             # })
-            return redirect('myANPAHPStep5', pk = ANPAHP.pk)
+            # return redirect('myANPAHPStep5', pk = ANPAHP.pk)
+            return redirect('myANPAHPStep7', pk = ANPAHP.pk)
     else:
         form = KPIPreferencesForm(ANPAHP.kpis, preferences = ANPAHP.kpis_preferences)
 

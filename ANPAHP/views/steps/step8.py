@@ -44,12 +44,12 @@ def step8_view(request, pk):
             ANPAHP.current_step = 8
             ANPAHP.save()
         
-        return render(request, 'ANPAHP/steps/ANPAHPStep8.html', {
-            'formset': formset,
-            'ANPAHP': ANPAHP,
-            'main_kpis': main_kpis,
-        })
-        # return redirect('myANPAHPResult', pk = ANPAHP.pk)
+        # return render(request, 'ANPAHP/steps/ANPAHPStep8.html', {
+        #     'formset': formset,
+        #     'ANPAHP': ANPAHP,
+        #     'main_kpis': main_kpis,
+        # })
+        return redirect('myANPAHPResults', pk = ANPAHP.pk)
     else: # GET request
         for kpi in main_kpis:
             formset.forms.append(KPIPreferencesForm(

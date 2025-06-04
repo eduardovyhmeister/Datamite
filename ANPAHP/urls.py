@@ -42,14 +42,18 @@ urlpatterns = [
     path('myANPAHP/<int:pk>/Step3', views.steps.step3_view, name = 'myANPAHPStep3'),
     # KPI preferences:
     path('myANPAHP/<int:pk>/Step4', views.steps.step4_view, name = 'myANPAHPStep4'),
-    # Criteria selection:
-    path('myANPAHP/<int:pk>/Step5', views.steps.step5_view, name = 'myANPAHPStep5'),
-    # Criteria preferences:
-    path('myANPAHP/<int:pk>/Step6', views.steps.step6_view, name = 'myANPAHPStep6'),
-    # Interfamily relationships:
-    path('myANPAHP/<int:pk>/Step7', views.steps.step7_view, name = 'myANPAHPStep7'),
-    # Intefamily preferences:
-    path('myANPAHP/<int:pk>/Step8', views.steps.step8_view, name = 'myANPAHPStep8'),
+    # # Criteria selection:
+    # path('myANPAHP/<int:pk>/Step5', views.steps.step5_view, name = 'myANPAHPStep5'),
+    # # Criteria preferences:
+    # path('myANPAHP/<int:pk>/Step6', views.steps.step6_view, name = 'myANPAHPStep6'),
+    # Intermetric relationships:
+    # path('myANPAHP/<int:pk>/Step7', views.steps.step7_view, name = 'myANPAHPStep7'),
+    # # Intermetric preferences:
+    # path('myANPAHP/<int:pk>/Step8', views.steps.step8_view, name = 'myANPAHPStep8'),
+    # Intermetric relationships:
+    path('myANPAHP/<int:pk>/Step5', views.steps.step7_view, name = 'myANPAHPStep7'),
+    # Intermetric preferences:
+    path('myANPAHP/<int:pk>/Step6', views.steps.step8_view, name = 'myANPAHPStep8'),
     
     # Once everything has been completed:
     path('myANPAHP/<int:pk>/Results', views.steps.results_view, name = "myANPAHPResults"),
