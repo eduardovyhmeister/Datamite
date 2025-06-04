@@ -50,7 +50,11 @@ def user_login_view(request):
 def user_logout_view(request):
     """Called when clicking 'logout' in the header."""
     logout(request)
-    # Redirect to the same page:
-    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    # Redirect to the same page or HOME if it was a user-specific page:
+    referer = request.META.get('HTTP_REFERER')
+    if "Not Found" in str(referer) or "myANPAHP" in str(referer):
+        return redirect('home')
+    else:
+        return redirect(referer)
 
 

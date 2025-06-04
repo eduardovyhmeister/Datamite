@@ -11,7 +11,7 @@ WORKDIR /ANPAHP
 COPY requirements.txt .
 
 # Install the dependencies specified in the requirements file
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --no-cache-dir -r requirements.txt && python3 -m pip list
 
 # Copy the rest of the application code into the container
 COPY . .
@@ -25,4 +25,4 @@ EXPOSE 8000
 
 # Define the command to run the application
 # (change "your_script.py" to the main script of your application)
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "localhost:8000"]
