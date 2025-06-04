@@ -53,6 +53,7 @@ urlpatterns = [
     
     # Once everything has been completed:
     path('myANPAHP/<int:pk>/Results', views.steps.results_view, name = "myANPAHPResults"),
+    path('myANPAHP/<int:pk>/DownloadPDF', views.steps.download_pdf_report, name = "download_pdf")
     #path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
 ]

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.template.loader import get_template
+from django.http import HttpResponse
 import pandas as pd
+from xhtml2pdf import pisa
 
 from ...models import Evaluation
 from ...utils import anp
@@ -20,7 +23,7 @@ def results_view(request, pk):
     ANPAHP = Evaluation.objects.get(pk = pk)
     keys, supermatrix, limiting_matrix, insights = extract_insights(ANPAHP)
     
-    content = {
+    context = {
         'ANPAHP': ANPAHP, 
         'keys': keys, 
         'supermatrix': supermatrix,
@@ -28,8 +31,32 @@ def results_view(request, pk):
         'insights': insights,
     }
     
-    return render(request, 'ANPAHP/steps/ANPAHPResults.html', content)
+    return render(request, 'ANPAHP/steps/ANPAHPResults.html', context)
     
+
+@login_required
+def download_pdf_report(request, pk):
+    """View used to generate and download the PDF report."""
+    ANPAHP = Evaluation.objects.get(pk = pk)
+    keys, supermatrix, limiting_matrix, insights = extract_insights(ANPAHP)
+    
+    context = {
+        'ANPAHP': ANPAHP, 
+        'keys': keys, 
+        'supermatrix': supermatrix,
+        'limiting_matrix': limiting_matrix,
+        'insights': insights,
+    }
+    
+    # Build a PDF response:
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{ANPAHP.name} - ANP-AHP Report.pdf"'
+    
+    # Use an HTML template to generate the report:
+    html = get_template("ANPAHP/steps/ANPAHPReport.html").render(context)
+    pisa.CreatePDF(html, dest=response)
+    return response
+
     
 # -----------------------------------------------------------------------------
 # Utility functions:

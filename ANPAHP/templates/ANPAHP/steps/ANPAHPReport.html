@@ -1,30 +1,47 @@
-{% extends "Shared/_layout.html" %}
 {% load static %}
 {% load custom_filters %}
 
-{%block head%}
-    <title> DATAMITE - ANP-AHP - Results </title>
-{%endblock%}
+{% block head %}
+    <title>ANP - AHP - Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
 
-{% block navbar %}{% endblock%}
-{% block main1%}{%endblock%}
-
+{% block main1 %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+        font-size: 8px; /* Adjust the font size here */
+    }
+    table th, table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #f2f2f2;
+        color: black;
+    }
+</style>
+{% endblock %}
 
 {%block main2%}
 
-<div class="row">
-{% include "Shared/_survey.html" %}
 <div class="col-md-9">
     <div id="surveyContainer">
-
         <div class="panel-heading card-header">
             <div class="sv_header__text">
-                <h3><span style="position: static;"> ANP-AHP Results: </span></h3>
+                <h1 class="display-6 text-primary font-weight-bold" style="text-align: center;"><span style="position: static;">{{ ANPAHP.name }} - ANP-AHP Results</span></h1>
             </div>
             <p style="text-align: justify;">
-                Well done, you have successfully completed your ANP-AHP evaluation. Please find below the detail of the results. You can also download a PDF version of this report.
+                Well done, you have successfully completed your ANP-AHP evaluation. Please find below the detail of the results.
             </p>
-            <a class="btn btn-primary card-btn" href="{% url 'download_pdf' pk=ANPAHP.pk %}" > Download report as a PDF </a>
         </div>
         </br>
 
@@ -50,6 +67,3 @@
 
 {% endblock %}
 
-
-{% block footer%}{%endblock%}
-{%block lastk%}{% endblock %}
