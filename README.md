@@ -1,5 +1,9 @@
 # Datamite
-datamite ANPAHP
+This Django website offers a service to manage your KPIs/metrics within your strategies. It will then use an ANP-AHP method to compute the weights used to compute the KPIs/metrics that depend on others, the different Balanced Scorecard (BSC) perspectives, and your main strategy.
+
+
+# Acknowledgements
+This website benefited from the financial support of the European Commission under Grant number 101092989, the Science Foundation Ireland under Grant numbers 12/RC/2289-P2,16/RC/3918, and 18/CRT/6223, which are co-funded under the European Regional Development Fund.
 
 
 # Use Docker for the service
