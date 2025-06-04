@@ -9,257 +9,33 @@
 
 <div class="row align-items-center">
     <div class="col-md-12 text-justify">
-        <h2 class="display-6 text-primary font-weight-bold"> How to use this tool </h2>
-            <p>
-                This tool combines two approaches to define the most suitable KPIs for data exploitation/valuation. The process involves the following steps:
-            </p>
-            <p>
-                <b>Define Strategy:</b> Establish the strategy for your system or process. These are also linked to pre-established DATAMITE strategies.
-            </p>
-            <p>
-                <b>Select KPIs:</b> Choose the most relevant KPIs from a provided list, linked to the Balanced Scorecard framework. Recommendations for KPI values may be provided based on collected information and historical use cases.
-            </p>
-            <p>
-                <b>Pair-wise Comparison:</b> Perform pair-wise comparisons of selected KPIs with respect to criteria or objectives.
-            </p>
-            <p>
-                <b>Define Criteria and Interactions:</b> Define criteria and possible interactions between criteria and KPIs. Criteria can be associated with strategic goals.
-            </p>
-            <p>
-                <b>Automated Steps:</b> The tool automatically processes the data to provide a list of KPIs to track your strategy.
-            </p>
-            <p>
-                The process uses ANP and AHP methodologies, which increase in complexity as more KPIs are considered due to the need for pair-wise comparisons. Therefore, the process can be summarized in the following steps:
-            </p>
+        <h2 class="display-6 text-primary font-weight-bold"> What is this tool? </h2>
+        <p style="text-align: justify;">
+            This tool uses a combination of both an Analytic Hierarchy Process (AHP) and an Analytic Network Process (ANP) to help you select the KPIs/metrics relevant to your strategy and estimate their relevance. KPIs/metrics are categorised following the Balance Scorecard (BSC) perspectives:
             <ul>
-                <li> <b>STEP 1:</b> Define what strategies and most important factors will be impacting the metrics/KPIs that you will use. </li>
-                <li> <b>STEP 2:</b> Find the most relevant KPIs for you. </li>
-                <li> <b>STEP 3:</b> Perform pair-wise comparisons to define the most relevant factors for decision-making. </li>
-                <li><b>STEP 4:</b> Define the criteria to achieve your goals and define possible interactions within your approaches.</li>
-                <li><b>STEP 5:</b> Results </li>
+                {% for bsc_family in BSC_Families %}
+                    <li>
+                        <b>{{ bsc_family.name }}:</b> {{ bsc_family.explanation|safe }}
+                    </li>
+                {% endfor %}
             </ul>
-            <p>
-                Depending of the approach that is seeked, these stages are not necesarily being defined together. 
-            </p>
+        </p>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <a>
+                <img src="{% static 'img/BSC.jpg' %}" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px; margin-top: 10px; max-height: 800px;  max-width: auto;" alt="ANP AHP Diagram"/>
+            </a>
+        </div>
 
-
-        <h2 class="display-6 text-primary font-weight-bold"> Approach 1 - KPI selection </h2>
-            <p>
-                Initially, KPIs are classified into one of four categories on a balanced scorecard. This is important since, as strategies evolve, the KPIs and, therefore, metrics can change over time. The term <b>balanced scorecard</b> refers to a performance management report used by a management team. It is typically focused on managing the implementation of a strategy or operational activities. Although less common, individuals also use the balanced scorecard to track personal performance.
-            </p>
-            <p>
-                The KPIs are classified within these four areas and can additionally be classified based on other perspectives. For example, as observed in <b>Figure 1. Balanced Scorecard</b>, Customer Relationship defines most of the KPIs relevant to users of DATAMITE and thus includes the family of KPIs (and metrics) related to the quality of the datasets. This category is based on the necessary measures to satisfy the customer’s requirements and to remain competitive in the market. As such, customer-oriented KPIs are used, such as customer satisfaction and customer retention.
-            </p>
-            <p>
-                Those linked to Education and Growth, for example, are connected to the process of platform service growth and the specialty and characteristics of the service. Therefore, they could be linked to special properties of the dataset that provide unique opportunities.
-            </p>
-            <p>
-                Other areas, such as financial, are self-explanatory and therefore easy to understand. Financial includes financial KPIs, such as profit and return on investment, allowing shareholders to verify the company's financial success.
-            </p>
-            <p>
-                Finally, metrics that relate to internal processes can be of interest to system providers but not necessarily to users, since they provide information about the alignment of the process with the strategy. In this perspective, there are KPIs that reflect the effectiveness and efficiency of the operations carried out in the company. This ensures that they meet the expectations and requirements imposed by both the company itself and the customer. Examples of KPIs used in this perspective include productivity and efficiency.
-            </p>
-            <div>
-                        <a><img src="{% static 'img/ANPAHP1.jpg' %}" style="margin-left: 200px; margin-right: 10px; max-height: 800px; margin-bottom: 10px; max-width: auto;" alt="ANP AHP Diagram" /> </a>
-            </div>
-            <p    style="margin-left: 260px"><b>Figure 1. Balanced Scorecard</b></p>
-
-
-            <h2 class="display-6 text-primary font-weight-bold"> Approach 2 - ANP based on the KPIs selected </h2>
-
-            After categorising the KPIs (Approach 1), the ANP process is applied according to a predefined structure. Following the work of Rodrigues et al. 2021 (<a href="https://www.mdpi.com/2071-1050/13/24/13777">read article here</a>), this structure can be seen in the following figure.
-            <div>
-                <a><img src="{% static 'img/ANPAHP2.jpg' %}" style="margin-left: 200px; margin-right: 10px; max-height: 300px; margin-bottom: 10px; max-width: auto;" alt="ANP AHP Diagram 2" /> </a>
-            </div>
-            <p style="margin-left: 400px"><b>Figure 2. ANP model </b></p>
-
-            <p>
-                As observed in Figure 2. ANP model, the proposed ANP model consists of three clusters: objective, criteria, and alternatives.
-            </p>
-                
-            <p>
-                <b>Objective Cluster:</b>
-                Two elements make up the "objective" cluster: "identifying KPIs for monitoring Datamite process performance" and "identifying KPIs for gaining higher insights from monetized data.” The objective is fulfilled through the selection of alternatives (i.e., KPIs) evaluated through a set of criteria.
-            </p>
-            
-            <p>
-                <b>Criteria Cluster:</b>
-                The “criteria” cluster consists of a set of factors that influence the decision-making process from the set of alternatives presented to the decision-maker. Criteria ensure that the decision-maker considers different aspects when choosing between alternatives. For example, criteria can be selected and associated with identified objectives (e.g., Cost: Reduce, Productivity: Increase, Quality: Increase, etc.).
-            </p>
-        
-            <p>
-                <b>Alternatives Cluster:</b>
-                The “alternatives” cluster consists of several options available for the decision-maker to choose from. KPIs represent the decision-maker's alternatives. The arrangement of these clusters in a network structure, rather than a hierarchy, is due to the high number of existing KPIs suitable for data monetization performance measurement (for more detail, check the following section). Since cluster size should not exceed nine elements, developing the ANP model led to arranging KPIs in Balanced Scorecard (BSC) categories.
-            </p>
-    
-
-        <h2 class="display-6 text-primary font-weight-bold"> KPI list </h2>
-            {% comment %}<style>
-                         table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: center;
-                        }
-                        tr:nth-child(even) {
-                            background-color: #f2f2f2;
-                        }
-                        summary {
-                        font-weight: bold;
-                        font-size: 2em;
-                        cursor: pointer;
-                        color: #420cd6;
-                        }
-                    </style>
-
-
-                    <details>
-                        <summary>Click Here For Finance KPIs</summary>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Definition</th>
-                                <th>Valorization Capabilities</th>
-                                <th>Dataset Context Dependant?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><th colspan="5">Finance</th></tr>
-                            <tr><td>1</td><td>Warehouse/Silo CAPEX</td><td>Cost of database app, static that could be affected by credits and inflation rates. A data silo is a collection of isolated data. This data is restricted, unanalysed, and only available to a single department or unit within an organisation. The direct costs of data silos within an organization may not be clear; however, there are numerous ways that data silos waste company resources and reduce employee efficiency.</td><td> - </td><td>No</td></tr>
-                            <tr><td>2</td><td>Warehouse/Silo OPEX</td><td>Cost of database management. To estimate the cost of a data warehouse, there are several components to consider: Infrastructure pricing, Internal headcount and external consultants, Opportunity costs, Ongoing maintenance and engineering costs, and software as a service (SAAS). </td><td> - </td><td>No</td></tr>
-                            <tr><td>3</td><td>Dataset Intrinsic Cost - Scarcity </td><td>Scarcity is a concept that can be viewed in two different ways: relative scarcity and absolute scarcity. Relative scarcity refers to the comparison of the availability of resources between two or more entities.This metrics should look at limited supply information, substitutes existance. For dataset, we do not consider absolute or relative only absolute.</td><td>Profiling</td><td>Yes</td></tr>
-                            <tr><td>4</td><td>Dataset Intrinsic Cost - Lifecycle</td><td>Lifecycle means all different steps a product passes through, from the first product concept to the production processes and ending with disposal of the product. For data this implies data curation data management, data collection, etc.</td><td>Profiling</td><td>Yes</td></tr>
-                            <tr><td>5</td><td>Dataset Intrinsic Cost - Future Economic Benefits</td><td>The future economic benefits flowing from an intangible asset may include revenue from the sale of products or services, cost savings, or other benefits resulting from the use of the asset. (e.g.    the use of intellectual property in a production process may reduce future production costs).</td><td>Profiling</td><td>Yes</td></tr>
-                            <tr><td>6</td><td>Market Value</td><td>Value of the Dataset or those similar to them within the market.</td><td>Monitoring</td><td>No</td></tr>
-                            <tr><td>7</td><td>Compliance Cost</td><td>Estiamted financial cost to buiseness of not keeping data for compliance / regulation puproses</td><td>Profiling</td><td>No</td></tr>
-                            <tr><td>8</td><td>fixed record value</td><td>A count of record with a fixed value per record that are ready to be used</td><td>Profiling</td><td>No</td></tr>
-                            <tr><td>9</td><td>IP value</td><td>Intellectual Porperty data assets whose value is directly proportional to its financial value (e.g. licenses or patents)</td><td>Profiling</td><td>Yes</td></tr>
-                        </tbody>
-                    </table>
-                </details>
-
-
-
-
-                <details>
-                        <summary>Click Here For Internal Processes KPIs</summary>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Definition</th>
-                                <th>Valorization Capabilities</th>
-                                <th>Dataset Context Dependant?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                <tr><th colspan="5">Internal Processes</th></tr>
-                                <tr><td>1</td><td>Utility - Flexibility </td><td>Data Flexibility is the ability for a solution to grow, shrink or change to meet a revised set of data needs or requirements.    This involves perspectivos of platform, integration, storage, and access capabilities. Flexibility can be seen from a client perspective and Internal Process Perspective. </td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>2</td><td>Utility - Frequency</td><td>The term “usage data” refers to any data about how a product or service is used. In the past, the term might only have referred to a visitor’s actions on a website, or tell you how many minutes someone has used their phone. Today, however, usage data is an essential part of a wide variety of services, across industries.    Usage is subdided in different concepts with individual metrics including: MIssion / Criticality, Ability to Integrate, Scope, Frequency of use, Consumer retention rate, metadata, additional resources, and diminishing value. </td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>3</td><td>Utility - Consumer Retention Rate</td><td>Porportion of data consumer who continue to use specific dataset after a specific period.    </td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>4</td><td>Data Security - Confidentiality</td><td>Confidentiality implies an infosec team's ability to keep company information, customer information, proprietary intellectual property and any other data under the infosec domain protected from unauthorized access.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>5</td><td>Data Security - Integrity</td><td>Integrity in cyber security means data is complete, trustworthy and has not been modified or accidentally altered by an unauthorised user. The integrity of data can be compromised unintentionally by errors in entering data, a system malfunction, or forgetting to maintain an up-to-date backup.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>6</td><td>Data Security - Integrated Framework</td><td>This implies the capture and analyses of several perspectives related to Data Security and System Security. These includes: Autehnticity, Controllability, Safe Physical Enfironment Index, Physical Access Control, Communication Network Architecture, Communication transmission, Trusted Verification, Access and Protection Strategies, Network Attack Prevention, Audit and Credible Verification, Identity autehtication and access polity, device intrusion prevention, data security, centrilized control, safety management, audit management, system management. This impact data governance.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>7</td><td>Data security - availability</td><td>Availability is the ability for users to access systems and information when needed, even under duress.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>8</td><td>Utility - Openness</td><td>Data should be discoverable, accessible, intelligible, assessable and re-usable. This also involves the deffinitions (e.g. license under which the content can be re-used) in order to enable information consumers to use the data under clear legal terms.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>9</td><td>Aggregation Level</td><td>The degree to which data is or should be aggregated (if constructed from more than one set). This can be manipulated, nevertheless when a report contains more than one attribute, any metric on the report is calculated by default at the lowest attribute level that is on the report.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>10</td><td>Update Frequency</td><td>Indicate how often the data is updated applies to electronic records only. </td><td>Monitoring</td><td>No</td></tr>
-    
-                        </tbody>
-                    </table>
-                </details>
-
-                <details>
-                        <summary>Click Here For Learning and Growth KPIs</summary>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Definition</th>
-                                <th>Valorization Capabilities</th>
-                                <th>Dataset Context Dependant?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                <tr><th colspan="5">Learning and Growth</th></tr>
-                                <tr><td>1</td><td>Trustworthy - Privacy</td><td>Addresses whether the dataset contains sensitive data such as Personally Identifiable Information (PII) and Protected Health Information, and meets privacy standards. Data Privacy stands as a crucial KPI in the context of data monetization and valuation, reflecting the extent to which personal identification data is protected and managed ethically.</td><td>Monitoring</td><td>Yes</td></tr>
-                                <tr><td>2</td><td>Trustwowrthy - Regulatory Risk</td><td>Defines if there is any obligation to keep this data, and if there are any ethical/legal consequences for the organization if it loses it</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>3</td><td>Utility - Velocity</td><td>Simply put, it's the rate at which consumers and businesses in an economy collectively use the goods.</td><td>Monitoring</td><td>No</td></tr>
-                                <tr><td>4</td><td>Trustworthy - Dependability</td><td>An in-depth description of the study procedures and analysis to allow the study to be replicated</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>5</td><td>Trustworthiness - Confirmability</td><td>If applicable, secure that data and findings are not due to the participant and/or researcher bias</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>6</td><td>Dataset optimisation capability</td><td>ability to acquire, curate, maintain and enhance datasets based on value maximisation</td><td>Performance capabilities</td><td>Yes</td></tr>
-                                <tr><td>7</td><td>Infrastructure optimisation capability</td><td>Ability to design, deploy and reconfigure the enterprise data infrastructure to maximise data value</td><td>Performance capabilities</td><td>No</td></tr>
-                                <tr><td>8</td><td>IT services optimisation capability</td><td>The ability to evolve, adapt and orchestrate the data processes, support services and workflows towards value-based goals and outcomes.</td><td>Performance capabilities</td><td>No</td></tr>
-                                <tr><td>9</td><td>Data non monetary value Trends</td><td>The data non-monetary value involves different waranties that are not directly related to money that can be extraxted and linked. These includes (1) communication capabilities, (2) training capabilities, and (3) profiling,    More specifically    (1) Level of integration of data value into IT leadership, governance, infrastructures, and communication to different stakeholders, (2) The ability to enhance organisational management and technical skills about data value issues, (3)    the ability to specify sources of value for a specific organisation/user/stakeholder.</td><td>Performance capabilities</td><td>No</td></tr>
-                                <tr><td>10</td><td>Data monetary value Trends</td><td>Involves different waranties that are related to money that can be extraxted and linked. These includes: (1) Data value monitoring capability and (2) Data value prediction capability. These involves (1) Supports data value assessment and reporting at all stages in the data value chain and (2) Capacity to analyse and predict data value trends or sources from current indicators, patterns and context.</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>11</td><td>Data innovation capability</td><td>The ability to innovate in services or products based on novel use of (or insights from) data and data services.</td><td>Performance capabilities</td><td>No</td></tr>
-                                <tr><td>12</td><td>Decision-making capability</td><td>Organisational capacity (Datamite) to create a data value-based control loop that feeds into organisational level decisions.</td><td>Performance capabilities</td><td>Yes</td></tr>
-                                <tr><td>13</td><td>Strategies</td><td>This involves (1) Strategic change capability, (2) Strategic data planning and scaling capability, and (3) Organisational learning capability. In other words (1) identification of the changes in organisational goals based on performance and trends.    (2) identification of longer-term data acquisition, data architecture, system integration, IS priorities, business process and people required, and (3) the extent to which the organisation can evolve based on data value considerations.</td><td>Performance capabilities</td><td>Yes</td></tr>
-                                <tr><td>14</td><td>Education and training related</td><td>A vital KPI in data monetization and valuation is the extent to which a data marketplace offers educational material and strategies for data monetization. The lack of clear guidelines and established best practices can lead to vague pricing strategies, revenue models, and value propositions, thereby misaligning data monetization efforts with broader business objectives and limiting revenue potential.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>15</td><td>Service Quality</td><td>The service quality involves responsiveness, accuracy of information, reliability, technical competence, empathy (if involves any service), and support personal (if exist).</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>16</td><td>Interlinking</td><td>Interlinking refers to the degree to which entities that represent the same concept are linked to each other, be it within or between two or more data sources. This is important, for example, to perform recommendations.</td><td>Profiling</td><td>Yes</td></tr>
-    
-                        </tbody>
-                    </table>
-                </details>
-
-
-
-
-
-                <details>
-                        <summary>Click Here For Clients KPIs</summary>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Definition</th>
-                                <th>Valorization Capabilities</th>
-                                <th>Dataset Context Dependant?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                <tr><th colspan="5">Clients</th></tr>
-                                <tr><td>1</td><td>Utility - Flexibility </td><td>Data Flexibility is the ability for a solution to grow, shrink or change to meet a revised set of data needs or requirements.    This involves perspectivos of platform, integration, storage, and access capabilities. Flexibility can be seen from a client perspective and Internal Process Perspective. </td><td>Performance Capabilities</td><td>Yes</td></tr>
-                                <tr><td>2</td><td>Ownership</td><td>Addresses outright data set ownership plus licensing restrictions and service agreements</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>3</td><td>Utility - Metadata and additional resources</td><td>Includedes data profiling and data abstraction. Data abstraction is the reduction of a particular body of data to a simplified representation for understanding (is not agglomeration)</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>4</td><td>Format</td><td>Format include different characteristics such as the format by itself (tabulated, visual, plots , graphs ….), ordering (the way the data is arranged in the medium or the sequencing of details and totals), and desing (e.g. graphical desing jpg, gif, etc.)</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>5</td><td>Size</td><td>Define quantity of data based on metrics    it can be number of of records, or Megabites, or specific characteristics given the format (e.g. number of features for tabulated).</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>6</td><td>Age</td><td> Addresses refresh rate and available history</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>7</td><td>Replacement Cost</td><td>This deifne cost of replacing the data set by another . If data set is unique, the replacement cost is infinity. This can be related to scarcity (in finance) but this is from the users / client perspective</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>8</td><td>Utility - interoperability / applicability / standardization/ semantic accuracy</td><td>The cornerstone of effective data exchange is the mutual understanding of the shared data, encapsulated by the concept “Semantic Interoperability”. However, achieving this understanding is often a hurdle, contingent upon the data consumer’s (i.e., data Buyer) grasp of the vocabulary and metadata from the data provider (i.e., data Seller). This necessitates the accessibility of metadata to decode the data content, adhering to the FAIR principles, and the utilization of a common vocabulary. In instances where a common vocabulary is absent, a mapping between the vocabularies of the data consumer and provider is imperative. Furthermore, this consider the following of standards, in case of existance, for data representation and its taxonomy.</td><td>Performance Capabilities</td><td>Yes</td></tr>
-                                <tr><td>9</td><td>Utility - inhibition threshold</td><td>Many internal structures, data architectures, data formats, and external regulations impose high inhibition thresholds on data that impact the use of data as a strategic resource.</td><td>Performance Capabilities</td><td>Yes</td></tr>
-                                <tr><td>10</td><td>Consumer Satisfaction</td><td>Focusing on measuring the level of satisfaction consumers experience with the data they have purchased. High levels of consumer satisfaction typically indicate that the data meets or exceeds the expectations of the consumers, suggesting that it is of high quality, accurate, and valuable for their specific needs. This, in turn, positively influences the overall valuation of the data, as satisfied consumers are more likely to make repeat purchases, recommend the data to others, and are willing to pay a premium for high-quality data. </td><td>Performance Capabilities</td><td>Yes</td></tr>
-                                <tr><td>11</td><td>Utility - Diversity of Useage</td><td>The Diversity of Data Use is a KPI relevant for data valuation, focusing on the range of contexts or projects where customers utilize the purchased data. This metric is sheds light on the versatility and broad applicability of the data. When data is used across a diverse array of projects and contexts, it indicates high versatility, suggesting that the data is comprehensive, adaptable, and relevant to various needs and applications</td><td>Performance Capabilities</td><td>Yes</td></tr>
-                                <tr><td>12</td><td>Quality - Accuracy & Credibility</td><td>Data accuracy is all about whether the data in the company systems matches that out in the real world or another verifiable source. Credibility corresponds to the notion of validity in quantitative work but is more about internal validity. The credibility of qualitative data can be assured through multiple perspectives throughout data collection to ensure data are appropriate. This may be done through data, investigator, or theoretical triangulation; participant validation or member checks; or the rigorous techniques used to gather the data.</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>13</td><td>Quality - consistency</td><td>Consistency means data across all systems/dataset reflects the same information, and they are in sync with each other across the system.</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>14</td><td>Quality - completeness</td><td>Data completeness is a metric that assesses the extent to which expected information is available within a dataset. Completeness doesn't necessarily mean that every single field is filled in. "For example, an employee's first name and last name are mandatory, but middle name is optional," he said. "So a record can be considered complete even if a middle name is not available."</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>15</td><td>Quality - currency/timeliness</td><td>Data Currency refers to the practice of ensuring that data is continuously updated and relevant to reflect the latest information available.</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>16</td><td>Quality - duplication/uniqueness/conciseness</td><td>Most companies have multiple overlapping sets of data. Even in the case of single data sets, records can be accidentally added more than once. Conciseness refers to the minimization of redundancy of entities at the schema and the data level. Conciseness is classified into (i) intensional conciseness (schema level) which refers to the case when the data does not contain redundant schema elements (properties and classes) and (ii) extensional conciseness (data level) which refers to the case when the data does not contain redundant objects (instances).</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>17</td><td>Quality - integrity</td><td>Even if data is consistent, complete, unique, and accurate it doesn't always stay that way. It's touched by different people and moves through different systems. Maintaining data integrity is essential for ensuring that the information is trustworthy and can be used confidently for decision-making, analysis, and operational processes.</td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>18</td><td>Quality - Validity</td><td>Data validity refers to the degree to which data accurately represents the real-world constructs it is intended to depict. It ensures that the data is appropriate, meaningful, and useful for the specific context in which it is applied. Valid data must adhere to relevant criteria, constraints, and specifications defined for a particular use case. </td><td>Performance Capabilities</td><td>No</td></tr>
-                                <tr><td>19</td><td>Similarity</td><td>A theoretical measure of similarity whenever each datum carries the same value for the user.</td><td>Prediction</td><td>Yes</td></tr>
-                                <tr><td>20</td><td>Detail</td><td>Data is written with the accuracy which is required for the business.</td><td>Profiling</td><td>Yes</td></tr>
-                                <tr><td>21</td><td>Latency</td><td>Data latency is the total time elapsed between when data are acquired by a sensor and when these data are made available to the public.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>22</td><td>Lineage or Provenence</td><td>The term “data provenance”, sometimes called “data lineage,” refers to a documented trail that accounts for the origin of a piece of data and where it has moved from to where it is presently.</td><td>Profiling</td><td>No</td></tr>
-                                <tr><td>23</td><td>Sintactic validity</td><td>Used for text and is related to syntactically accurate. This is achieved when it is part of a legal value set for the represented domain or it does not violate syntactical rules defined for the domain.</td><td>Profiling</td><td>Yes</td></tr>
-                        </tbody>
-                    </table>
-                </details> {% endcomment %}
-
-
-        <h3 class="display-8 text-primary font-weight-bold"> Disclaimer    </h3>
-            <p> 
-                The tool provided here is not intended to provide a general perspective of how to track and monetize data. The tool is provided within the domain of the DATAMITE project and, if used outside this scope, users should take all possible considerations for the results provided.
-            </p>
+        <h2 class="display-6 text-primary font-weight-bold"> How to use this tool? </h2>
+        <p style="text-align: justify;">
+            To use this, you need to create an account and log in (top right of the navigation bar). Once you are logged in, you can then create and access your evaluations (My Evaluations in the navigation bar). Each evaluation corresponds to a single strategy, so you may want to create multiple ones. Once you have created an evaluation, all you have to do is to follow the steps and their instructions.
+        </p>
+        <p style="text-align: justify;">
+            In practice, you will select how important each Balance Scorecard (BSC) perspective is for your strategy. Based on these perspectives, it will offer a selection of KPIs/metrics (you can create your own too) that you can select to include into your evaluation. How important KPIs/metrics are for your perspectives is set through the selection of preference levels (from 1 to 100). If some KPIs/metrics are computed based on others, you can then create relationships between them. It can even handle circular dependencies (e.g. metric1 depending on metric2 which depends itself on metric1)!
+        </p>
+        <p style="text-align: justify;">
+            Finally, once everything has been selected and weighted, we provide an analysis that gives you some insights on what are the most important KPIs/metrics for your strategy. You will be able to download a PDF report. These insights can then be included in your own system used measure your KPIs/metrics to estimate the performance of your overall strategy.
+        </p>
     </div>
 </div>
 {% endblock %}

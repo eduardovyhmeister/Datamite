@@ -3,6 +3,8 @@ Basically any page you can find directly in the header."""
 
 from django.shortcuts import render
 
+from ..models import BSCFamily
+
 
 # -----------------------------------------------------------------------------
 # Basic pages:
@@ -14,7 +16,8 @@ def home(request):
 
 def how_to_anp_ahp_view(request):
     """View for the How To page about ANP-AHP."""
-    return render(request, 'howto_ANP_AHP.html')
+    context = {"BSC_Families": BSCFamily.objects.all()}
+    return render(request, 'howto_ANP_AHP.html', context)
 
 
 def about_view(request):
