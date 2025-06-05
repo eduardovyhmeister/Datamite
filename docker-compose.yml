@@ -1,25 +1,21 @@
-version: "3.8"
 services:
-  #database
-  #django application
   app: #this is the name of the image....in this case app
-  # build is that the Dockerfile is in the same folder
     build: .
-  # this specify the link between containers and other
-    volumes:
-      - .:/ANPAHP #this is the link between folders (if something change locali will later on be applied to the container)
     env_file:
       - .env
     ports:
       - 8000:8000 #expose from 8000 in our computer to the other port in the image
-    image: app:ANPAHP_container_v2.0.0
-    container_name: ANPAHP_container_v2.0.0
+    image: anpahp_container_v2.0.0
+    container_name: anpahp_container_v2.0.0
     command: >
-      sh -c "python3 manage.py makemigrations &&
+        sh -c "python3 manage.py makemigrations &&
             python3 manage.py migrate &&
             python3 manage.py makemigrations ANPAHP &&
             python3 manage.py migrate ANPAHP &&
             python3 manage.py runscript populate_db &&
             python3 manage.py runserver 0.0.0.0:8000"
+
+
+
 
 

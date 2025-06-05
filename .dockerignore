@@ -7,12 +7,3 @@
 #docker
 .docker
 
-
-#python
-altai/__pycache__/
-altai/*/__pycache__/
-altai/*/*/__pycache__/
-altai/*/*/*/__pycache__/
-
-
-/data

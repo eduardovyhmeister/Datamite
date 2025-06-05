@@ -4,16 +4,17 @@ LABEL maintainer="Bastien Pietropaoli - Insight Centre for Data Analytics / UCC"
 #define that all errors are sent to terminal
 ENV PYTHONUNBUFFERED=1
 
-# Set the working directory in the container
-WORKDIR /ANPAHP
-
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Ensure the python site-packages scripts are in the PATH
+# For Alpine, Python executables are often in /usr/local/bin
+ENV PATH="/usr/local/bin:$PATH"
 
 # Install the dependencies specified in the requirements file
+WORKDIR /install
+COPY requirements.txt .
 RUN python3 -m pip install --no-cache-dir -r requirements.txt && python3 -m pip list
 
 # Copy the rest of the application code into the container
+WORKDIR /ANPAHP
 COPY . .
 
 # Expose the port that your application will run on
@@ -25,4 +26,4 @@ EXPOSE 8000
 
 # Define the command to run the application
 # (change "your_script.py" to the main script of your application)
-CMD ["python3", "manage.py", "runserver", "localhost:8000"]
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
