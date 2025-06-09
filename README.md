@@ -21,7 +21,7 @@ ALLOWED_HOST='your_ip'
 
 To build the service image:
 ```
-docker build -t anpahp-docker . # --no-cache if you want to force a rebuild (new schema for instance)
+docker build -t anpahp_container . # --no-cache if you want to force a rebuild (new schema for instance)
 ```
 
 Start the service with Docker:

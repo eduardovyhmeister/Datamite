@@ -5,8 +5,8 @@ services:
       - .env
     ports:
       - 8000:8000 #expose from 8000 in our computer to the other port in the image
-    image: anpahp_container_v2.0.0
-    container_name: anpahp_container_v2.0.0
+    image: anpahp_container
+    container_name: anpahp_container
     command: >
         sh -c "python3 manage.py makemigrations &&
             python3 manage.py migrate &&
