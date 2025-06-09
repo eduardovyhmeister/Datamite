@@ -91,6 +91,10 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
         3) The limiting supermatrix computed from the supermatrix.
         4) A list of insights in the form of a dictionary of content to be used
            in the HTML template.
+           
+    TODO:
+        Could separate the insights into subsections (e.g. Strategy, BSC families, Metrics)
+        to better format the final report.
     """
     keys, supermatrix = anp.build_supermatrix(evaluation.bsc_preferences, 
                                               evaluation.kpis_preferences,
@@ -148,6 +152,8 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
     # 3nd: for each BSC perspective, how much the metrics affect them:
     for i, bsc_family in enumerate(bsc_families_selected):
         weights = [round(x, 4) for x in limiting_matrix[1+i][1 + nb_families:]]
+        if sum(weights) == 0:
+            continue # Ignore BSC families with no KPIs selected.
         df = pd.DataFrame(weights, index=keys[1 + nb_families:])
         html_table = df.to_html(classes='table table-striped', header=False)
         

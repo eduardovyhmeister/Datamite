@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## v2.0.1
+
+### Fixed
+- Fixed an issue in the report generation when a BSC family was not set to 0 but had no KPI selected.
+
+
 ## v2.0.0
 
 ### Fixed
@@ -17,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the security issue with no actual secure key being used.
 - Fixed the .gitignore that was preventing some static files from being copied properly in the Docker image.
 - Fixed URLs to be more consistent.
+- Fixed the favicon (i.e. the icon appearing in your tab on your browser) to use the DATAMITE logo instead.
 
 ### Added
 - Added our own ANP library to not rely on an external library that was old and unmaintained.
@@ -44,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the step in which you could select links between KPIs/metrics to make it much more accessible and readable.
 - Changed models 'save()' method to be more consistent in what it is actually saving, in particular by enforcing validators to be run again when saving (this is not a default behaviour for some reason).
 - Changed the views to make them clearer (no more partially computing the supermatrix all over the place), and more consistent in what they are doing: a link between the data and the templates.
-
 
 ### Removed
 - Removed criteria from steps since they were not used in the overall evaluation (they are still in the code base if we want to include them in a future version though).

@@ -100,7 +100,7 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
     """Build the supermatrix for the AHP.
     
     If intermetrics_relationships create cycles in the dependency graph, then 
-    you should find the limiting matrix using `TODO`.
+    you should find the limiting matrix using `compute_limiting_matrix()`.
     
     Args:
         bsc_prefs (dict[name: value]): The preferences in terms of BSC families.
@@ -120,8 +120,12 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
         with the matrix being the supermatrix of the hierarchy (the AHP). The 
         matrix is given as a list of columns.
     """
-    bsc_keys = [key for key in bsc_prefs.keys() if bsc_prefs[key] != 0] # Filter out excluded families
-    kpi_keys = list(kpi_prefs.keys())
+    # Extract the KPI preferences per family:
+    kpi_preferences = __separate_family_preferences(kpi_prefs)
+    
+    # Filter out BSC families with a preference of 0 OR no KPI selected:
+    bsc_keys = [key for key in bsc_prefs.keys() if bsc_prefs[key] != 0 and kpi_preferences[key] != {}]
+    kpi_keys = list(kpi_prefs.keys()) 
     
     # 1st column = strategy
     # Following columns = BSC families
@@ -138,7 +142,6 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
     # Construct the columns for the BSC families:
     # Each family depends on the KPIs/metrics it contains.
     # It uses the expressed preferences in terms of KPIs (the pairwise comparison).
-    kpi_preferences = __separate_family_preferences(kpi_prefs)
     for bsc_family in bsc_keys:
         keys, pref_matrix = build_matrix(kpi_preferences[bsc_family])
         kpi_weights = normalise_columns(pref_matrix)[0]
