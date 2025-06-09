@@ -182,7 +182,15 @@ class ANPTests(TestCase):
             self.assertAlmostEqual(value1, value2)
 
         
-        
+    ### TODO: test the construction of the supermatrix:
+    ###  - Needs to setup a bunch of BSC families and subfamilies.
+    ###  - Setup some KPIs
+    ###  - Simulate the whole selection process.
+    ###  - Check the build supermatrix is correct: correct columns and rows, correct values.
+    ###      - A no dependency metric should depend on itself.
+    ###      - A metric with dependencies should have itself as 0.
+    ###      - The strategy should only depend on the BSC families.
+    ###      - BSC families with no KPIs selected OR with preference set to 0 should NOT appear in it.
         
         
     

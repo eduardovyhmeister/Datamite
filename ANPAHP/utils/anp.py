@@ -150,21 +150,20 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
         supermatrix.append(column)
     
     # Construct the columns for all the metrics:
-    if intermetrics_relationships:
-        for kpi in kpi_keys:
-            # No dependencies, metric depends only on itself:
-            if kpi not in intermetrics_relationships:
-                kpi_column = [0] * matrix_size
-                kpi_column[1 + len(bsc_keys) + kpi_keys.index(kpi)] = 1
-                supermatrix.append(kpi_column)
-                continue
-            
-            # There are dependencies, compute the weights:
-            keys, importance_matrix = build_matrix(intermetrics_relationships[kpi])
-            kpi_weights = normalise_columns(importance_matrix)[0]
-            quick_access = {name: value for name, value in zip(keys, kpi_weights)}
-            column = [0] * (1 + len(bsc_keys)) + [quick_access.get(key, 0) for key in kpi_keys]
-            supermatrix.append(column)
+    for kpi in kpi_keys:
+        # No dependencies, metric depends only on itself:
+        if kpi not in intermetrics_relationships:
+            kpi_column = [0] * matrix_size
+            kpi_column[1 + len(bsc_keys) + kpi_keys.index(kpi)] = 1
+            supermatrix.append(kpi_column)
+            continue
+        
+        # There are dependencies, compute the weights:
+        keys, importance_matrix = build_matrix(intermetrics_relationships[kpi])
+        kpi_weights = normalise_columns(importance_matrix)[0]
+        quick_access = {name: value for name, value in zip(keys, kpi_weights)}
+        column = [0] * (1 + len(bsc_keys)) + [quick_access.get(key, 0) for key in kpi_keys]
+        supermatrix.append(column)
     
     keys = ["strategy"] + bsc_keys + kpi_keys
     return (keys, supermatrix)
