@@ -89,5 +89,11 @@ Here is a list of stuff that could be done to improve this project:
 * Change the theme used by Bootstap to fit the identity of DATAMITE.
 * Improve the overall visual of the website.
 * Refactor code of similar steps (e.g. preference steps use very similar code).
-* Refactor code to make it easy to change the order or add new steps.
+* Refactor code to make it easier to change the order or add new steps.
 * Add a slug to evaluations so it can be used for the URI instead of the ID.
+* Add a warning message if one of the selected BSC families has no KPIs/metrics selected.
+* Improve the generated report: better format, better section/subsection separation, better colour theme for the pie charts.
+* Add the possibility to download an Excel sheet with the supermatrix, the limiting supermatrix, and the automatic computation of KPIs based on measured KPIs/metrics.
+* Add the knowledge base pages with a main page referencing all the pages.
+* Add a search functionality to the website.
+* Better integrate the taxonomy from D4.2 (add the diagrams into the KB, and add the relationships as predefined relationships in the intermetrics relationships).
