@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fixed an redirection issue that prevented the creation of new KPIs.
+
+### Changed
+- Entering notes on your evaluation and validating now brings you to step 1.
+
 
 ## v2.0.2
 
