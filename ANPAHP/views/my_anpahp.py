@@ -14,6 +14,7 @@ def my_anpahp_home_view(request, pk):
     
     if form.is_valid():
         form.save()
-        return render(request, 'ANPAHP/ANPAHPHome.html', content)
+        # return render(request, 'ANPAHP/ANPAHPHome.html', content)
+        return redirect('myANPAHPStep1', pk = ANPAHP.pk)
     
     return render(request, 'ANPAHP/ANPAHPHome.html', content)
