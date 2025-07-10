@@ -57,7 +57,13 @@ To import, simply run the following command:
 cd foldername/
 python manage.py runscript populate_db
 ```
-The script uses CSV files in 'static/mine' to populate the database with the Datamite data.
+The script uses CSV files in 'ANPAHP/data' to populate the database with the Datamite data.
+This script provides logs to help you identify errors in the input CSVs.
+
+The CSVs should have the following:
+- A header with the names of the fields as they are in the DB model.
+- If a field is a foreign key, then it expects the primary key (e.g., BSCSubfamily has a BSCFamily as a foreign key, and BSCFamily's primary key is its unique name, so the CSV for BSCSubfamilies expect to find an existing BSCFamily name).
+- If a field is a ManyToManyField, then it expect either nothing (empty string, meaning no connection), a single value, or a list of values (in the form of a JSON list). The provided values need to correspond to the primary key of the model linked here.
 
 
 # Run unit tests

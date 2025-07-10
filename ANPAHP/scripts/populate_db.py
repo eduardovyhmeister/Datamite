@@ -203,7 +203,7 @@ def populate_db(file_path: str, model_class: Type[django.db.models.Model]) -> No
                             value = []
                         elif "[" not in value: # Not a JSON list, just a single value
                             value = [value]
-                        else:
+                        else: # A JSON list is provided:
                             value = json.loads(value)
                         m2m_foreign_model = many_to_many_fields[field].remote_field.model
                         m2m_target_field = many_to_many_fields[field].target_field.name
