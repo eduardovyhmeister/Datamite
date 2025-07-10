@@ -199,7 +199,12 @@ def populate_db(file_path: str, model_class: Type[django.db.models.Model]) -> No
                 # Retrieve ManyToMany records from the DB:
                 if field in many_to_many_fields:
                     try:
-                        value = json.loads(value)
+                        if value == "": # Empty value
+                            value = []
+                        elif "[" not in value: # Not a JSON list, just a single value
+                            value = [value]
+                        else:
+                            value = json.loads(value)
                         m2m_foreign_model = many_to_many_fields[field].remote_field.model
                         m2m_target_field = many_to_many_fields[field].target_field.name
                         many_to_many_kwargs[field] = [m2m_foreign_model.objects.get(**{m2m_target_field: v})
