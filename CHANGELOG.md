@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Entering notes on your evaluation and validating now brings you to step 1.
+- 'populate_db.py' now acceps empty values or single values in the JSONFields.
+- Updated the content of KPIs.csv with new information.
 
 
 ## v2.0.2
