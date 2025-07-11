@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-# lib/
+lib/
 lib64/
 parts/
 sdist/
@@ -100,3 +100,9 @@ ENV/
 
 *.sqlite3
 .vagrant
+
+
+# Keep the static files from being ignored since they need to be committed
+# for js libraries to work:
+!static
+!static/**
