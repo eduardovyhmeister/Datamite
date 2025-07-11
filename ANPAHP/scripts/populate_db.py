@@ -174,7 +174,8 @@ def populate_db(file_path: str, model_class: Type[django.db.models.Model]) -> No
             
             if len(row) != len(header):
                 logger.error(f"Invalid Row Error - In file {file_path}, line {line_number} is invalid: " +
-                             f"expected {len(header)} entries, got {len(row)} instead.")
+                             f"expected {len(header)} entries, got {len(row)} instead." +
+                             f"{row}")
                 continue
             
             # Get the retrieval kwargs (in case the record already exist in the DB) and
@@ -201,8 +202,8 @@ def populate_db(file_path: str, model_class: Type[django.db.models.Model]) -> No
                     try:
                         if value == "": # Empty value
                             value = []
-                        elif "[" not in value: # Not a JSON list, just a single value
-                            value = [value]
+                        elif "[" not in value: # Not a JSON list, just comma-separated values:
+                            value = [x.strip() for x in value.split(",")]
                         else: # A JSON list is provided:
                             value = json.loads(value)
                         m2m_foreign_model = many_to_many_fields[field].remote_field.model

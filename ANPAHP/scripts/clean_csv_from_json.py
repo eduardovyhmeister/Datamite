@@ -8,6 +8,12 @@ import csv
 import json
 import os.path
 
+import utils.custom_logger as logging
+
+
+# Instantiate the logger for this script:
+logger = logging.get_logger(__name__)
+
 
 # Paths to the CSV files containing the data:
 DATA_FOLDER = os.path.join("ANPAHP", "data")
@@ -29,25 +35,31 @@ def clean_csv(filepath: str, savepath:str = None):
     """
     if not savepath:
         savepath = filepath
-        
+    
+    logger.info(f"CLEANING CSV FILE {filepath} FROM JSON AND SAVING TO {savepath}.")
+     
     # Read the file:
     lines = []
     with open(filepath, "r") as csv_file:
         reader = csv.reader(csv_file, quotechar = '"', delimiter = ',',
                             quoting = csv.QUOTE_ALL, skipinitialspace = True,
                             escapechar = "\\")
+        header = ", ".join(next(reader))
+        lines.append(header)
+        
         for row in reader:
             line = []
+            row = [x.strip() for x in row] # Get rid of whitespace
             for column in row:
                 try:
-                    o = json.loads()
+                    o = json.loads(column)
                     if isinstance(o, list):
-                        line.append(" ,".join(o)) # Replace the list with comma-separated values
+                        line.append(", ".join(o)) # Replace the list with comma-separated values
                     else:
                         line.append(column)
                 except json.decoder.JSONDecodeError: # Not a JSON object
                     line.append(column)
-            line_str = ", ".join([f'"{column}"' for column in line])
+            line_str = ", ".join([f'"{column.replace('"', '\\"')}"' for column in line])
             lines.append(line_str)
         
     # Rewrite the file:
@@ -57,5 +69,6 @@ def clean_csv(filepath: str, savepath:str = None):
     
     
     
-if __name__ == "__main__":
-    clean_csv(KPIS_CSV_PATH, "test.csv")
+def run():
+    """Function called by the 'python manage.py runscript' command."""
+    clean_csv(KPIS_CSV_PATH)

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added a script (clean_csv_from_json) to get rid of JSON lists from the a CSV file and replacing them with comma-separated values instead for format consistency.
+
 ### Fixed
 - Fixed an redirection issue that prevented the creation of new KPIs.
 
