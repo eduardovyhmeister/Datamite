@@ -127,7 +127,8 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
 
     # 2nd: How each KPI/metric affect the overall strategy and BSC families:
     weights = [round(x, 4) for x in limiting_matrix[0][1 + nb_families:]]
-    df = pd.DataFrame(weights, index=keys[1 + nb_families:])
+    df = pd.DataFrame(weights, index=keys[1 + nb_families:], columns = ["weight"])
+    df.drop(df[df.weight == 0].index, inplace = True)
     html_table = df.to_html(classes='table table-striped', header=False)
     
     description = (
@@ -154,7 +155,8 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
         weights = [round(x, 4) for x in limiting_matrix[1+i][1 + nb_families:]]
         if sum(weights) == 0:
             continue # Ignore BSC families with no KPIs selected.
-        df = pd.DataFrame(weights, index=keys[1 + nb_families:])
+        df = pd.DataFrame(weights, index=keys[1 + nb_families:], columns = ["weight"])
+        df.drop(df[df.weight == 0].index, inplace = True)
         html_table = df.to_html(classes='table table-striped', header=False)
         
         description = (
@@ -182,7 +184,7 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
         
         weights = [round(x, 4) for x in limiting_matrix[i][1 + nb_families:]]
         df = pd.DataFrame(weights, index=keys[1 + nb_families:], columns=["weight"])
-        df = df[df.weight != 0] # Filter out the 0s from the list.
+        df.drop(df[df.weight == 0].index, inplace = True)
         html_table = df.to_html(classes='table table-striped', header=False)
         
         description = f"Taking into account all the relationships you defined between KPIs/metrics, here is how to compute \"{kpi_name}\":"
