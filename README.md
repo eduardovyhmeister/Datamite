@@ -28,6 +28,7 @@ Start the service with Docker:
 ```
 docker compose up
 ```
+With the way the `docker-compose.yml` file is configured, any change in the code, the DB, etc, will be reflected in the both the container and locally. You don't need to rebuild the image every time you do changes. It will prevent the DB from being reset everytime too when you commit new changes because it keeps it between different runs.
 
 Stop the service:
 ```
@@ -79,6 +80,9 @@ cd foldername/
 python -m coverage run --source='.' manage.py test
 python -m coverage report
 ```
+
+NOTE: The unit tests are not up to date right now.
+
 
 # Checklist of things to do when adding code
 Here is a checklist of things to not forget if you add code:
