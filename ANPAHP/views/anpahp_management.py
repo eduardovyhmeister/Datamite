@@ -27,7 +27,12 @@ def my_anp_ahp_create(request):
             assessment = form.save(commit = False) # this create the form but do not commit it so can be modified
             assessment.author = request.user # modify the form
             assessment.save()
-            return HttpResponseRedirect('myANPAHP') # /add_event?submitted=True
+            # Redirect to the newly created Evaluation:
+            # print(assessment)
+            ANPAHP = Evaluation.objects.get(author = request.user, name = assessment.name)
+            return redirect('myANPAHPHome', pk = ANPAHP.pk)
+            # Stay on the same page with the newly created evaluation:
+            # return HttpResponseRedirect('myANPAHP') # /add_event?submitted=True
     else:
         form = ANPAHPForm
         if 'submitted' in request.GET:
