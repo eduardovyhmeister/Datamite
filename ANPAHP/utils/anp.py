@@ -121,7 +121,7 @@ def build_supermatrix(bsc_prefs, kpi_prefs, intermetrics_relationships = None):
         matrix is given as a list of columns.
     """
     # Extract the KPI preferences per family:
-    kpi_preferences = __separate_family_preferences(kpi_prefs)
+    kpi_preferences = _separate_family_preferences(kpi_prefs)
     
     # Filter out BSC families with a preference of 0 OR no KPI selected:
     bsc_keys = [key for key in bsc_prefs.keys() if bsc_prefs[key] != 0 and kpi_preferences[key] != {}]
@@ -203,7 +203,7 @@ def compute_limiting_matrix(matrix, max_iter=1000, error=1e-6, rounding=6):
 # -----------------------------------------------------------------------------
 # Private functions:
 
-def __separate_family_preferences(kpi_prefs):
+def _separate_family_preferences(kpi_prefs):
     """Separates the KPIs from the different families from all the preferences
     expressed in the KPI preference step.
     

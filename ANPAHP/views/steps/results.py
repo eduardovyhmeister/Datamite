@@ -91,10 +91,6 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
         3) The limiting supermatrix computed from the supermatrix.
         4) A list of insights in the form of a dictionary of content to be used
            in the HTML template.
-           
-    TODO:
-        Could separate the insights into subsections (e.g. Strategy, BSC families, Metrics)
-        to better format the final report.
     """
     keys, supermatrix = anp.build_supermatrix(evaluation.bsc_preferences, 
                                               evaluation.kpis_preferences,
@@ -103,9 +99,16 @@ def extract_insights(evaluation, pie_chart_threshold=0.02):
     
     # Extract useful information for the report.
     # 1st: How the BSC perspective affect the overall strategy:
-    bsc_families_selected = [key for key, value in evaluation.bsc_preferences.items() if value != 0]
+    # If a family was selected but had no KPI, then it's weight is set to 0.
+    # So let's retrieve the KPIs and see if each family has at least 1 KPI selected.
+    actual_preferences = anp._separate_family_preferences(evaluation.kpis_preferences)
+    actual_bsc_preferences = {}
+    for family, value in evaluation.bsc_preferences.items():
+        actual_bsc_preferences[family] = value if actual_preferences[family] else 0
+    
+    bsc_families_selected = [key for key, value in actual_bsc_preferences.items() if value != 0]
     nb_families = len(bsc_families_selected)
-    bsc_families_excluded = [key for key, value in evaluation.bsc_preferences.items() if value == 0]
+    bsc_families_excluded = [key for key, value in actual_bsc_preferences.items() if value == 0]
     nb_families_excluded = len(bsc_families_excluded)
     
     insights = []
