@@ -1,3 +1,4 @@
 [submodule "RAGDataMite"]
 	path = RAGDataMite
 	url = https://github.com/Qirtas/RAGDataMite.git
+	branch = main
