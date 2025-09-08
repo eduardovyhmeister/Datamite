@@ -8,6 +8,19 @@ ENV PYTHONUNBUFFERED=1
 # For Alpine, Python executables are often in /usr/local/bin
 ENV PATH="/usr/local/bin:$PATH"
 
+# Install system dependencies needed for building Python packages
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    python3-dev \
+    build-base \
+    linux-headers \
+    freetype-dev \
+    libpng-dev \
+    pkgconfig
+
 # Install the dependencies specified in the requirements file
 WORKDIR /install
 COPY requirements.txt .
