@@ -61,3 +61,9 @@ urlpatterns = [
     #path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
 ]
+
+# Chat endpoint
+urlpatterns += [
+    path('chat', views.chat.chat_page, name='chat_page'),
+    path('api/chat/ask', views.chat.chat_ask_view, name='chat_ask')
+]

@@ -101,6 +101,8 @@ ENV/
 *.sqlite3
 .vagrant
 
+# LangGraphChatLogic data projects
+LangGraphChatLogic/data/projects/
 
 # Keep the static files from being ignored since they need to be committed
 # for js libraries to work:
