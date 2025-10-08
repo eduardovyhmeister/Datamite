@@ -63,11 +63,17 @@ def generate_first_answer(state:OverallState) -> OverallState:
     Generates and summarises the answer from the sub-questions
     '''
 
+    # Handle case when there are no sub-questions or only one question
+    sub_questions = state.get('sub_questions', [])
+    if not sub_questions or len(sub_questions) <= 1:
+        # Use the original query as the sub-question
+        sub_questions = [state.get('query', '')]
+
     generate_answer_output = chain.invoke(
         {
             'query': state.get('query'),
             'files': state.get('files'),
-            'sub_questions': state.get('sub_questions')
+            'sub_questions': sub_questions
         }
     )
     answer = generate_answer_output.answer

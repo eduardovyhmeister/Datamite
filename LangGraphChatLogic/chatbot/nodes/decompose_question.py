@@ -29,7 +29,19 @@ def decompose_question(state: OverallState) -> OverallState:
     result = chain.invoke({"query": query})
 
 
-    message = "Question decomposed into sub-questions"
+    # Determine if we need to process sub-questions or go directly to content retrieval
+    if len(result.sub_questions) > 1:
+        message = f"Question decomposed into {len(result.sub_questions)} sub-questions."
+        next_action = 'process_sub_questions'
+    elif len(result.sub_questions) == 1:
+        message = "Question decomposed into 1 sub-question. Processing directly."
+        next_action = 'first_retrieve_content'
+        # Set the single sub-question as the current query
+        state['query'] = result.sub_questions[0]
+    else:
+        message = "Question could not be decomposed. Processing original question directly."
+        next_action = 'first_retrieve_content'
+    
     print(message)
 
     new_state = {
@@ -37,7 +49,7 @@ def decompose_question(state: OverallState) -> OverallState:
         "sub_questions": result.sub_questions,
         "step": "decompose_question",
         "message": message,
-        'next_action': 'first_retrieve_content',
+        'next_action': next_action,
         'all_messages': state.get('all_messages', '') + '\n\n' + message,
         "state_history": state.get("state_history", []) + [{
             "step": "decompose_question",
