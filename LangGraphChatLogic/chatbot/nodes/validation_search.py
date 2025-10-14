@@ -63,22 +63,48 @@ def validation_search(state: OverallState) -> OverallState:
         }
     )
   
+    # Check if we're processing sub-questions and need to continue to the next one
+    sub_questions = state.get('sub_questions', [])
+    current_index = state.get('current_question_index', 0)
+    sub_question_answers = state.get('sub_question_answers', [])
+    
+    # Determine next action based on validation and sub-question status
     if validate_answer_output.decision == 'VALID':
-        message = "Answer is valid, so the final answer can be composed."
+        # Check if we're processing multiple sub-questions
+        if len(sub_questions) > 1 and current_index < len(sub_questions):
+            # Store the answer for this sub-question
+            # Ensure sub_question_answers list is long enough
+            while len(sub_question_answers) <= current_index:
+                sub_question_answers.append("")
+            sub_question_answers[current_index] = state.get('answer_ai_2', '')
+            
+            # Check if there are more sub-questions to process
+            if current_index + 1 < len(sub_questions):
+                message = f"Answer for sub-question {current_index + 1} is valid. Moving to next sub-question."
+                next_action = 'process_sub_questions'
+            else:
+                message = "All sub-questions processed. Answer is valid, so the final answer can be composed."
+                next_action = 'compose_answer'
+        else:
+            # Single question or no sub-questions - go directly to composition
+            message = "Answer is valid, so the final answer can be composed."
+            next_action = 'compose_answer'
     else:
         message = "Answer is incorrect, so the final answer cannot be generated."
+        next_action = 'generate_final_answer'
 
     print(message)
     new_state = {
         **state,
-        'next_action': 'compose_answer' if validate_answer_output.decision == 'VALID' else 'generate_final_answer',
+        'next_action': next_action,
         'step': 'validation_search',
         'message': message,
+        'sub_question_answers': sub_question_answers,
         'all_messages': state.get('all_messages', '') + '\n\n' + message,
         'state_history': state.get('state_history', []) + [{
             'step': 'validation_search',
             'message': message,
-            'next_action': 'compose_answer' if validate_answer_output.decision == 'VALID' else 'generate_final_answer'
+            'next_action': next_action
         }]
     }
 

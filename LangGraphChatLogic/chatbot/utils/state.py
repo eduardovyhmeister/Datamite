@@ -22,6 +22,9 @@ class OverallState(TypedDict):
     collection_name: str
     query: str
     sub_questions: List[str]
+    current_question_index: int
+    current_question: str
+    sub_question_answers: List[str]
     summary: str
     answer_ai_1: str
     answer_ai_2: str

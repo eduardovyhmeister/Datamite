@@ -9,10 +9,13 @@ def second_retrieve_content(state: OverallState) -> OverallState:
 
     project_id = state.get("project_id")
     summary = state.get('summary')
+    
+    # If summary is empty or None, use the original query for search
+    search_query = summary if summary and summary.strip() else state.get('query', '')
 
     similar_docs = search_similar_chunks(
         collection_name=project_id,
-        questions=[summary],
+        questions=[search_query],
         project_id=project_id
     )
 

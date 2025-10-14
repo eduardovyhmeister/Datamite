@@ -4,13 +4,22 @@
   </div>
   
   <div class="modal-body d-flex flex-column p-0" style="height: 75vh;">
-    <!-- AI Logic Section -->
-    <div class="p-2">
-      <h6 class="mb-2 text-muted">AI Logic</h6>
-      <div id="logicPanel"
-           class="small p-2 bg-light rounded"
-           style="max-height: 20vh; overflow-y:auto; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;">
-        (AI Logic appears here)
+    <!-- AI Logic Header -->
+    <div class="p-2 pb-1">
+      <h6 class="mb-0 text-muted" style="cursor: pointer;" onclick="toggleAILogic()">
+        AI Logic 
+        <i id="aiLogicToggle" class="fa fa-chevron-down ms-2" style="font-size: 0.8rem;"></i>
+      </h6>
+    </div>
+    
+    <!-- AI Logic Accordion Section -->
+    <div id="aiLogicAccordion" class="collapse" style="transition: all 0.3s ease;">
+      <div class="p-2 pt-0">
+        <div id="logicPanel"
+             class="small p-2 bg-light rounded"
+             style="max-height: 20vh; overflow-y:auto; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;">
+          (AI Logic appears here)
+        </div>
       </div>
     </div>
     
@@ -113,6 +122,24 @@
   </style>
   
   <script>
+    // Global function for toggling AI Logic accordion
+    function toggleAILogic() {
+      const accordion = document.getElementById('aiLogicAccordion');
+      const toggleIcon = document.getElementById('aiLogicToggle');
+      
+      if (accordion.classList.contains('show')) {
+        // Collapse
+        accordion.classList.remove('show');
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+      } else {
+        // Expand
+        accordion.classList.add('show');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const endpointUrl = "{% url 'chat_ask' %}";
       const messageInput = document.getElementById('userInput');
