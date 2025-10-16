@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.basics.home, name = "home"),
     path('howtoANPAHP', views.basics.how_to_anp_ahp_view, name = 'howto_ANP_AHP'),
     path('about', views.basics.about_view, name = 'about'),
+    path('documentation', views.basics.documentation_view, name = 'documentation'),
     # Pushed into the about page.
     # path('privacy', views.basics.privacy_view, name = 'privacy'),
 
