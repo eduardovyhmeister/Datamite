@@ -88,6 +88,10 @@ try:
 except AttributeError:
     logger.error(error_msg("ALLOWED_HOSTS"))
     errors += 1
+else:
+    if not DJANGO_ALLOWED_HOSTS:
+        logger.error(error_msg("ALLOWED_HOSTS"))
+        errors += 1
     
 # -----------------
 try:
@@ -95,97 +99,98 @@ try:
 except ValueError:
     logger.warning(warning_msg.format("LLM_DISABLE", LLM_DISABLE))
     
-# -----------------
-try:
-    LLM_TEMPERATURE = float(os.environ.get("LLM_TEMPERATURE", LLM_TEMPERATURE))
-except ValueError:
-    logger.warning(warning_msg.format("LLM_TEMPERATURE", LLM_TEMPERATURE))
+if not LLM_DISABLE:
+    # -----------------
+    try:
+        LLM_TEMPERATURE = float(os.environ.get("LLM_TEMPERATURE", LLM_TEMPERATURE))
+    except ValueError:
+        logger.warning(warning_msg.format("LLM_TEMPERATURE", LLM_TEMPERATURE))
 
-# -----------------
-try:
-    LLM_MAX_TOKENS = int(os.environ.get("LLM_MAX_TOKENS", LLM_MAX_TOKENS))
-except ValueError:
-    logger.warning(warning_msg.format("LLM_MAX_TOKENS", LLM_MAX_TOKENS))
-    
-# -----------------
-LLM_SERVICE_PROVIDER = os.environ.get("LLM_SERVICE_PROVIDER").lower()
-if LLM_SERVICE_PROVIDER not in ["openai", "anthropic", "deepseek", "custom"]:
-    logger.error(error_msg.format("LLM_SERVICE_PROVIDER"))
-    errors += 1
-
-# -----------------
-if LLM_SERVICE_PROVIDER == "custom":
-    LLM_URL = os.environ.get("LLM_URL", LLM_URL)
-    if not LLM_URL:
-        logger.error(error_msg.format("LLM_URL"))
+    # -----------------
+    try:
+        LLM_MAX_TOKENS = int(os.environ.get("LLM_MAX_TOKENS", LLM_MAX_TOKENS))
+    except ValueError:
+        logger.warning(warning_msg.format("LLM_MAX_TOKENS", LLM_MAX_TOKENS))
+        
+    # -----------------
+    LLM_SERVICE_PROVIDER = os.environ.get("LLM_SERVICE_PROVIDER").lower()
+    if LLM_SERVICE_PROVIDER not in ["openai", "anthropic", "deepseek", "custom"]:
+        logger.error(error_msg.format("LLM_SERVICE_PROVIDER"))
         errors += 1
-else:
-    LLM_API_KEY = os.environ.get("LLM_API_KEY", LLM_API_KEY)
-    if not LLM_API_KEY:
-        logger.error(error_msg.format("LLM_API_KEY"))
-        errors += 1
-    
-    LLM_MODEL = os.environ.get("LLM_MODEL", LLM_MODEL)
-    if not LLM_MODEL:
-        logger.error(error_msg.format("LLM_MODEL"))
-        errors += 1
-    
-# -----------------
-CHROMA_DB_FOLDER = os.environ.get("CHROMA_DB_FOLDER", CHROMA_DB_FOLDER)
-if not CHROMA_DB_FOLDER:
-    logger.warning(warning_msg.format("CHROMA_DB_FOLDER"))
-    
-# -----------------
-EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", EMBEDDING_MODEL)
-if not EMBEDDING_MODEL:
-    logger.warning(warning_msg.format("EMBEDDING_MODEL"))
-    
-# -----------------
-try:
-    KNOWLEDGE_FOLDERS = [folder.strip()
-                         for folder in os.environ.get("KNOWLEDGE_FOLDERS").split(',')
-                         if folder.strip()]
-except AttributeError:
-    logger.error(error_msg.format("KNOWLEDGE_FOLDERS"))
-    errors += 1
-    
-# -----------------
-try:
-    KNOWLEDGE_SEARCH_RECURSIVELY = int(os.environ.get("KNOWLEDGE_SEARCH_RECURSIVELY", KNOWLEDGE_SEARCH_RECURSIVELY))
-except ValueError:
-    logger.warning(warning_msg.format("KNOWLEDGE_SEARCH_RECURSIVELY", KNOWLEDGE_SEARCH_RECURSIVELY))
-    
-# -----------------
-try:
-    KNOWLEDGE_FILE_TYPES = [extension.strip()
-                            for extension in os.environ.get("KNOWLEDGE_FILE_TYPES", KNOWLEDGE_FILE_TYPES).split(',')
-                            if extension.strip()]
-except AttributeError:
-    logger.warning(warning_msg.format("KNOWLEDGE_FILE_TYPES", KNOWLEDGE_FILE_TYPES))
 
-# -----------------
-try:
-    CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", CHUNK_SIZE))
-except ValueError:
-    logger.warning(warning_msg.format("CHUNK_SIZE", CHUNK_SIZE))
-    
-# -----------------
-try:
-    CHUNK_OVERLAP = int(os.environ.get("CHUNK_OVERLAP", CHUNK_OVERLAP))
-except ValueError:
-    logger.warning(warning_msg.format("CHUNK_OVERLAP", CHUNK_OVERLAP))
-   
-# -----------------
-try:
-    NUM_CHUNKS_TO_RETRIEVE = int(os.environ.get("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
-except ValueError:
-    logger.warning(warning_msg.format("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
+    # -----------------
+    if LLM_SERVICE_PROVIDER == "custom":
+        LLM_URL = os.environ.get("LLM_URL", LLM_URL)
+        if not LLM_URL:
+            logger.error(error_msg.format("LLM_URL"))
+            errors += 1
+    else:
+        LLM_API_KEY = os.environ.get("LLM_API_KEY", LLM_API_KEY)
+        if not LLM_API_KEY:
+            logger.error(error_msg.format("LLM_API_KEY"))
+            errors += 1
+        
+        LLM_MODEL = os.environ.get("LLM_MODEL", LLM_MODEL)
+        if not LLM_MODEL:
+            logger.error(error_msg.format("LLM_MODEL"))
+            errors += 1
+        
+    # -----------------
+    CHROMA_DB_FOLDER = os.environ.get("CHROMA_DB_FOLDER", CHROMA_DB_FOLDER)
+    if not CHROMA_DB_FOLDER:
+        logger.warning(warning_msg.format("CHROMA_DB_FOLDER"))
+        
+    # -----------------
+    EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", EMBEDDING_MODEL)
+    if not EMBEDDING_MODEL:
+        logger.warning(warning_msg.format("EMBEDDING_MODEL"))
+        
+    # -----------------
+    try:
+        KNOWLEDGE_FOLDERS = [folder.strip()
+                            for folder in os.environ.get("KNOWLEDGE_FOLDERS").split(',')
+                            if folder.strip()]
+    except AttributeError:
+        logger.error(error_msg.format("KNOWLEDGE_FOLDERS"))
+        errors += 1
+        
+    # -----------------
+    try:
+        KNOWLEDGE_SEARCH_RECURSIVELY = int(os.environ.get("KNOWLEDGE_SEARCH_RECURSIVELY", KNOWLEDGE_SEARCH_RECURSIVELY))
+    except ValueError:
+        logger.warning(warning_msg.format("KNOWLEDGE_SEARCH_RECURSIVELY", KNOWLEDGE_SEARCH_RECURSIVELY))
+        
+    # -----------------
+    try:
+        KNOWLEDGE_FILE_TYPES = [extension.strip()
+                                for extension in os.environ.get("KNOWLEDGE_FILE_TYPES", KNOWLEDGE_FILE_TYPES).split(',')
+                                if extension.strip()]
+    except AttributeError:
+        logger.warning(warning_msg.format("KNOWLEDGE_FILE_TYPES", KNOWLEDGE_FILE_TYPES))
 
-# -----------------
-try:
-    SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
-except ValueError:
-    logger.warning(warning_msg.format("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
+    # -----------------
+    try:
+        CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", CHUNK_SIZE))
+    except ValueError:
+        logger.warning(warning_msg.format("CHUNK_SIZE", CHUNK_SIZE))
+        
+    # -----------------
+    try:
+        CHUNK_OVERLAP = int(os.environ.get("CHUNK_OVERLAP", CHUNK_OVERLAP))
+    except ValueError:
+        logger.warning(warning_msg.format("CHUNK_OVERLAP", CHUNK_OVERLAP))
+    
+    # -----------------
+    try:
+        NUM_CHUNKS_TO_RETRIEVE = int(os.environ.get("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
+    except ValueError:
+        logger.warning(warning_msg.format("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
+
+    # -----------------
+    try:
+        SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
+    except ValueError:
+        logger.warning(warning_msg.format("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
 
 
 # If errors were detected, kill the process:
