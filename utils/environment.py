@@ -44,6 +44,8 @@ KNOWLEDGE_SEARCH_RECURSIVELY = 0
 KNOWLEDGE_FILE_TYPES = ""
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 100
+NUM_CHUNKS_TO_RETRIEVE = 10
+SIMILARITY_THRESHOLD = 0.3
 
 # -----------------------------------------------------------------------------
 # Actually loading the environment:
@@ -173,6 +175,18 @@ try:
 except ValueError:
     logger.warning(warning_msg.format("CHUNK_OVERLAP", CHUNK_OVERLAP))
    
+# -----------------
+try:
+    NUM_CHUNKS_TO_RETRIEVE = int(os.environ.get("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
+except ValueError:
+    logger.warning(warning_msg.format("NUM_CHUNKS_TO_RETRIEVE", NUM_CHUNKS_TO_RETRIEVE))
+
+# -----------------
+try:
+    SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
+except ValueError:
+    logger.warning(warning_msg.format("SIMILARITY_THRESHOLD", SIMILARITY_THRESHOLD))
+
 
 # If errors were detected, kill the process:
 if errors:
