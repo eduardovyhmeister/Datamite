@@ -10,6 +10,18 @@ https://docs.python.org/3/library/logging.html.
 import logging
 from enum import StrEnum
 
+
+# -----------------------------------------------------------------------------
+
+# Used to convert environment variables into an actual logging level.
+LOG_LEVELS = {
+    "debug": logging.DEBUG,
+    "info": logging.INFO,
+    "warning": logging.WARNING,
+    "error": logging.ERROR,
+    "critical": logging.CRITICAL,
+}
+
 # -----------------------------------------------------------------------------
 
 class Color(StrEnum):

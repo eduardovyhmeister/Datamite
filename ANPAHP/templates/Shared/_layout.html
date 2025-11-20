@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,25 +74,28 @@
         <script src="{% static 'js/validate_preferences.js'%}"></script>
         {% block last %}
         {% endblock %}
-<!-- Global Floating Action Button -->
-<div class="fab-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 1030;">
-    <button type="button" class="btn btn-primary btn-lg rounded-circle shadow dm-fab"
-            style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;"
-            data-bs-toggle="modal" data-bs-target="#chatModal" aria-label="Open Chat">
-      <i class="fa fa-comment"></i>
-    </button>
-  </div>
-  
-  <!-- Global Chat Modal -->
-  <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
-     aria-hidden="true" data-bs-backdrop="false" data-bs-keyboard="false">
-  <div class="modal-dialog modal-sm"
-       style="position: fixed; bottom: 24px; right: 24px; left:auto; margin:0; max-width: 380px; width: 100%;">
-    <div class="modal-content" style="border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.3); height: 70vh;">
-      {% include "chat.html" %}
+
+{% if not LLM_DISABLE|env %}
+    <!-- Global Floating Action Button -->
+    <div class="fab-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 1030;">
+        <button type="button" class="btn btn-primary btn-lg rounded-circle shadow dm-fab"
+                style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;"
+                data-bs-toggle="modal" data-bs-target="#chatModal" aria-label="Open Chat">
+        <i class="fa fa-comment"></i>
+        </button>
     </div>
-  </div>
-</div>
+    
+    <!-- Global Chat Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
+        aria-hidden="true" data-bs-backdrop="false" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm"
+        style="position: fixed; bottom: 24px; right: 24px; left:auto; margin:0; max-width: 380px; width: 100%;">
+        <div class="modal-content" style="border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.3); height: 70vh;">
+        {% include "chat.html" %}
+        </div>
+    </div>
+    </div>
+{% endif%}
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {

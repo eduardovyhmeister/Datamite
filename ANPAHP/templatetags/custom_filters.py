@@ -11,6 +11,8 @@ from django import template
 from django.utils import text
 register = template.Library()
 
+import utils.environment as environment
+
 
 @register.filter
 def get_value_at(indexable, index_or_key):
@@ -44,3 +46,20 @@ def slugify(string):
         str - A slugified version of the string, compatible with URLs and JS.
     """
     return text.slugify(string)
+
+
+@register.filter
+def env(var_name):
+    """Retrieve an environment variable from the environment utility.
+    
+    Args:
+        var_name (str): The name of the variable to retrieve.
+    
+    Returns:
+        Any - The value for that environment variable, `None` if
+        not found.
+    """
+    try:
+        environment.__dict__[var_name]
+    except KeyError:
+        return None

@@ -8,12 +8,15 @@ please have a look at .env.template which provides a template for setting
 the required environment variables, with instructions on how to set them
 up.
 
+WARNING: If you decide to access variables through `os.environ` anyway,
+know that the defaults would not have been set, and that all the variables
+will be strings only. Constants provided here are instead typecast already.
+
 WARNING: If you edit the constants provided here later on in your code, 
 then you're making your own bed."""
 
 import os
 import sys
-from typing import Any
 
 import dotenv
 
@@ -144,7 +147,7 @@ if not LLM_DISABLE:
     EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", EMBEDDING_MODEL)
     if not EMBEDDING_MODEL:
         logger.warning(warning_msg.format("EMBEDDING_MODEL"))
-        
+    
     # -----------------
     try:
         KNOWLEDGE_FOLDERS = [folder.strip()
