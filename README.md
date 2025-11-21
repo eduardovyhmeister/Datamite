@@ -7,17 +7,7 @@ This website benefited from the financial support of the European Commission und
 
 
 # Use Docker for the service
-First, you need to setup a secure secret key for Django to use. To generate a key, you can use:
-```
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-```
-
-Now you need to set this secret key into a `.env` file as follows:
-```
-DJANGO_SECRET_KEY='your_generated_key'
-DEBUG=1 # We're not using a proper prod command, but still python manage.py runserver
-ALLOWED_HOST='your_ip'
-```
+First, you need to set your environment correctly. Copy `.env.template`, rename it to `.env` and set the values you want in there. All the instructions required for setting up the environment should be present in `.env.template`. In particular, note that some environment variables are mandatory and the whole thing will exit automatically if at least one of the mandatory variable was not set. Consult the logs to know what went wrong in your setup.
 
 To build the service image:
 ```
@@ -28,7 +18,7 @@ Start the service with Docker:
 ```
 docker compose up
 ```
-With the way the `docker-compose.yml` file is configured, any change in the code, the DB, etc, will be reflected in the both the container and locally. You don't need to rebuild the image every time you do changes. It will prevent the DB from being reset everytime too when you commit new changes because it keeps it between different runs.
+With the way the `docker-compose.yml` file is configured, any change in the code, the DB, etc, will be reflected in both the container and locally. You don't need to rebuild the image every time you do changes. It will prevent the DB from being reset everytime you commit new changes because it keeps it between different runs.
 
 Stop the service:
 ```
@@ -65,6 +55,15 @@ The CSVs should have the following:
 - A header with the names of the fields as they are in the DB model.
 - If a field is a foreign key, then it expects the primary key (e.g., BSCSubfamily has a BSCFamily as a foreign key, and BSCFamily's primary key is its unique name, so the CSV for BSCSubfamilies expect to find an existing BSCFamily name).
 - If a field is a ManyToManyField, then it expect either nothing (empty string, meaning no connection), a single value, or a list of values (in the form of a JSON list OR as comma-separated values). The provided values need to correspond to the primary key of the model linked here.
+
+
+# Create and populate the knowledge base for the RAG system
+If you have setup your `.env` file properly, creating the knowledge base can be done by simply using the following command:
+```
+python manage.py runscript create_knowledge
+```
+
+This will automatically search the folders that you set in `KNOWLEDGE_FOLDERS`. If you want to search more folders, just add them to this environment variable, separated by commas. If you need more types of files to be processed, you can implement your own file processors in `ANPAHP/rag/knowledgebase/file_processors.py`. Follow the already existing processors. If you need to pass specific arguments to your processors, have a look at `ANPAHP/script/create_knowledge.py`, in particular `create_knowledge_base()` and add your specific arguments to be passed as it is already done for .csv and .pdf files.
 
 
 # Run unit tests

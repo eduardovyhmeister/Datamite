@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## v2.1.0
+
 ### Added
 - Added a script (clean_csv_from_json) to get rid of JSON lists from the a CSV file and replacing them with comma-separated values instead for format consistency.
+- Added the RAG system under `ANPAHP/rag`, including the knowledge base creation and management.
 
 ### Fixed
-- Fixed an redirection issue that prevented the creation of new KPIs.
+- Fixed a redirection issue that prevented the creation of new KPIs.
 
 ### Changed
 - Entering notes on your evaluation and validating now brings you to step 1.
