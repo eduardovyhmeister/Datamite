@@ -75,7 +75,6 @@
         {% block last %}
         {% endblock %}
 
-{% if not LLM_DISABLE|env %}
     <!-- Global Floating Action Button -->
     <div class="fab-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 1030;">
         <button type="button" class="btn btn-primary btn-lg rounded-circle shadow dm-fab"
@@ -95,7 +94,7 @@
         </div>
     </div>
     </div>
-{% endif%}
+
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {
