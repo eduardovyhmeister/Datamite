@@ -2,7 +2,6 @@
 Basically any page you can find directly in the header."""
 
 from django.shortcuts import render
-
 from ..models import BSCFamily
 
 
@@ -23,6 +22,10 @@ def how_to_anp_ahp_view(request):
 def about_view(request):
     """View for the 'about' page."""
     return render(request, 'about.html')
+
+def documentation_view(request):
+    """View for the 'documentation' page."""
+    return render(request, 'documentation.html',context={})
 
 
 

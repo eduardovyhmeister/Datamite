@@ -101,6 +101,14 @@ ENV/
 *.sqlite3
 .vagrant
 
+# LangGraphChatLogic data projects
+LangGraphChatLogic/data/projects/
+
+# The ChromaDB used as a knowledge base:
+chromadb/
+
+# The temp folder used to move things around temporarily:
+temp/
 
 # Keep the static files from being ignored since they need to be committed
 # for js libraries to work:

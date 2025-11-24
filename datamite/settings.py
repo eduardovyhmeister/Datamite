@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 
+import utils.environment as environment
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -23,17 +24,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECRET_KEY = 'django-insecure-a52&$)8&u8^hqrov$ndwp1oaie-y(@*gi)i2b#j%6s_hkul%75'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "unsafe-default-key-for-development")
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "unsafe-default-key-for-development")
+SECRET_KEY = environment.DJANGO_SECRET_KEY
 # DEBUG = True
-DEBUG = bool(int(os.environ.get('DEBUG', 1))) # If not setup, will be in debug mode.
+# DEBUG = bool(int(os.environ.get('DEBUG', 1))) # If not setup, will be in debug mode.
+DEBUG = environment.DJANGO_DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.0', '127.0.0.1', 'localhost']
-ALLOWED_HOSTS.extend(
-    filter(
-        None,
-        os.environ.get('ALLOWED_HOSTS','').split(',')
-    )
-)
+ALLOWED_HOSTS.extend(environment.DJANGO_ALLOWED_HOSTS)
+# ALLOWED_HOSTS.extend(
+#     filter(
+#         None,
+#         os.environ.get('ALLOWED_HOSTS','').split(',')
+#     )
+# )
 
 
 # Application definition
@@ -73,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ANPAHP.context_processors.chatbot_context',
             ],
         },
     },

@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.basics.home, name = "home"),
     path('howtoANPAHP', views.basics.how_to_anp_ahp_view, name = 'howto_ANP_AHP'),
     path('about', views.basics.about_view, name = 'about'),
+    path('documentation', views.basics.documentation_view, name = 'documentation'),
     # Pushed into the about page.
     # path('privacy', views.basics.privacy_view, name = 'privacy'),
 
@@ -60,4 +61,10 @@ urlpatterns = [
     path('myANPAHP/<int:pk>/DownloadPDF', views.steps.download_pdf_report, name = "download_pdf")
     #path('myANPAHPPdf/<int:pk>',old_views.myANPAHPPdf, name= 'myANPAHPPdf'),
 
+]
+
+# Chat endpoint
+urlpatterns += [
+    path('chat', views.chat.chat_page, name='chat_page'),
+    path('api/chat/ask', views.chat.chat_ask_view, name='chat_ask')
 ]
