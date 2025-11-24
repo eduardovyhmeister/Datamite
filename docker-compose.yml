@@ -15,6 +15,7 @@ services:
             python3 manage.py makemigrations ANPAHP &&
             python3 manage.py migrate ANPAHP &&
             python3 manage.py runscript populate_db &&
+            python3 manage.py runscript create_knowledge &&
             python3 manage.py runserver 0.0.0.0:8000"
 
 
