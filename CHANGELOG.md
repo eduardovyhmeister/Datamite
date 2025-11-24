@@ -11,14 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added a script (clean_csv_from_json) to get rid of JSON lists from the a CSV file and replacing them with comma-separated values instead for format consistency.
+- Added the documentation page enabling the download of reports from Datamite.
 - Added the RAG system under `ANPAHP/rag`, including the knowledge base creation and management.
+- Added the create_knowledge script to create the knowledge base.
+- All the pages now have the LLM chat panel available.
+- Added a basic RAG system to the webpage, will need to be complemented with our research.
 
 ### Fixed
 - Fixed a redirection issue that prevented the creation of new KPIs.
+- Fixed the documentation page appearing only when logged in.
 
 ### Changed
 - Entering notes on your evaluation and validating now brings you to step 1.
-- 'populate_db.py' now acceps empty values or single values in the JSONFields.
+- 'populate_db.py' now accepts empty values or single values in the JSONFields.
 - Updated the content of KPIs.csv with new information.
 
 
