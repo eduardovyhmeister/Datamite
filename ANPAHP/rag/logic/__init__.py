@@ -9,4 +9,19 @@ received.
 
 In `views.chat.py`, simply replace the module imported from rag.logic by yours
 and it'll handle the rest automatically.
+
+For example, you can create a new file under `ANPAHP.rag.logic` called `my_logic.py`.
+Here is the minimal content of the file:
+
+```
+from langchain.llms.base import LLM
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_chroma import Chroma
+
+def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, list[str]]:
+    return "test", ["This is test logic A", "This is test logic B"]
+```
+
+Once this file is done, simple go into `ANPAHP.views.chat.py` and replace the import from
+rag logic with your new file.
 """

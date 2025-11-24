@@ -70,9 +70,12 @@ def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, lis
     prompt_value = BASIC_RAG.invoke({"question": user_query, "documents": retrieved_str})
     
     response = llm.invoke(prompt_value)
-    return response, [prompt_value.to_messages()]
+    # Make sure that the logic is a list of strings (required for json serialisation):
+    return response, [f"{message.type}: {message.content}" for message in prompt_value.to_messages()]
     
     
+# -----------------------------------------------------------------------------  
+# # Small test to see if the logic works:
 # if __name__ == "__main__":
 #     import os
 #     from ..knowledgebase import chroma_manager
@@ -85,4 +88,4 @@ def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, lis
 #                                                 persist_directory = environment.CHROMA_DB_FOLDER + os.sep + "chromadb")
 #     result = rag_logic(llm_to_use, vector_store, "What is accessibility?")
 #     print(result[0])
-#     print(result[1])
+#     print(result[1][1])
