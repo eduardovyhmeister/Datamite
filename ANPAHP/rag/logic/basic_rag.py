@@ -78,19 +78,3 @@ def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, lis
     # Make sure that the logic is a list of strings (required for json serialisation):
     return response, [f"{message.type}: {message.content}" for message in prompt_value.to_messages()]
     
-    
-# -----------------------------------------------------------------------------  
-# # Small test to see if the logic works:
-# if __name__ == "__main__":
-#     import os
-#     from ..knowledgebase import chroma_manager
-#     from ..llms.init_llm import initialise_llm
-#     # Initialise the LLM to be used throughout:
-#     llm_to_use = initialise_llm()
-#     # Initialise the vector store to be used throughout:
-#     vector_store = chroma_manager.get_vector_db(chroma_manager.DEFAULT_COLLECTION_NAME,
-#                                                 model_name = environment.EMBEDDING_MODEL,
-#                                                 persist_directory = environment.CHROMA_DB_FOLDER + os.sep + "chromadb")
-#     result = rag_logic(llm_to_use, vector_store, "What is accessibility?")
-#     print(result[0])
-#     print(result[1][1])
