@@ -1,5 +1,5 @@
-"""A module providing a basic RAG logic,
-"""
+"""A module providing a basic RAG logic, no verification or anything,
+just retrieves document and tell the AI to refer to them simply."""
 
 from langchain.llms.base import LLM
 from langchain_core.prompts import ChatPromptTemplate
@@ -70,6 +70,11 @@ def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, lis
     prompt_value = BASIC_RAG.invoke({"question": user_query, "documents": retrieved_str})
     
     response = llm.invoke(prompt_value)
+    try: # If the returned response is a message (of any type)
+        response = response.content
+    except:
+        pass # If it was just a string
+        
     # Make sure that the logic is a list of strings (required for json serialisation):
     return response, [f"{message.type}: {message.content}" for message in prompt_value.to_messages()]
     
