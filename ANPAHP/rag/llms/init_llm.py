@@ -45,7 +45,7 @@ def initialise_llm() -> LLM :
     elif llm_to_use == "custom":
         return custom_llm.CustomLLM(model_name = environment.LLM_MODEL,
                                    temperature = environment.LLM_TEMPERATURE,
-                                   max_tokens_to_sample = environment.LLM_MAX_TOKENS,
+                                   max_tokens = environment.LLM_MAX_TOKENS,
                                    model_url = environment.LLM_URL)
     else:
         logger.error(f"The selected service provider '{environment.LLM_SERVICE_PROVIDER}' is not supported yet.")

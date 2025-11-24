@@ -101,7 +101,7 @@ class CustomLLM(LLM):
 
         post_response = response.json()
         if response.status_code == 200 and "error" not in post_response:
-            return post_response["response"]
+            return post_response["answer"]
         else:
             logger.error(f"Could not reach the LLM API. Error {response.status_code}: {response.text}")
             return "An error occurred while trying to reach the LLM, try again later."
