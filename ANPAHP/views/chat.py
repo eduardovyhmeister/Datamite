@@ -16,10 +16,10 @@ from utils import environment
 # Initialise the LLM to be used throughout:
 llm_to_use = initialise_llm()
 # Initialise the vector store to be used throughout:
-vector_store = chroma_manager.get_vector_db(chroma_manager.DEFAULT_COLLECTION_NAME,
-                                            model_name = environment.EMBEDDING_MODEL,
-                                            persist_directory = environment.CHROMA_DB_FOLDER + os.sep + "chromadb")
-
+# vector_store = chroma_manager.get_vector_db(chroma_manager.DEFAULT_COLLECTION_NAME,
+#                                             model_name = environment.EMBEDDING_MODEL,
+#                                             persist_directory = environment.CHROMA_DB_FOLDER + os.sep + "chromadb")
+# vector_store = chroma_manager.get_vector_db()
 
 @csrf_exempt  # If you prefer CSRF protection, remove this and send X-CSRFToken from JS
 @require_POST
@@ -31,7 +31,8 @@ def chat_ask_view(request):
         if not question:
             return JsonResponse({"error": "Empty message"}, status=400)
 
-        response, logic = rag_logic(llm_to_use, vector_store, question)
+        # response, logic = rag_logic(llm_to_use, vector_store, question)
+        response, logic = rag_logic(llm_to_use, chroma_manager.get_vector_db(), question)
         return JsonResponse({
             "response": response,
             "logic": logic,

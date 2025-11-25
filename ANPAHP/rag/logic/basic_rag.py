@@ -1,9 +1,9 @@
 """A module providing a basic RAG logic, no verification or anything,
 just retrieves document and tell the AI to refer to them simply."""
 
+from chromadb import Collection
 from langchain.llms.base import LLM
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_chroma import Chroma
 
 from ..knowledgebase import chroma_manager
 from utils import environment
@@ -32,14 +32,14 @@ BASIC_RAG = ChatPromptTemplate(
 # -----------------------------------------------------------------------------
 # Main function to be called in the chat view:
 
-def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, list[str]]:
+def rag_logic(llm: LLM, vector_store: Collection, user_query: str) -> tuple[str, list[str]]:
     """Basic RAG logic, retrieves documents, passes them into a prompt,
     and return the answer from the LLM. No verification or validation
     steps.
     
     Args:
         llm (LLM): The LLM to use (can be provided by `initialise_llm()`).
-        vector_store (Chroma): The vector DB to use for retrieval (provided
+        vector_store (Collection): The vector DB to use for retrieval (provided
             by `get_vector_db()`).
         user_query (str): The question from the user.
         
@@ -60,7 +60,6 @@ def rag_logic(llm: LLM, vector_store: Chroma, user_query: str) -> tuple[str, lis
     # Build the prompt:
     retrieved_str = ""
     for i, doc in enumerate(documents, 1):
-        doc = doc[0] # Get rid of the similarity score
         retrieved_str += (
             "-" * 80 + "\n"
             f"Document {i}\n"

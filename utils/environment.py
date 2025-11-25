@@ -41,7 +41,6 @@ LLM_MODEL = None
 LLM_URL = None
 
 CHROMA_DB_FOLDER = "."
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 KNOWLEDGE_FOLDERS = None
 KNOWLEDGE_SEARCH_RECURSIVELY = 0
 KNOWLEDGE_FILE_TYPES = ""
@@ -142,11 +141,6 @@ if not LLM_DISABLE:
     CHROMA_DB_FOLDER = os.environ.get("CHROMA_DB_FOLDER", CHROMA_DB_FOLDER)
     if not CHROMA_DB_FOLDER:
         logger.warning(warning_msg.format("CHROMA_DB_FOLDER"))
-        
-    # -----------------
-    EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", EMBEDDING_MODEL)
-    if not EMBEDDING_MODEL:
-        logger.warning(warning_msg.format("EMBEDDING_MODEL"))
     
     # -----------------
     try:

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## v2.2.
+
+### Fixed
+- Fixed the docker issues associated with `langchain-chroma` by getting rid of the dependency altogether.
+
+### Changed
+- Changed the `chroma_manager` module to now only depend on `chromadb` instead of `langchain-chroma`.
+- Changed the `chroma_manager` API slightly:
+    - `get_vector_db()` now returns a `chromadb.Collection` instead of `langchain_chroma.Chroma`.
+    - `get_vector_db()` does not take an embedding model name anymore as an argument.
+    - Added a new function to store documents to keep an interface similar to `langchain_chroma.Chroma`.
+- In `ANPAHP.views.chat`, changed the initialisation of the ChromaDB client to prevent conflicts when trying to delete the database when running script `create_knowledge`.
+
+### Removed
+- Removed the possibility to change the embedding model for the vector DB.
+
+
 ## v2.1.0
 
 ### Added

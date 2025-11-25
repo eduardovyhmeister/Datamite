@@ -7,11 +7,10 @@ import os
 import os.path
 import pathlib
 import shutil
-from typing import Any
 import uuid
 
+import chromadb
 from langchain_core.documents import Document
-from langchain_chroma import Chroma
 
 from ..rag.knowledgebase import file_processors, chroma_manager
 
@@ -24,7 +23,7 @@ logger = logging.get_logger(__name__, environment.LOGGING_LEVEL)
 # -----------------------------------------------------------------------------
 # Main function to create the knowledge base:
 
-def create_knowledge_base(delete_db = True) -> Chroma:
+def create_knowledge_base(delete_db = True) -> chromadb.Collection:
     """Creates the knowledge base by discovering documents, processing it, and storing
     the text excerpts into a vector DB.
     
@@ -35,7 +34,8 @@ def create_knowledge_base(delete_db = True) -> Chroma:
             `True`.
             
     Returns:
-        Chroma - The vector store containing all the discovered knowledge.
+        chromadb.Collection - The vector store collection containing all the discovered 
+        knowledge.
     """
     logger.info("Creating the knowledge base.")
     
@@ -77,13 +77,11 @@ def create_knowledge_base(delete_db = True) -> Chroma:
             shutil.rmtree(chroma_db_folder)
         except FileNotFoundError: pass
     
-    # Create or retrieve the vector database. 'embedding_function' isn't specified
-    # to keep the default model used by ChromaDB (all-MiniLM-L6-v2).
     logger.info("Creating/retrieving the vector DB.")
-    vector_store = chroma_manager.get_vector_db(collection_name = chroma_manager.DEFAULT_COLLECTION_NAME,
-                                                persist_directory = chroma_db_folder)
+    vector_store = chroma_manager.get_vector_db()
+    
     logger.info("Storing documents.")
-    vector_store.add_documents(docs)
+    chroma_manager.store_documents(vector_store, docs)
     
     logger.info(f"Knowledge base created in {chroma_db_folder}.")
     return vector_store
@@ -169,15 +167,15 @@ def process_documents(file_paths: list[str], **kwargs) -> list[Document]:
         
         # Create a LangChain document with a random ID:
         documents.extend([Document(page_content = text,
-                                       metadata = {"source": path.name},
-                                       id = str(uuid.uuid4()))
+                                   metadata = {"source": path.name},
+                                   id = str(uuid.uuid4()))
                           for text in raw_docs])
     return documents
 
 
 def run():
     """Function called by the 'python manage.py runscript' command."""
-    vector_store = create_knowledge_base()
+    create_knowledge_base()
     
 
     
