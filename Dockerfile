@@ -1,5 +1,4 @@
-FROM python:3.14-bookworm
-# FROM python:3.13-alpine3.22
+FROM python:3.14-slim
 LABEL maintainer="Bastien Pietropaoli - Insight Centre for Data Analytics / UCC"
 
 #define that all errors are sent to terminal
@@ -20,37 +19,12 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 RUN apt-get update --fix-missing && \
     apt-get install -y --fix-missing build-essential
-# RUN apk add --no-cache \
-#     gcc \
-#     musl-dev \
-#     libffi-dev \
-#     openssl-dev \
-#     python3-dev \
-#     build-base \
-#     linux-headers \
-#     freetype-dev \
-#     libpng-dev \
-#     cairo-dev \
-#     pkgconfig \
-#     cmake
 
 # Install the dependencies specified in the requirements file
 WORKDIR /install
 COPY requirements.txt .
 RUN pip install --upgrade pip
-RUN python3 -m pip install -r requirements.txt --verbose
-RUN python3 -m pip install openai
-# RUN python3 -m pip install onnxruntime
-RUN python3 -m pip install chromadb --verbose
-RUN python3 -m pip install langchain
-RUN python3 -m pip install langchain-community
-RUN python3 -m pip install langchain-core
-RUN python3 -m pip install langchain-openai
-RUN python3 -m pip install langchain-anthropic
-RUN python3 -m pip install langchain-deepseek
-# RUN python3 -m pip install langchain-chroma
-RUN python3 -m pip install langchain-huggingface
-RUN python3 -m pip install langchain-text-splitters
+RUN pip install -r requirements.txt --verbose
 
 # Copy the rest of the application code into the container
 WORKDIR /ANPAHP
