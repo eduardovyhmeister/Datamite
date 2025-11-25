@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.13-slim
 LABEL maintainer="Bastien Pietropaoli - Insight Centre for Data Analytics / UCC"
 
 #define that all errors are sent to terminal
